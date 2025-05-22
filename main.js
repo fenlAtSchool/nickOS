@@ -9,24 +9,27 @@ Cursor Y
 
 Main Action
 Alt Action
+
+(NickOS runs in the +Z direction)
 */
 user = -1
 
-function onClick(){
-        jp[4] = 1
-} 
-function onPlayerAttemptAltAction(){
-        jp[5] = 1
-}
+inBounds = (x,y,z) => (x >= y && x <= z)
+onClick = () => (jp[4] = 1)
+onPlayerAttemptAltAction = () => (jp[5] = 1)
 
-functon ctrack(){
+function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
         vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
+        
+        ctmp[0] = ctmp[0] * (50 / ctmp[2]) + vec[0]
+        ctmp[1] = ctmp[1] * (50 / ctmp[2]) + vec[1]
 
-        // To be finished
+        if(inBounds(ctmp[0], -32, 32) && inBounds(ctmp[1],-32,32)){
+                return ctmp
+        }
 }
-
 function jp(){
         let tmp = ctrack()
         jp[2] = tmp[0]
@@ -34,6 +37,6 @@ function jp(){
         tmp = movtrack()
         jp[0] = tmp[0]
         jp[1] = tmp[1]
-
-        jp[0] = 
+        jp[4] = 0
+        jp[5] = 0
 }
