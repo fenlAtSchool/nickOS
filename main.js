@@ -18,6 +18,12 @@ inBounds = (x,y,z) => (x >= y && x <= z)
 onClick = () => (jp[4] = 1)
 onPlayerAttemptAltAction = () => (jp[5] = 1)
 
+function movtrack(){
+        let z = api.getPosition(user)
+        api.setPosition(user,[0,0,0])
+        return z
+}
+
 function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
         vec = ctmp["camPos"]
@@ -31,12 +37,25 @@ function ctrack(){
         }
 }
 function jp(){
+        ram[7] = ram[2]
+        ram[8] = ram[3]
         let tmp = ctrack()
-        jp[2] = tmp[0]
-        jp[3] = tmp[1]
+        ram[2] = tmp[0]
+        ram[3] = tmp[1]
         tmp = movtrack()
-        jp[0] = tmp[0]
-        jp[1] = tmp[1]
-        jp[4] = 0
-        jp[5] = 0
+        ram[0] = tmp[0]
+        ram[1] = tmp[2]
+        ram[4] = 0
+        ram[5] = 0
+}
+function allocMem(name){
+        ramdict[
+}
+
+function OSboot(){
+        ram = []
+        ramdict = {""};
+        for(let i = 0; i < 512; i++){
+                ram.append
+        }
 }
