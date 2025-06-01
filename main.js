@@ -17,24 +17,32 @@ Stick Programming Lang
 16 Registers, Unlimited memory, System Stack
 X/Y/N/NN/NNN syntax from CHIP-8
 
-REQ - Give 32 more 32-bit addresses
-STM - Push string Y to memory at index X (Will be array of ASCII ints)
-STO - Push register X to memory at index Y
-INR - Store 
+REQ 0x0FFF- Give 32 more 8-bit addresses
+IMM 0x1XNN - Store NN at RX
+STR 0x1XY1 - Store RX at Mem RY
+LDR 0x1XY2 - Store Mem RX to RY
+MOV 0x1XY3 - Store RX to RY
 
+OPP 0x2XY0 - Plus RX RY
+OPS 0x2XY1 - Minus RX RY
+OPT 0x2XY2 - Mult RX RY
+OPD 0x2XY3 - Div RX RY
+OPM 0x2XY4 - Mod RX RY
+OPA 0x2XY5 - And RX RY
+OPN 0x2XY6 - Not RX
+OPO 0x2XY7 - Or RX RY
+OPX 0x2XY8 - Xor RX RY
 
-OP Family:
-P - Plus
-S - Minus
-T - Mult
-D - Div
-M - Mod
-A - And
-N - Not
-O - Or
-X - Xor
+CAL 0x3000 - Push PC to Stack 2, JMP to POP
+RET 0x3FFF - JMP to POP Stack 2
 
-CAL - Push PC to Stack 2, JMP to POP
+JMP 0x4007 - JMP RX
+JEQ 0x4XY2 - JEQ RX RY
+JGT 0x4XY1 - JGT RX RY
+JLT 0x4XY4 - JLT RX RY
+JGE 0x4XY3
+JLE 9x4XY4
+JNE 
 
 
 */
