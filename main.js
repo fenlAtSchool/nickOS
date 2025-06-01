@@ -17,8 +17,8 @@ Stick Programming Lang
 16 Registers, Unlimited memory, System Stack
 X/Y/N/NN/NNN syntax from CHIP-8
 
-REQ 0x0FFF- Give 32 more 8-bit addresses
-IMM 0x1XNN - Store NN at RX
+REQ 0x0FFF- Give 256 more addresses
+IMM 0x1XY0 - Store following Y bytes at RX
 STR 0x1XY1 - Store RX at Mem RY
 LDR 0x1XY2 - Store Mem RX to RY
 MOV 0x1XY3 - Store RX to RY
@@ -35,15 +35,23 @@ OPX 0x2XY8 - Xor RX RY
 
 CAL 0x3000 - Push PC to Stack 2, JMP to POP
 RET 0x3FFF - JMP to POP Stack 2
+IDX 0x3X01 - Set index to RX
 
 JMP 0x4007 - JMP RX
 JEQ 0x4XY2 - JEQ RX RY
 JGT 0x4XY1 - JGT RX RY
 JLT 0x4XY4 - JLT RX RY
-JGE 0x4XY3
-JLE 9x4XY4
-JNE 
+JGE 0x4XY3 - JGE RX RY
+JLE 0x4XY6 - JLE RX RY
+JNE 0x4XY5 - JNE RX RY
 
+DIS 0x5XY0 - Display string with RY len starting from MEM RX
+
+PIX 0x5XY1 - CHIP-8 DXYN with single pixel
+DRA 0x5XYN - CHIP-8 DXYN
+
+SPI 0x6XY0 - Display pixel RXRY with IDX
+DSP 0x7XYN - Display 
 
 */
 user = -1
@@ -57,7 +65,6 @@ function movtrack(){
         api.setPosition(user,[0,0,0])
         return z
 }
-
 function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
         vec = ctmp["camPos"]
@@ -82,6 +89,7 @@ function jp(){
         s[4] = 0
         s[5] = 0
 }
+
 function setProcess(name){
         ram[name] = []
         active.push(name)
@@ -99,7 +107,6 @@ function killProcess(name){
 function OSboot(){
         active = []
         ram = {}
-
-        setProcess('sys')
-        requestMemory('sys')
+        f = []
+        task = "DISPLAY FILE NAMES"
 }
