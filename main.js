@@ -70,10 +70,10 @@ function ctrack(){
         vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
         
-        ctmp[0] = ctmp[0] * (50 / ctmp[2]) + vec[0]
-        ctmp[1] = ctmp[1] * (50 / ctmp[2]) + vec[1]
+        ctmp[0] = ctmp[0] * (50 / ctmp[2]) + vec[0] + 32
+        ctmp[1] = ctmp[1] * (50 / ctmp[2]) + vec[1] + 32
 
-        if(inBounds(ctmp[0], -32, 32) && inBounds(ctmp[1],-32,32)){
+        if(inBounds(ctmp[0], 0, 64) && inBounds(ctmp[1],0,64)){
                 return ctmp
         }
 }
@@ -90,23 +90,29 @@ function jp(){
         s[5] = 0
 }
 
-function setProcess(name){
-        ram[name] = []
-        active.push(name)
-}
 function requestMemory(name){
         for(let i = 0; i < 256; i++){
-                ram[name].push(0)
+                ram[active.indexOf(name)].push(0)
         }
 }
+function setProcess(name){
+        ram.push([])
+        active.push(name)
+        requestMemory(name)
+}
 function killProcess(name){
+        ram.splice(active.indexOf(name),1)
         active.splice(active.indexOf(name),1)
-        delete ram[name] = []
 }
 
 function OSboot(){
         active = []
-        ram = {}
-        f = []
+        ram = []
         task = "DISPLAY FILE NAMES"
+}
+function cursorShape(){
+        return "100011010"
+}
+function drawCursor(){
+        
 }
