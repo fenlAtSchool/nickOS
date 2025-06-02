@@ -19,6 +19,7 @@ X/Y/N/NN/NNN syntax from CHIP-8
 
 REQ 0x0FFF- Give 256 more addresses
 IMM 0x1XY0 - Store following Y bytes at RX
+ISR 0x1XY4 - Store following Y bytes at MRX, one byte per mem (For string purposes)
 STR 0x1XY1 - Store RX at Mem RY
 LDR 0x1XY2 - Store Mem RX to RY
 MOV 0x1XY3 - Store RX to RY
@@ -67,7 +68,7 @@ function movtrack(){
 }
 function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
-        vec = ctmp["camPos"]
+        let vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
         
         ctmp[0] = ctmp[0] * (50 / ctmp[2]) + vec[0] + 32
@@ -108,11 +109,29 @@ function killProcess(name){
 function OSboot(){
         active = []
         ram = []
-        task = "DISPLAY FILE NAMES"
+        s = [0,0,0,0,0,0,0,0,0]
+        display = []
+        for(let i = 0; i < 64; i++){
+                display.push([])
+                for(let z = 0; z < 64; z++){
+                        display[display.length - 1].push(0)
+                }
+        }
+        task = ["DISPLAY FILE NAMES",0]
 }
 function cursorShape(){
         return "100011010"
 }
 function drawCursor(){
-        
+        let m = cursorShape()
+        for(let i = 0; i < 3; i++){
+                for(let j = 0; j < 3; j++){
+                        api.setBlock(s[7] + i - 32, s[8] + j - 32, display[ (s[7] + j) * 64 + s[8] + i])
+                        api.setBlock(s[2] + i - 32, s[3] + j - 32, 86 + 11 * m[3*i+j])
+                }
+        }
+}
+function displayFileNames(prog){
+        if()
+        let m = api.getStandardChestItemSlot([prog,0, 51])
 }
