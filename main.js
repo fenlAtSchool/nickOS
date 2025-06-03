@@ -111,13 +111,14 @@ function OSboot(){
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
         display = []
+        filecount = api.getBlockId(-1,0,51)
         for(let i = 0; i < 64; i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
                         display[display.length - 1].push(0)
                 }
         }
-        task = ["DISPLAY FILE NAMES",0]
+        task = ["getFileCount",0, 0]
 }
 function cursorShape(){
         return "100011010"
@@ -131,7 +132,14 @@ function drawCursor(){
                 }
         }
 }
-function displayFileNames(prog){
-        if()
-        let m = api.getStandardChestItemSlot([prog,0, 51])
+function displayFileNames(obj){
+        if(obj[1] <= obj[2]){  
+                let m = "api.getStandardChest"
+                m += `Items([${prog},0,51])`
+                m = eval(m)[0][pages][0]
+                api.log(m) //Placeholder for font display
+                obj[1]++
+                return 0
+        }
+        return 1
 }
