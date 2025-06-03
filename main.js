@@ -110,15 +110,15 @@ function OSboot(){
         active = []
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
-        display = []
-        filecount = api.getBlockId(-1,0,51)
+        display = [] //sulfrox code format used
+        filecount = api.getStandardChes\u{74}\u{49}\u{74}emSlot([-1,0,51],0)["attributes"]["customAttributes"]["pages"][0]
         for(let i = 0; i < 64; i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
                         display[display.length - 1].push(0)
                 }
         }
-        task = ["getFileCount",0, 0]
+        task = ["displayFileNames", 0, 16]
 }
 function cursorShape(){
         return "100011010"
@@ -131,6 +131,7 @@ function drawCursor(){
                         api.setBlock(s[2] + i - 32, s[3] + j - 32, 86 + 11 * m[3*i+j])
                 }
         }
+        return 1
 }
 function displayFileNames(obj){
         if(obj[1] <= obj[2]){  
