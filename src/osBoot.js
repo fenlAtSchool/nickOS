@@ -90,4 +90,4 @@ function OSboot(){
         loadFont()
         osOn = true
 }
-osBoot()
+OSboot()
