@@ -140,7 +140,8 @@ function displayFileNames(obj){ // [task, progress, starting val]
         if(obj[1] < 10 && filecount > obj[1] + obj[2]){  
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
-                m = eval(m)[0][pages][0]
+                m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
+                api.log(`NLOG: ${m}`)
                 dtxt(0, 64 - obj[1]*5, m)
                 obj[1]++
                 return obj
