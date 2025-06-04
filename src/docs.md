@@ -1,4 +1,4 @@
-/*
+# Keys
 Movement +/- x
 Movement +/- z
 
@@ -9,11 +9,8 @@ Main Action
 Alt Action
 
 (NickOS runs in the +Z direction)
-*/
 
-/* Example program
-
-Stick Programming Lang
+# Stick Programming Lang
 16 Registers, Unlimited memory, System Stack
 X/Y/N/NN/NNN syntax from CHIP-8
 
@@ -54,4 +51,4 @@ DRA 0x5XYN - CHIP-8 DXYN
 SPI 0x6XY0 - Display pixel RXRY with IDX
 DSP 0x7XYN - Display 
 
-*/
+
