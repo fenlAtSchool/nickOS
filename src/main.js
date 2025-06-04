@@ -90,9 +90,9 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 obj[1]++
                 return obj
         }
-        return ["display",0,0]
+        return ["updateDisplay",0,0]
 }
-function display(obj){
+function updateDisplay(obj){
         for(let y = 32; y > -33; y++){
                 for(let x = -32; x < 33; x++){
                         if(display[y + 32][x + 32][0] != display[y + 32][x + 32][1]){
@@ -113,7 +113,7 @@ function tick(){
                                 task = displayFileNames(task)
                                 break
                         case "display":
-                                task = display(task)
+                                task = updateDisplay(task)
                                 break
                         
                 }
