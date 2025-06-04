@@ -72,9 +72,9 @@ function dtxt(x,y,m){
                         for(let dx = 0; dx < 3; dx++){
                                 r = font[m[i]][3 * dy + dx]
                                 if(r == "#"){
-                                        display[x + dx][y - dy] = 86
+                                        display[x + dx][y + dy][1] = 86
                                 } else {
-                                        display[x + dx][y - dy] = 97
+                                        display[x + dx][y + dy][1] = 97
                                 }
                         }
                 }
@@ -87,22 +87,22 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
-                api.log(`NLOG: ${m}`)
-                dtxt(0, 64 - obj[1]*5, m)
+                dtxt(0, obj[1]*5, m)
                 obj[1]++
                 return obj
         }
         return ["updateDisplay",0,0]
 }
 function updateDisplay(obj){
-        for(let y = 32; y > -33; y++){
-                for(let x = -32; x < 33; x++){
-                        let val = display[y + 32][x + 32]
+        for(let y = 0; y < 64; y++){
+                for(let x = 0; x < 64; x++){
+                        let val = display[y][x]
                         if(val[0] != val[1]){
+                                api.log(val)
                                 val[0] = val[1]
-                                let tmp = api.blockIdToBlockName(val)
-                                api.setBlock([x,y,50],tmp)
-                                display[y+32][x+32] = val
+                                let tmp = api.blockIdToBlockName(val[1])
+                                api.setBlock([y - 32,64 - x,50],tmp)
+                                display[y][x] = val
                         }
                 }
         }
@@ -117,7 +117,7 @@ function tick(){
                         case "displayFileNames":
                                 task = displayFileNames(task)
                                 break
-                        case "display":
+                        case "updateDisplay":
                                 task = updateDisplay(task)
                                 break
                         
