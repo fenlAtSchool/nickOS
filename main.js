@@ -118,7 +118,7 @@ function OSboot(){
                         display[display.length - 1].push(0)
                 }
         }
-        task = ["displayFileNames", 0, 16]
+        task = ["displayFileNames", 0, 0]
 }
 function cursorShape(){
         return "100011010"
@@ -133,12 +133,14 @@ function drawCursor(){
         }
         return 1
 }
-function displayFileNames(obj){
-        if(obj[1] <= obj[2]){  
+function dtxt(){ //todo
+}
+function displayFileNames(obj){ // [task, progress, starting val]
+        if(obj[1] < 10){  
                 let m = "api.getStandardChest"
-                m += `Items([${prog},0,51])`
+                m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0][pages][0]
-                api.log(m) //Placeholder for font display
+                dtxt(0, 64 - obj[1]*5, m)
                 obj[1]++
                 return 0
         }
