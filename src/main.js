@@ -63,12 +63,12 @@ function drawCursor(){
         }
         return 1
 }
-function dtxt(x,y,m){ //todo
+function dtxt(x,y,m){ 
         let r = 0
         for(let i = 0; i < m.length; i++){
                 for(let dy = 0; dy < 5; dy++){
                         for(let dx = 0; dx < 3; dx++){
-                                r = font[i][3 * dy + dx]
+                                r = font[m[i]][3 * dy + dx]
                                 if(r == "#"){
                                         display[x + dx][y - dy] = 86
                                 } else {
@@ -97,7 +97,7 @@ function updateDisplay(obj){
                 for(let x = -32; x < 33; x++){
                         if(display[y + 32][x + 32][0] != display[y + 32][x + 32][1]){
                                 display[y + 32][x + 32][0] = display[y + 32][x + 32][1]
-                                api.setBlock([x,y,50],display[y + 32][x + 32][1])
+                                api.setBlock([x,y,50],api.blockIdToBlockName(display[y + 32][x + 32][1]))
                         }
                 }
         }
