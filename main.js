@@ -137,7 +137,7 @@ function dtxt(x,y,m){ //todo
         return 1
 }
 function displayFileNames(obj){ // [task, progress, starting val]
-        if(obj[1] < 10){  
+        if(obj[1] < 10 && filecount > obj[1] + obj[2]){  
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0][pages][0]
