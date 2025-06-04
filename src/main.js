@@ -59,7 +59,7 @@ function drawCursor(){
                 for(let j = 0; j < 3; j++){
                         let pos = [s[7]+i-32,s[8]+j-32,50]
                         api.setBlock(pos,display[(s[7]+j)*64+s[8]+i])
-                        let pos = [s[2]+i-32,s[3]+j-32,50]
+                        pos = [s[2]+i-32,s[3]+j-32,50]
                         api.setBlock(pos,86+11*m[3*i+j])
                 }
         }
