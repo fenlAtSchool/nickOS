@@ -106,20 +106,6 @@ function killProcess(name){
         active.splice(active.indexOf(name),1)
 }
 
-function OSboot(){
-        active = []
-        ram = []
-        s = [0,0,0,0,0,0,0,0,0]
-        display = [] //sulfrox code format used
-        filecount = api.getStandardChes\u{74}\u{49}\u{74}emSlot([-1,0,51],0)["attributes"]["customAttributes"]["pages"][0]
-        for(let i = 0; i < 64; i++){
-                display.push([])
-                for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push(0)
-                }
-        }
-        task = ["displayFileNames", 0, 0]
-}
 function cursorShape(){
         return "100011010"
 }
@@ -133,7 +119,22 @@ function drawCursor(){
         }
         return 1
 }
-function dtxt(){ //todo
+function dtxt(x,y,m){ //todo
+        let r = 0
+        for(let i = 0; i < m.length; i++){
+                for(let dy = 0; dy < 5; dy++){
+                        for(let dx = 0; dx < 3; dx++){
+                                r = font[i][3 * dy + dx]
+                                if(r == "#"){
+                                        display[r][i] = 86
+                                } else {
+                                        display[r][i] = 97
+                                }
+                        }
+                }
+                x += 4
+        }
+        return 1
 }
 function displayFileNames(obj){ // [task, progress, starting val]
         if(obj[1] < 10){  
@@ -142,7 +143,18 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 m = eval(m)[0][pages][0]
                 dtxt(0, 64 - obj[1]*5, m)
                 obj[1]++
-                return 0
+                return obj
         }
-        return 1
+        return "FINISHED"
+}
+
+
+osOn = false
+function tick(){
+        if(osOn){
+                switch(task[0]){
+                        case "displayFileNames":
+                                task = displayFileNames(task)
+                }
+        }
 }
