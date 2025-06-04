@@ -2,7 +2,7 @@
 user = -1
 
 inBounds = (x,y,z) => (x >= y && x <= z)
-onClick = () => (jp[4] = 1)
+onPlayerClick = () => (jp[4] = 1)
 onPlayerAttemptAltAction = () => (jp[5] = 1)
 
 function movtrack(){
@@ -57,8 +57,10 @@ function drawCursor(){
         let m = cursorShape()
         for(let i = 0; i < 3; i++){
                 for(let j = 0; j < 3; j++){
-                        api.setBlock(s[7] + i - 32, s[8] + j - 32, display[ (s[7] + j) * 64 + s[8] + i])
-                        api.setBlock(s[2] + i - 32, s[3] + j - 32, 86 + 11 * m[3*i+j])
+                        let pos = [s[7]+i-32,s[8]+j-32,50]
+                        api.setBlock(pos,display[(s[7]+j)*64+s[8]+i])
+                        let pos = [s[2]+i-32,s[3]+j-32,50]
+                        api.setBlock(pos,86+11*m[3*i+j])
                 }
         }
         return 1
@@ -95,9 +97,12 @@ function displayFileNames(obj){ // [task, progress, starting val]
 function updateDisplay(obj){
         for(let y = 32; y > -33; y++){
                 for(let x = -32; x < 33; x++){
-                        if(display[y + 32][x + 32][0] != display[y + 32][x + 32][1]){
-                                display[y + 32][x + 32][0] = display[y + 32][x + 32][1]
-                                api.setBlock([x,y,50],api.blockIdToBlockName(display[y + 32][x + 32][1]))
+                        let val = display[y + 32][x + 32]
+                        if(val[0] != val[1]){
+                                val[0] = val[1]
+                                let tmp = api.blockIdToBlockName(val)
+                                api.setBlock([x,y,50],tmp)
+                                display[y+32][x+32] = val
                         }
                 }
         }
