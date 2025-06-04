@@ -1,5 +1,4 @@
 function OSboot(){
-        osOn = true
         active = []
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
@@ -12,4 +11,6 @@ function OSboot(){
                 }
         }
         task = ["displayFileNames", 0, 0]
+        loadFont()
+        osOn = true
 }
