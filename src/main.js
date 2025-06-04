@@ -101,7 +101,7 @@ function updateDisplay(obj){
                         }
                 }
         }
-        return ["FINISHED,0,0]
+        return ["FINISHED",0,0]
 }
 
 
