@@ -1,26 +1,29 @@
 
-user = -1
+
+user = "fenl_"
 
 inBounds = (x,y,z) => (x >= y && x <= z)
 onPlayerClick = () => (jp[4] = 1)
 onPlayerAttemptAltAction = () => (jp[5] = 1)
 
 function movtrack(){
-        let z = api.getPosition(user)
-        api.setPosition(user,[0,0,0])
+        let z = api.getPosition(api.getPlayerId(user))
+        // api.setPosition(user,[0,0,0])
         return z
 }
 function ctrack(){
-        let ctmp = api.getPlayerFacingInfo(user)
+        let ctmp = api.getPlayerFacingInfo(api.getPlayerId(user))
         let vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
         
-        ctmp[0] = ctmp[0] * (50 / ctmp[2]) + vec[0] + 32
-        ctmp[1] = ctmp[1] * (50 / ctmp[2]) + vec[1] + 32
-
-        if(inBounds(ctmp[0], 0, 64) && inBounds(ctmp[1],0,64)){
+        ctmp[0] = ctmp[0] * ((50-vec[2]) / ctmp[2]) + vec[0]
+        ctmp[1] = ctmp[1] * ((50-vec[2]) / ctmp[2]) + vec[1]
+        ctmp[0] = Math.floor(ctmp[0] + 64)
+        ctmp[1] = Math.floor(64 - ctmp[1])
+        if(inBounds(ctmp[0], 0, 128) && inBounds(ctmp[1],0,64)){
                 return ctmp
         }
+        return [0,0,0]
 }
 function jp(){
         s[7] = s[2]
@@ -57,10 +60,11 @@ function drawCursor(){
         let m = cursorShape()
         for(let i = 0; i < 3; i++){
                 for(let j = 0; j < 3; j++){
-                        let pos = [s[7]+i-32,s[8]+j-32,50]
-                        api.setBlock(pos,display[(s[7]+j)*64+s[8]+i])
-                        pos = [s[2]+i-32,s[3]+j-32,50]
-                        api.setBlock(pos,86+11*m[3*i+j])
+                        let pos = [s[7]-64+i,64-s[8]-j,50]
+                        let tmp = display[s[7]+i][s[8]+j][1]
+                        api.setBlock(pos,api.blockIdToBlockName(tmp))
+                        pos = [s[2]+i-64,64-s[3]-j,50]
+                        api.setBlock(pos,api.blockIdToBlockName(97-11*m[3*i+j]))
                 }
         }
         return 1
@@ -87,40 +91,52 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
-                dtxt(0, obj[1]*5, m)
+                api.log(m)
+                dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
+                api.log(obj)
                 return obj
         }
         return ["updateDisplay",0,0]
 }
 function updateDisplay(obj){
-        for(let y = 0; y < 64; y++){
+        for(let y = 0; y < 128; y++){
                 for(let x = 0; x < 64; x++){
                         let val = display[y][x]
                         if(val[0] != val[1]){
-                                api.log(val)
                                 val[0] = val[1]
                                 let tmp = api.blockIdToBlockName(val[1])
-                                api.setBlock([y - 32,64 - x,50],tmp)
+                                api.setBlock([y - 64,64 - x,50],tmp)
                                 display[y][x] = val
                         }
                 }
         }
         return ["FINISHED",0,0]
 }
+function drawInitMenu(){
+        dtxt(0, 0, "NickOS Alpha")
+        
+}
 
 
 osOn = false
 function tick(){
         if(osOn){
+                jp()
                 switch(task[0]){
                         case "displayFileNames":
                                 task = displayFileNames(task)
                                 break
                         case "updateDisplay":
-                                task = updateDisplay(task)
+                                updateDisplay(task)
+                                task = ["cursor",0,0]
                                 break
-                        
+                        case "cursor":
+                                drawCursor()
+                                break
+                        case "drawInitMenu":
+                                drawInitMenu()
+                                break
                 }
         }
 }
