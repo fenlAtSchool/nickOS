@@ -67,7 +67,7 @@ function drawCursor(){
                         api.setBlock(pos,api.blockIdToBlockName(97-11*m[3*i+j]))
                 }
         }
-        return 1
+        task.push("return 0")
 }
 function dtxt(x,y,m){ 
         let r = 0
@@ -87,19 +87,18 @@ function dtxt(x,y,m){
         return 1
 }
 function displayFileNames(obj){ // [task, progress, starting val]
-        if(obj[1] < 10 && filecount > obj[1] + obj[2]){  
+        if(obj[1] < 7 && filecount > obj[1] + obj[2]){  
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
                 api.log(m)
                 dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
-                api.log(obj)
-                return obj
+                task.push(`updateDisplay(${obj})`)
         }
-        return ["updateDisplay",0,0]
+        task.push(`drawCursor()`)
 }
-function updateDisplay(obj){
+function updateDisplay(toPush){
         for(let y = 0; y < 128; y++){
                 for(let x = 0; x < 64; x++){
                         let val = display[y][x]
@@ -111,32 +110,31 @@ function updateDisplay(obj){
                         }
                 }
         }
-        return ["FINISHED",0,0]
+        task.push(toPush)
 }
 function drawInitMenu(){
-        dtxt(0, 0, "NickOS Alpha")
-        
+        dtxt(0, 0, "NickOS Alpha - fenl under GPL V3")
+        dtxt(0, 6, "Click to continue")
+        task.push("waitClick('clearScreen('displayFileNames([0,0,0])')')")
 }
-
+function waitClick(obj){
+        if(jp[4] == 1){
+                task.push(obj)
+        }
+        task.push( `waitClick(${obj})` )
+}
+function clearScreen(obj){
+        for(let i = 0; i < 32; i++){
+                api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Concrete")
+        }
+        task.push(obj)
+}
 
 osOn = false
 function tick(){
         if(osOn){
                 jp()
-                switch(task[0]){
-                        case "displayFileNames":
-                                task = displayFileNames(task)
-                                break
-                        case "updateDisplay":
-                                updateDisplay(task)
-                                task = ["cursor",0,0]
-                                break
-                        case "cursor":
-                                drawCursor()
-                                break
-                        case "drawInitMenu":
-                                drawInitMenu()
-                                break
-                }
+                task.push( eval(task[0]) )
+                task.splice(1, 1)
         }
 }
