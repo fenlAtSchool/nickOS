@@ -67,7 +67,7 @@ function drawCursor(){
                         api.setBlock(pos,api.blockIdToBlockName(97-11*m[3*i+j]))
                 }
         }
-        task.push("return 0")
+        return ["waitClick",task]
 }
 function dtxt(x,y,m){ 
         let r = 0
@@ -94,11 +94,11 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 api.log(m)
                 dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
-                task.push(`updateDisplay(${obj})`)
+                return ["updateDisplay",task]
         }
-        task.push(`drawCursor()`)
+        return "drawCursor"
 }
-function updateDisplay(toPush){
+function updateDisplay(){
         for(let y = 0; y < 128; y++){
                 for(let x = 0; x < 64; x++){
                         let val = display[y][x]
@@ -110,18 +110,16 @@ function updateDisplay(toPush){
                         }
                 }
         }
-        task.push(toPush)
+        return task[1]
 }
 function drawInitMenu(){
         dtxt(0, 0, "NickOS Alpha - fenl under GPL V3")
-        dtxt(0, 6, "Click to continue")
-        task.push("waitClick('clearScreen('displayFileNames([0,0,0])')')")
 }
 function waitClick(obj){
         if(jp[4] == 1){
-                task.push(obj)
+                return task[2]
         }
-        task.push( `waitClick(${obj})` )
+        return task[1]
 }
 function clearScreen(obj){
         for(let i = 0; i < 64; i++){
@@ -133,14 +131,30 @@ function clearScreen(obj){
         for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Concrete")
         }
-        task.push(obj)
+        return task[1]
 }
 
 osOn = false
 function tick(){
         if(osOn){
                 jp()
-                task.push( eval(task[0]) )
-                task.splice(1, 1)
+                switch(task[0]){
+                        case "initmenu":
+                                drawInitMenu()
+                                task = ["displayFileNames",0,0]
+                                break
+                        case "displayFileNames":
+                                task = displayFileNames(task)
+                                break
+                        case "updateDisplay":
+                                task = updateDisplay()
+                                break
+                        case "drawCursor":
+                                task = drawCursor()
+                                break
+                        case "waitClick":
+                                task = waitClick()
+                                break
+                }
         }
 }
