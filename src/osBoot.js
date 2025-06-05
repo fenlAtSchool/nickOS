@@ -91,10 +91,10 @@ function OSboot(){
                         display[display.length - 1].push([97,97])
                 }
         }
-		for(let i = 0; i < 32; i++){
-			api.setBlockRect([4*i - 64, 64, 50], [4*(i+1) - 64,0, 50], "White Concrete")
-		}
-        task = ["displayFileNames", 0, 0]
+	for(let i = 0; i < 32; i++){
+		api.setBlockRect([4*i - 64, 64, 50], [4*(i+1) - 64,0, 50], "White Concrete")
+	}
+        task = ["drawInitMenu()"]
         loadFont()
         osOn = true
 }
