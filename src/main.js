@@ -124,6 +124,12 @@ function waitClick(obj){
         task.push( `waitClick(${obj})` )
 }
 function clearScreen(obj){
+        for(let i = 0; i < 64; i++){
+                display.push([])
+                for(let z = 0; z < 64; z++){
+                        display[display.length - 1].push([97,97])
+                }
+        }
         for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Concrete")
         }
