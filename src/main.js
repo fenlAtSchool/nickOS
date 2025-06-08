@@ -1,41 +1,41 @@
 
 
-user = "fenl_"
+user = "doesNotExist"     
 
 inBounds = (x,y,z) => (x >= y && x <= z)
-onPlayerClick = () => (jp[4] = 1)
-onPlayerAttemptAltAction = () => (jp[5] = 1)
+function onPlayerClick(){
+		s[4] = 1
+}
+onPlayerAttemptAltAction = () => (s[5] = 1)
 
 function movtrack(){
-        let z = api.getPosition(api.getPlayerId(user))
+        let z = api.getPosition(user)
         // api.setPosition(user,[0,0,0])
         return z
 }
 function ctrack(){
-        let ctmp = api.getPlayerFacingInfo(api.getPlayerId(user))
+        let ctmp = api.getPlayerFacingInfo(user)
         let vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
         
         ctmp[0] = ctmp[0] * ((50-vec[2]) / ctmp[2]) + vec[0]
         ctmp[1] = ctmp[1] * ((50-vec[2]) / ctmp[2]) + vec[1]
-        ctmp[0] = Math.floor(ctmp[0] + 64)
-        ctmp[1] = Math.floor(64 - ctmp[1])
-        if(inBounds(ctmp[0], 0, 128) && inBounds(ctmp[1],0,64)){
+        ctmp[0] = Math.round(ctmp[0] + 64)
+        ctmp[1] = Math.round(64 - ctmp[1])
+        if(inBounds(ctmp[0], 0, 125) && inBounds(ctmp[1],0,61)){
                 return ctmp
         }
         return [0,0,0]
 }
 function jp(){
-        s[7] = s[2]
-        s[8] = s[3]
         let tmp = ctrack()
         s[2] = tmp[0]
         s[3] = tmp[1]
         tmp = movtrack()
         s[0] = tmp[0]
         s[1] = tmp[2]
-        s[4] = 0
-        s[5] = 0
+        s[4] = Math.abs(s[4]-0.25)-0.25
+        s[5] = Math.abs(s[4]-0.25)-0.25
 }
 
 function requestMemory(name){
@@ -64,10 +64,12 @@ function drawCursor(){
                         let tmp = display[s[7]+i][s[8]+j][1]
                         api.setBlock(pos,api.blockIdToBlockName(tmp))
                         pos = [s[2]+i-64,64-s[3]-j,50]
-                        api.setBlock(pos,api.blockIdToBlockName(97-11*m[3*i+j]))
+                        api.setBlock(pos,api.blockIdToBlockName(1724-1638*m[3*i+j]))
                 }
         }
-        return ["waitClick",task]
+        s[7] = s[2]
+        s[8] = s[3]
+        return ["waitClick",task,["ptrc"]]
 }
 function dtxt(x,y,m){ 
         let r = 0
@@ -78,7 +80,7 @@ function dtxt(x,y,m){
                                 if(r == "#"){
                                         display[x + dx][y + dy][1] = 86
                                 } else {
-                                        display[x + dx][y + dy][1] = 97
+                                        display[x + dx][y + dy][1] = 1724
                                 }
                         }
                 }
@@ -91,12 +93,12 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 let m = "api.getStandardChest"
                 m += `Items([${obj[1] + obj[2]},0,51])`
                 m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
-                api.log(m)
+                m = ">" + m
                 dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
                 return ["updateDisplay",task]
         }
-        return "drawCursor"
+        return ["drawCursor"]
 }
 function updateDisplay(){
         for(let y = 0; y < 128; y++){
@@ -113,31 +115,37 @@ function updateDisplay(){
         return task[1]
 }
 function drawInitMenu(){
-        dtxt(0, 0, "NickOS Alpha - fenl under GPL V3")
+        dtxt(0, 0, "NickOS Alpha")
+        dtxt(0, 6, "Files: (Click to open)")
 }
 function waitClick(obj){
-        if(jp[4] == 1){
+        if(s[4] == 0.5){
                 return task[2]
         }
         return task[1]
 }
 function clearScreen(obj){
+        display = []
         for(let i = 0; i < 64; i++){
                 display.push([])
-                for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push([97,97])
+                for(let z = 0; z < 128; z++){
+                        display[display.length - 1].push([1724,1724])
                 }
         }
         for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Concrete")
+                api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Chalk")
         }
         return task[1]
 }
 
 osOn = false
+time = 0
 function tick(){
+        time++
         if(osOn){
-                jp()
+                if(time % 2 == 0){
+                	jp()
+                }
                 switch(task[0]){
                         case "initmenu":
                                 drawInitMenu()
@@ -155,6 +163,12 @@ function tick(){
                         case "waitClick":
                                 task = waitClick()
                                 break
+			case "ptrc":
+				clearScreen()
+				cpace = Math.floor((s[2] - 6)/3)
+				api.log(cpace)
+				task = []
+				break
                 }
         }
 }
