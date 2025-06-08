@@ -174,15 +174,39 @@ function tick(){
                                 break
 			case "ptrc":
 				clearScreen()
-				cpace = Math.floor((s[2])/6) - 2
+				cpace = Math.floor((s[2])/6) - 1
 				if(isInBounds(cpace, 1, filecount)){
-					task = ["executePrep",cpace]
+					task = ["execMenu"]
 				} else {
 					task = ["drawCursor"]
 				}
 				break
+			case "execMenu":
+				dtxt(0,6,"Execute file")
+				dtxt(0,12,"View file")
+				dtxt(0,18,"Delete file")
+				dtxt(0,24,"Back")
+				task = ["menuCallBackWait"]
+				break
+			case "menuCallBackWait":
+				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
+				break
+			case "menuOptionClicked":
+				cp2 = Math.floor((s[2])/6)
+				switch(cp2){
+					case 0:
+						task = ["executePrep"]
+						break
+					case 3:
+						task = ["initMenu",0,0]
+						break
+				}
+				break
 			case "executePrep":
-				program = api.get // fill in
+				program = ""
+				for(let i = 1; i < 48; i++){
+					program += api.getStandardChestItemSlot([cpace,0,50], i)?.attributes?.customDescription ?? "";
+				}
 				task[0] = "execute"
 				memory = [[],display]
 				break
