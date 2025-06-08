@@ -85,6 +85,10 @@ function dtxt(x,y,m){
                         }
                 }
                 x += 4
+		if(x > 60){
+			x = 0
+			y += 6
+		}
         }
         return 1
 }
@@ -190,22 +194,22 @@ function tick(){
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[2])/6)
-				switch(cp2){
-					case 0:
-						task = ["executePrep"]
-						break
-					case 3:
-						task = ["initMenu",0,0]
-						break
-				}
-				break
-			case "executePrep":
 				program = ""
 				for(let i = 1; i < 48; i++){
 					program += api.getStandardChestItemSlot([cpace,0,50], i)?.attributes?.customDescription ?? "";
 				}
-				task[0] = "execute"
-				memory = [[],display]
+				switch(cp2){
+					case 0:
+						task[0] = "execute"
+						memory = [[],display]
+						break
+					case 1:
+						clearScreen()
+						dtxt("> " + program)
+					case 3:
+						task = ["initMenu",0,0]
+						break
+				}
 				break
 			case "execute":
 				memory = executeProgram(program, memory)
