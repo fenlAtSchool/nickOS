@@ -176,17 +176,14 @@ function tick(){
 				clearScreen()
 				cpace = Math.floor((s[2])/6) - 1
 				if(isInBounds(cpace, 1, filecount)){
-					task = ["execMenu"]
+					dtxt(0,6,"Execute file")
+					dtxt(0,12,"View file")
+					dtxt(0,18,"Delete file")
+					dtxt(0,24,"Back")
+					task = ["menuCallBackWait"
 				} else {
 					task = ["drawCursor"]
 				}
-				break
-			case "execMenu":
-				dtxt(0,6,"Execute file")
-				dtxt(0,12,"View file")
-				dtxt(0,18,"Delete file")
-				dtxt(0,24,"Back")
-				task = ["menuCallBackWait"]
 				break
 			case "menuCallBackWait":
 				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
