@@ -137,6 +137,15 @@ function clearScreen(obj){
         }
         return task[1]
 }
+function executeProgram(prog, mem){
+	let result = eval(`memory = [${mem[0]}]; display = [${mem[1]}]; keyboard = [${s}]; font = {${font}}; ${prog}; [memory,display]`)
+	for(let i = 0; i < 64; i++){
+		for(let j = 0; j < 128; j++){
+			display[i][j][1] = result[1][i][j]
+		}
+	}
+	return result
+}
 
 osOn = false
 time = 0
@@ -165,10 +174,24 @@ function tick(){
                                 break
 			case "ptrc":
 				clearScreen()
-				cpace = Math.floor((s[2] - 6)/3)
-				api.log(cpace)
-				task = []
+				cpace = Math.floor((s[2])/6) - 2
+				if(isInBounds(cpace, 1, filecount)){
+					task = ["executePrep",cpace]
+				} else {
+					task = ["drawCursor"]
+				}
 				break
+			case "executePrep":
+				program = api.get // fill in
+				task[0] = "execute"
+				memory = [[],display]
+				break
+			case "execute":
+				memory = executeProgram(program, memory)
+				display = memory[1]
+				updateDisplay()
+				break
+				
                 }
         }
 }
