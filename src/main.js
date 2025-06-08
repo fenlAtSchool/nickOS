@@ -102,7 +102,7 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 obj[1]++
                 return ["updateDisplay",task]
         }
-        return ["drawCursor"]
+        return ["waitClick","directwaitClick",["ptrc"]]
 }
 function updateDisplay(){
         for(let y = 0; y < 128; y++){
@@ -159,6 +159,7 @@ function tick(){
                 if(time % 2 == 0){
                 	jp()
                 }
+		drawCursor()
                 switch(task[0]){
                         case "initmenu":
                                 drawInitMenu()
@@ -170,9 +171,9 @@ function tick(){
                         case "updateDisplay":
                                 task = updateDisplay()
                                 break
-                        case "drawCursor":
-                                task = drawCursor()
-                                break
+			case "directwaitClick":
+				task = ["waitClick","directwaitClick",["ptrc"]]
+				break
                         case "waitClick":
                                 task = waitClick()
                                 break
@@ -184,9 +185,9 @@ function tick(){
 					dtxt(0,12,"View file")
 					dtxt(0,18,"Delete file")
 					dtxt(0,24,"Back")
-					task = ["menuCallBackWait"
+					task = ["menuCallBackWait"]
 				} else {
-					task = ["drawCursor"]
+					task = ["directwaitClick"]
 				}
 				break
 			case "menuCallBackWait":
