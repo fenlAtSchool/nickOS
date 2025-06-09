@@ -8,5 +8,5 @@ filecount = files.attributes.customAttributes.pages.0
 for(let i = 0; i < file.length; i++){
     writeDataToItem([filecount+1,0,50],i+1,file[i])
 }
-files.attributes.customAttributes.pages.0++
+files.attributes.customAttributes.pages[0]++
 api.setStandardChestItemSlot([0,0,50],0,files)
