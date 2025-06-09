@@ -5,6 +5,7 @@ file = ""
 file = file.match(/.{1,470}/g)
 files = api.getStandardChestItemSlot([0,0,50],0)
 filecount = files.attributes.customAttributes.pages.0
+api.setBlock([filecount+1,0,50],"Chest")
 for(let i = 0; i < file.length; i++){
     writeDataToItem([filecount+1,0,50],i+1,file[i])
 }
