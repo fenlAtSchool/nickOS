@@ -1,4 +1,4 @@
-
+//v1.22.12
 
 user = "doesNotExist"     
 
@@ -85,7 +85,7 @@ function dtxt(x,y,m){
                         }
                 }
                 x += 4
-		if(x > 60){
+		if(x > 124){
 			x = 0
 			y += 6
 		}
@@ -102,7 +102,7 @@ function displayFileNames(obj){ // [task, progress, starting val]
                 obj[1]++
                 return ["updateDisplay",task]
         }
-        return ["waitClick","directwaitClick",["ptrc"]]
+        return ["waitClick",["directwaitClick"],["ptrc"]]
 }
 function updateDisplay(){
         for(let y = 0; y < 128; y++){
@@ -130,14 +130,15 @@ function waitClick(obj){
 }
 function clearScreen(obj){
         display = []
-        for(let i = 0; i < 64; i++){
+        for(let i = 0; i < 128;i++){
                 display.push([])
-                for(let z = 0; z < 128; z++){
+                for(let z = 0; z < 64; z++){
                         display[display.length - 1].push([1724,1724])
                 }
         }
+		
         for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i, 64, 50], [4 * (i + 1), 0, 50], "White Chalk")
+                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
         }
         return task[1]
 }
@@ -159,7 +160,9 @@ function tick(){
                 if(time % 2 == 0){
                 	jp()
                 }
-		drawCursor()
+				try{
+				drawCursor()
+				}catch{}
                 switch(task[0]){
                         case "initmenu":
                                 drawInitMenu()
@@ -172,19 +175,23 @@ function tick(){
                                 task = updateDisplay()
                                 break
 			case "directwaitClick":
-				task = ["waitClick","directwaitClick",["ptrc"]]
+				task = ["waitClick",["directwaitClick"],["clearScreen",["ptrc"]]]
 				break
                         case "waitClick":
                                 task = waitClick()
                                 break
+						case "clearScreen":
+								task = clearScreen()
+								break
 			case "ptrc":
-				clearScreen()
-				cpace = Math.floor((s[2])/6) - 1
-				if(isInBounds(cpace, 1, filecount)){
+				cpace = Math.floor((s[3])/6) -1
+				api.log(cpace)
+				if(inBounds(cpace, 1, filecount)){
 					dtxt(0,6,"Execute file")
 					dtxt(0,12,"View file")
 					dtxt(0,18,"Delete file")
 					dtxt(0,24,"Back")
+					updateDisplay()
 					task = ["menuCallBackWait"]
 				} else {
 					task = ["directwaitClick"]
@@ -193,23 +200,35 @@ function tick(){
 			case "menuCallBackWait":
 				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
 				break
+			case "viewingTextRedir":
+				task = ["waitClick","viewingTextRedir","initmenu"]
+				break
 			case "menuOptionClicked":
-				cp2 = Math.floor((s[2])/6)
+				cp2 = Math.floor((s[3])/6) + 1
+				api.log(cp2)
 				program = ""
-				for(let i = 1; i < 48; i++){
+				for(let i = 1; i < 47; i++){
 					program += api.getStandardChestItemSlot([cpace,0,50], i)?.attributes?.customDescription ?? "";
 				}
+				if(inBounds(cp2,0,3)){
 				switch(cp2){
-					case 0:
+					case 2:
 						task[0] = "execute"
 						memory = [[],display]
 						break
-					case 1:
+					case 3:
 						clearScreen()
 						dtxt("> " + program)
-					case 3:
-						task = ["initMenu",0,0]
+						updateDisplay()
+						task = ["viewingTextRedir"]
 						break
+					case 4:
+					case 5:
+						task = ["initmenu",0,0]
+						break
+				}
+				} else {
+					task = ["menuCallBackWait"]
 				}
 				break
 			case "execute":
