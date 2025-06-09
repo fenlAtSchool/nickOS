@@ -3,9 +3,7 @@
 user = "doesNotExist"     
 
 inBounds = (x,y,z) => (x >= y && x <= z)
-function onPlayerClick(){
-		s[4] = 1
-}
+onPlayerClick = () => (s[4] = 1)
 onPlayerAttemptAltAction = () => (s[5] = 1)
 
 function movtrack(){
@@ -94,9 +92,7 @@ function dtxt(x,y,m){
 }
 function displayFileNames(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && filecount > obj[1] + obj[2]){  
-                let m = "api.getStandardChest"
-                m += `Items([${obj[1] + obj[2]},0,51])`
-                m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
+                let m = api.getStandardChestItemSlot([obj[1]+obj[2],0,51],0).attributes.customAttributes.pages[0]
                 m = ">" + m
                 dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
@@ -136,7 +132,6 @@ function clearScreen(obj){
                         display[display.length - 1].push([1724,1724])
                 }
         }
-		
         for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
         }
@@ -180,9 +175,9 @@ function tick(){
                         case "waitClick":
                                 task = waitClick()
                                 break
-						case "clearScreen":
-								task = clearScreen()
-								break
+			case "clearScreen":
+				task = clearScreen()
+				break
 			case "ptrc":
 				cpace = Math.floor((s[3])/6) -1
 				api.log(cpace)
@@ -211,22 +206,22 @@ function tick(){
 					program += api.getStandardChestItemSlot([cpace,0,50], i)?.attributes?.customDescription ?? "";
 				}
 				if(inBounds(cp2,0,3)){
-				switch(cp2){
-					case 2:
-						task[0] = "execute"
-						memory = [[],display]
-						break
-					case 3:
-						clearScreen()
-						dtxt("> " + program)
-						updateDisplay()
-						task = ["viewingTextRedir"]
-						break
-					case 4:
-					case 5:
-						task = ["initmenu",0,0]
-						break
-				}
+					switch(cp2){
+						case 2:
+							task[0] = "execute"
+							memory = [[],display]
+							break
+						case 3:
+							clearScreen()
+							dtxt("> " + program)
+							updateDisplay()
+							task = ["viewingTextRedir"]
+							break
+						case 4:
+						case 5:
+							task = ["initmenu",0,0]
+							break
+					}
 				} else {
 					task = ["menuCallBackWait"]
 				}
