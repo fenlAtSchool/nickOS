@@ -155,7 +155,7 @@ function tick(){
 				if(inBounds(cpace, 1, filecount)){
 					task = ["clearScreen",["drawFileMenu"]]
 				} else {
-					task = ["directWaitClick]
+					task = ["directWaitClick"]
 				}
 				break
 			case "drawFileMenu":
@@ -178,7 +178,7 @@ function tick(){
 				for(let i = 0; i < 47; i++){
 					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
 				}
-				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0)?.attributes?.customAttributes?.pages?[0] ?? ""
+				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0).attributes.customAttributes.pages[0]
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
