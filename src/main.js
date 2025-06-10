@@ -113,7 +113,7 @@ function clearScreen(obj){
 function executeProgram(prog, mem){
 	let tmp1 = `memory = [${mem}]; ${prog} [memory,display]`
 	let result = eval(tmp1)
-	for(let i = 0; i < 64; i++){
+	for(let i = 6; i < 64; i++){
 		for(let j = 0; j < 128; j++){
 			display[i][j][1] = result[1][i][j]
 		}
@@ -182,6 +182,7 @@ function tick(){
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
+							dtxt(0,0,"Exit")
 							task = ["execute"]
 							memory = []
 							break
@@ -202,6 +203,9 @@ function tick(){
 			case "execute":
 				memory = executeProgram(program, memory)
 				updateDisplay()
+				if(s[2]<6 && s[4] == 0.5){
+					task = ["clearScreen",["initmenu"]]
+				}
 				break
 			case "displayFile":
 				dtxt(0,0,name)
