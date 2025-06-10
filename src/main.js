@@ -7,12 +7,6 @@ function onPlayerClick(){
 		s[4] = 1
 }
 onPlayerAttemptAltAction = () => (s[5] = 1)
-
-function movtrack(){
-        let z = api.getPosition(user)
-        // api.setPosition(user,[0,0,0])
-        return z
-}
 function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
         let vec = ctmp["camPos"]
@@ -31,33 +25,14 @@ function jp(){
         let tmp = ctrack()
         s[2] = tmp[0]
         s[3] = tmp[1]
-        tmp = movtrack()
+        tmp = api.getPosition(user)
         s[0] = tmp[0]
         s[1] = tmp[2]
         s[4] = Math.abs(s[4]-0.25)-0.25
         s[5] = Math.abs(s[4]-0.25)-0.25
 }
-
-function requestMemory(name){
-        for(let i = 0; i < 256; i++){
-                ram[active.indexOf(name)].push(0)
-        }
-}
-function setProcess(name){
-        ram.push([])
-        active.push(name)
-        requestMemory(name)
-}
-function killProcess(name){
-        ram.splice(active.indexOf(name),1)
-        active.splice(active.indexOf(name),1)
-}
-
-function cursorShape(){
-        return "100011010"
-}
 function drawCursor(){
-        let m = cursorShape()
+        let m = "100011010"
         for(let i = 0; i < 3; i++){
                 for(let j = 0; j < 3; j++){
                         let pos = [s[7]-64+i,64-s[8]-j,50]
@@ -69,7 +44,6 @@ function drawCursor(){
         }
         s[7] = s[2]
         s[8] = s[3]
-        return ["waitClick",task,["ptrc"]]
 }
 function dtxt(x,y,m){ 
         let r = 0
@@ -90,7 +64,6 @@ function dtxt(x,y,m){
 			y += 6
 		}
         }
-        return 1
 }
 function displayFileNames(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && filecount > obj[1] + obj[2]){  
@@ -116,11 +89,6 @@ function updateDisplay(){
                         }
                 }
         }
-        return task[1]
-}
-function drawInitMenu(){
-        dtxt(0, 0, "NickOS Alpha")
-        dtxt(0, 6, "Files: (Click to open)")
 }
 function waitClick(obj){
         if(s[4] == 0.5){
@@ -159,17 +127,12 @@ function tick(){
         time++
         if(osOn){
                 jp()
-				try{
-				drawCursor()
-				}catch{}
+		try{drawCursor()}catch{}
                 switch(task[0]){
-						case "cinitmenu":
-								clearScreen()
-								task = ["initmenu"]
-								break
                         case "initmenu":
-                                drawInitMenu()
-								updateDisplay()
+                                dtxt(0, 0, "NickOS Alpha")
+        			dtxt(0, 6, "Files: (Click to open)")
+				updateDisplay()
                                 task = ["displayFileNames",0,0]
                                 break
                         case "displayFileNames":
@@ -178,34 +141,36 @@ function tick(){
                         case "updateDisplay":
                                 task = updateDisplay()
                                 break
-						case "directwaitClick":
-								task = ["waitClick",["directwaitClick"],["clearScreen",["ptrc"]]]
-								break
+			case "directwaitClick":
+				task = ["waitClick",["directwaitClick"],["mainMenuClicked"]]
+				break
                         case "waitClick":
                                 task = waitClick()
                                 break
-						case "clearScreen":
-								task = clearScreen()
-								break
-			case "ptrc":
+			case "clearScreen":
+				task = clearScreen()
+				break
+			case "mainMenuClicked":
 				cpace = Math.floor((s[3])/6) -1
-				api.log(filecount)
 				if(inBounds(cpace, 1, filecount)){
-					dtxt(0,6,"Execute file")
-					dtxt(0,12,"View file")
-					dtxt(0,18,"Delete file")
-					dtxt(0,24,"Back")
-					updateDisplay()
-					task = ["menuCallBackWait"]
+					task = ["clearScreen",["drawFileMenu"]]
 				} else {
-					task = ["cinitmenu"]
+					task = ["directWaitClick]
 				}
+				break
+			case "drawFileMenu":
+				dtxt(0,6,"Execute file")
+				dtxt(0,12,"View file")
+				dtxt(0,18,"Delete file")
+				dtxt(0,24,"Back")
+				updateDisplay()
+				task = ["menuCallBackWait"]
 				break
 			case "menuCallBackWait":
 				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
 				break
 			case "viewingTextRedir":
-				task = ["waitClick",["viewingTextRedir"],["cinitmenu"]]
+				task = ["waitClick",["viewingTextRedir"],["clearScreen",["initmenu"]]]
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
@@ -213,22 +178,23 @@ function tick(){
 				for(let i = 0; i < 47; i++){
 					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
 				}
+				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0)?.attributes?.customAttributes?.pages?[0] ?? ""
 				if(inBounds(cp2,2,5)){
-				switch(cp2){
-					case 2:
-						task = ["execute"]
-						memory = []
-						break
-					case 3:
-						api.log("DISPLAYING")
-						task = ["clearScreen",["displayFile"]]
-						break
-					case 4:
-						break
-					case 5:
-						task = ["cinitmenu"]
-						break
-				}
+					switch(cp2){
+						case 2:
+							task = ["execute"]
+							memory = []
+							break
+						case 3:
+							api.log("DISPLAYING")
+							task = ["clearScreen",["displayFile"]]
+							break
+						case 4:
+							break
+						case 5:
+							task = ["cinitmenu"]
+							break
+					}
 				} else {
 					task = ["menuCallBackWait"]
 				}
@@ -238,6 +204,7 @@ function tick(){
 				updateDisplay()
 				break
 			case "displayFile":
+				dtxt(0,0,name)
 				dtxt(0,6,program)
 				updateDisplay()
 				task = ["viewingTextRedir"]
