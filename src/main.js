@@ -88,7 +88,7 @@ function updateDisplay(){
                                 display[y][x] = val
                         }
                 }
-        }
+        } return task[1]
 }
 function waitClick(obj){
         if(s[4] == 0.5){
