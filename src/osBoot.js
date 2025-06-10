@@ -1,4 +1,5 @@
 
+
 function loadFont(){
 
 font = {
@@ -73,10 +74,19 @@ font = {
 "!":"_#__#__#_____#_",
 ">":"______##___###_",
 ":":"____#_____#____",
+'"':"#_##_#_________",
+"'":"_#__#_#________",
+"&":"_#_#___#_#_###_",
+",":"__________#_#__",
+"^":"_#_#_##_#______",
+"|":"_#__#__#__#__#_",
 "full":"###############",
 "blank":"_______________",
 "(":"_#_#__#__#___#_",
-")":"_#___#__#__#_#_"
+";":"____#_____#_#__",
+")":"_#___#__#__#_#_",
+"[":"##_#__#__#__##_",
+"]":"_##__#__#__#_##"
 }
 
 }
@@ -87,7 +97,7 @@ function OSboot(){
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
         display = [] //sulfrox code format used
-        filecount = parseInt(api.getStandardChes\u{74}\u{49}\u{74}emSlot([-1,0,51],0)["attributes"]["customAttributes"]["pages"][0])
+        filecount = parseInt(api.getStandardChes\u{74}\u{49}\u{74}emSlot([0,0,51],0)["attributes"]["customAttributes"]["pages"][0])
         for(let i = 0; i < 128; i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
@@ -95,11 +105,11 @@ function OSboot(){
                 }
         }
         task = ["initmenu"]
-		for(let i = 0; i < 32; i++){
-			api.setBlockRect([4*i - 64, 64, 50], [4*(i+1) - 64,0, 50], "White Chalk")
-		}
         loadFont()
         osOn = true
+		for(let i = 0; i < 32; i++){
+                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
+        }
         api.log("osSuccesfullyBooted")
 }
 OSboot()
