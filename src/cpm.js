@@ -4,7 +4,7 @@ function j(){let a=k();s[2]=a[0];s[3]=a[1];a=api.getPosition(u);s[0]=a[0];s[1]=a
 function d(){let m="100011010";for(let a=0;a<3;a++)for(let b=0;b<3;b++){let p=[s[7]-64+a,64-s[8]-b,50],t=display[s[7]+a][s[8]+b][1];api.setBlock(p,api.blockIdToBlockName(t));p=[s[2]+a-64,64-s[3]-b,50];api.setBlock(p,api.blockIdToBlockName(1724-1638*m[3*a+b]))}s[7]=s[2];s[8]=s[3]}
 function t(x,y,m){for(let a=0;a<m.length;a++){for(let b=0;b<5;b++)for(let c=0;c<3;c++){let r=font[m[a]][3*b+c];display[x+c][y+b][1]=r=="#"?86:1724}x+=4;if(x>124){x=0;y+=6}}}
 function f(o){if(o[1]<7&&filecount>o[1]+o[2]){let m="api.getStandardChest";m+=`Items([${o[1]+o[2]+1},0,51])`;m=eval(m)[0].attributes.customAttributes.pages[0];t(0,o[1]*6+12,">"+m);o[1]++;return["ud",task]}return["wc",["dwc"],["ptrc"]]}
-function y(){for(let y=0;y<128;y++)for(let x=0;x<64;x++){let v=display[y][x];if(v[0]!=v[1]){v[0]=v[1];api.setBlock([y-64,64-x,50],api.blockIdToBlockName(v[1]));display[y][x]=v}}}
+function y(){for(let y=0;y<128;y++)for(let x=0;x<64;x++){let v=display[y][x];if(v[0]!=v[1]){v[0]=v[1];api.setBlock([y-64,64-x,50],api.blockIdToBlockName(v[1]));display[y][x]=v}};return task[1]}
 function w(o){return s[4]==.5?task[2]:task[1]}
 function c(o){display=[];for(let i=0;i<128;i++){display.push([]);for(let z=0;z<64;z++)display[i].push([1724,1724])}for(let i=0;i<32;i++)api.setBlockRect([4*i-64,64,50],[4*(i+1)-64,0,50],"White Chalk");return task[1]}
 function e(p,m){let r=eval(`memory=[${m}];${p} [memory,display]`);for(let i=0;i<64;i++)for(let j=0;j<128;j++)display[i][j][1]=r[1][i][j];return r[0]}
