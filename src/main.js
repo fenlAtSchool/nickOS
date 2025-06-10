@@ -1,9 +1,11 @@
-//v1.22.12
+
 
 user = "doesNotExist"     
-
+s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
-onPlayerClick = () => (s[4] = 1)
+function onPlayerClick(){
+		s[4] = 1
+}
 onPlayerAttemptAltAction = () => (s[5] = 1)
 
 function movtrack(){
@@ -92,7 +94,9 @@ function dtxt(x,y,m){
 }
 function displayFileNames(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && filecount > obj[1] + obj[2]){  
-                let m = api.getStandardChestItemSlot([obj[1]+obj[2],0,51],0).attributes.customAttributes.pages[0]
+                let m = "api.getStandardChest"
+                m += `Items([${obj[1] + obj[2] + 1},0,51])`
+                m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
                 m = ">" + m
                 dtxt(0, obj[1]*6 + 12, m)
                 obj[1]++
@@ -132,19 +136,21 @@ function clearScreen(obj){
                         display[display.length - 1].push([1724,1724])
                 }
         }
+		
         for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
         }
         return task[1]
 }
 function executeProgram(prog, mem){
-	let result = eval(`memory = [${mem[0]}]; display = [${mem[1]}]; keyboard = [${s}]; font = {${font}}; ${prog}; [memory,display]`)
+	let tmp1 = `memory = [${mem}]; ${prog} [memory,display]`
+	let result = eval(tmp1)
 	for(let i = 0; i < 64; i++){
 		for(let j = 0; j < 128; j++){
 			display[i][j][1] = result[1][i][j]
 		}
 	}
-	return result
+	return result[0]
 }
 
 osOn = false
@@ -152,15 +158,18 @@ time = 0
 function tick(){
         time++
         if(osOn){
-                if(time % 2 == 0){
-                	jp()
-                }
+                jp()
 				try{
 				drawCursor()
 				}catch{}
                 switch(task[0]){
+						case "cinitmenu":
+								clearScreen()
+								task = ["initmenu"]
+								break
                         case "initmenu":
                                 drawInitMenu()
+								updateDisplay()
                                 task = ["displayFileNames",0,0]
                                 break
                         case "displayFileNames":
@@ -169,18 +178,18 @@ function tick(){
                         case "updateDisplay":
                                 task = updateDisplay()
                                 break
-			case "directwaitClick":
-				task = ["waitClick",["directwaitClick"],["clearScreen",["ptrc"]]]
-				break
+						case "directwaitClick":
+								task = ["waitClick",["directwaitClick"],["clearScreen",["ptrc"]]]
+								break
                         case "waitClick":
                                 task = waitClick()
                                 break
-			case "clearScreen":
-				task = clearScreen()
-				break
+						case "clearScreen":
+								task = clearScreen()
+								break
 			case "ptrc":
 				cpace = Math.floor((s[3])/6) -1
-				api.log(cpace)
+				api.log(filecount)
 				if(inBounds(cpace, 1, filecount)){
 					dtxt(0,6,"Execute file")
 					dtxt(0,12,"View file")
@@ -189,47 +198,49 @@ function tick(){
 					updateDisplay()
 					task = ["menuCallBackWait"]
 				} else {
-					task = ["directwaitClick"]
+					task = ["cinitmenu"]
 				}
 				break
 			case "menuCallBackWait":
 				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
 				break
 			case "viewingTextRedir":
-				task = ["waitClick","viewingTextRedir","initmenu"]
+				task = ["waitClick",["viewingTextRedir"],["cinitmenu"]]
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
-				api.log(cp2)
 				program = ""
-				for(let i = 1; i < 47; i++){
-					program += api.getStandardChestItemSlot([cpace,0,50], i)?.attributes?.customDescription ?? "";
+				for(let i = 0; i < 47; i++){
+					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
 				}
-				if(inBounds(cp2,0,3)){
-					switch(cp2){
-						case 2:
-							task[0] = "execute"
-							memory = [[],display]
-							break
-						case 3:
-							clearScreen()
-							dtxt("> " + program)
-							updateDisplay()
-							task = ["viewingTextRedir"]
-							break
-						case 4:
-						case 5:
-							task = ["initmenu",0,0]
-							break
-					}
+				if(inBounds(cp2,2,5)){
+				switch(cp2){
+					case 2:
+						task = ["execute"]
+						memory = []
+						break
+					case 3:
+						api.log("DISPLAYING")
+						task = ["clearScreen",["displayFile"]]
+						break
+					case 4:
+						break
+					case 5:
+						task = ["cinitmenu"]
+						break
+				}
 				} else {
 					task = ["menuCallBackWait"]
 				}
 				break
 			case "execute":
 				memory = executeProgram(program, memory)
-				display = memory[1]
 				updateDisplay()
+				break
+			case "displayFile":
+				dtxt(0,6,program)
+				updateDisplay()
+				task = ["viewingTextRedir"]
 				break
 				
                 }
