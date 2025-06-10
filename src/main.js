@@ -110,16 +110,6 @@ function clearScreen(obj){
         }
         return task[1]
 }
-function executeProgram(prog, mem){
-	let tmp1 = `memory = [${mem}]; ${prog} [memory,display]`
-	let result = eval(tmp1)
-	for(let i = 6; i < 64; i++){
-		for(let j = 0; j < 128; j++){
-			display[i][j][1] = result[1][i][j]
-		}
-	}
-	return result[0]
-}
 
 osOn = false
 time = 0
@@ -130,7 +120,7 @@ function tick(){
 		try{drawCursor()}catch{}
                 switch(task[0]){
                         case "initmenu":
-                                dtxt(0, 0, "NickOS Beta V1.20.26")
+                                dtxt(0, 0, "NickOS Beta V1.26.20")
         			dtxt(0, 6, "Files: (Click to open)")
 				updateDisplay()
                                 task = ["displayFileNames",0,0]
@@ -182,8 +172,7 @@ function tick(){
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
-							dtxt(0,0,"Exit")
-							task = ["execute"]
+							task = ["clearScreen",["initexecute"]]
 							memory = []
 							break
 						case 3:
@@ -201,17 +190,23 @@ function tick(){
 				}
 				break
 			case "execute":
-				memory = executeProgram(program, memory)
-				updateDisplay()
-				if(s[2]<6 && s[4] == 0.5){
+				if(s[3]<6 && s[4] == 0.5){
 					task = ["clearScreen",["initmenu"]]
 				}
+				eval(program)
+				dtxt(0,0,"Exit")
+				updateDisplay()
 				break
 			case "displayFile":
 				dtxt(0,0,name)
 				dtxt(0,6,program)
 				updateDisplay()
 				task = ["viewingTextRedir"]
+				break
+			case "initexecute":
+				dtxt(0,0,"Exit")
+				updateDisplay()
+				task = ["execute"]
 				break
 				
                 }
