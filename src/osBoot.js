@@ -110,11 +110,12 @@ function OSboot(){
         }
         task = ["initmenu"]
         loadFont()
-        osOn = true
 		for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
         }
+	curr_page = 0
         api.log("osSuccesfullyBooted")
+	osOn = true
 }
 OSboot()
 user = myId
