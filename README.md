@@ -18,7 +18,7 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 1: Run osBoot.js
 
 
---- Credits ---
+## Credits
 
 Credits to @sulfrox for his anti-filter Board Formatter ( https://sulfrox.github.io/BoardFormatter/anti-filter.html )
 
