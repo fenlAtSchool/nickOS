@@ -1,5 +1,4 @@
 
-
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -65,13 +64,13 @@ function dtxt(x,y,m){
 		}
         }
 }
-function displayFileNames(obj){ // [task, progress, starting val]
-        if(obj[1] < 7 && filecount > obj[1] + obj[2]){  
+function displayFileNames(obj,page){ // [task, progress, starting val]
+        if(obj[1] < 7 && filecount > obj[1] + page){  
                 let m = "api.getStandardChest"
-                m += `Items([${obj[1] + obj[2] + 1},0,51])`
+                m += `Items([${obj[1] + page + 1},0,51])`
                 m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
                 m = ">" + m
-                dtxt(0, obj[1]*6 + 12, m)
+                dtxt(0, obj[1]*6 + 18, m)
                 obj[1]++
                 return ["updateDisplay",task]
         }
@@ -120,13 +119,16 @@ function tick(){
 		try{drawCursor()}catch{}
                 switch(task[0]){
                         case "initmenu":
-                                dtxt(0, 0, "NickOS Beta V1.27.23")
+                                dtxt(0, 0, "NickOS Beta V1.26.20")
         			dtxt(0, 6, "Files: (Click to open)")
+					dtxt(0, 12, "Back")
+					dtxt(24,12, "Next")
+					dtxt(48,12, "Shut Off")
 				updateDisplay()
-                                task = ["displayFileNames",0,0]
+                                task = ["displayFileNames",0]
                                 break
                         case "displayFileNames":
-                                task = displayFileNames(task)
+                                task = displayFileNames(task,curr_page)
                                 break
                         case "updateDisplay":
                                 task = updateDisplay()
@@ -141,14 +143,29 @@ function tick(){
 				task = clearScreen()
 				break
 			case "mainMenuClicked":
-				cpace = Math.floor((s[3])/6) -1
+				cpace = Math.floor((s[3])/6) - 2
 				if(inBounds(cpace, 1, filecount)){
 					task = ["clearScreen",["drawFileMenu"]]
 				} else {
 					task = ["directWaitClick"]
 				}
+				if(inBounds(s[3],6,12)){
+					if(inBounds(s[2],0,16)){
+						curr_page -= 6
+						task = ["clearScreen",["initmenu"]]
+					}
+					if(inBounds(s[2],24,40)){
+						curr_page += 6
+						task = ["clearScreen",["initmenu"]]
+					}
+					if(inBounds(s[2],48,80)){
+						osOn = false
+					}
+				}
 				break
 			case "drawFileMenu":
+				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0).attributes.customAttributes.pages[0]
+				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
 				dtxt(0,12,"View file")
 				dtxt(0,18,"Delete file")
@@ -160,7 +177,23 @@ function tick(){
 				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
 				break
 			case "viewingTextRedir":
-				task = ["waitClick",["viewingTextRedir"],["clearScreen",["initmenu"]]]
+				if(s[4] == 0.5 && inBounds(s[3],6,12)){
+					if(inBounds(s[2],0,16)){
+						task[1] -= 256
+						task[2] -= 256
+						task[0] = "displayFile"
+						task = ["clearScreen",task]
+					}
+					if(inBounds(s[2],24,40)){
+						task[1] += 256
+						task[2] += 256
+						task[0] = "displayFile"
+						task = ["clearScreen",task]
+					}
+					if(inBounds(s[2],48,64)){
+						task = ["clearScreen",["drawFileMenu"]]
+					}
+				}
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
@@ -168,7 +201,6 @@ function tick(){
 				for(let i = 0; i < 47; i++){
 					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
 				}
-				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0).attributes.customAttributes.pages[0]
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
@@ -177,12 +209,13 @@ function tick(){
 							break
 						case 3:
 							api.log("DISPLAYING")
-							task = ["clearScreen",["displayFile"]]
+							task = ["clearScreen",["displayFile",0,256]]
 							break
 						case 4:
 							break
 						case 5:
-							task = ["cinitmenu"]
+							curr_page = 0
+							task = ["clearScreen",["initmenu"]]
 							break
 					}
 				} else {
@@ -191,7 +224,7 @@ function tick(){
 				break
 			case "execute":
 				if(s[3]<6 && s[4] == 0.5){
-					task = ["clearScreen",["initmenu"]]
+					task = ["clearScreen",["drawFileMenu"]]
 				}
 				eval(program)
 				dtxt(0,0,"Exit")
@@ -199,9 +232,12 @@ function tick(){
 				break
 			case "displayFile":
 				dtxt(0,0,name)
-				dtxt(0,6,program)
+				dtxt(0,6,"Back")
+				dtxt(24,6,"Next")
+				dtxt(48,6,"Exit")
+				dtxt(0,12,program.slice(task[1],task[2]))
 				updateDisplay()
-				task = ["viewingTextRedir"]
+				task[0] = "viewingTextRedir"
 				break
 			case "initexecute":
 				dtxt(0,0,"Exit")
