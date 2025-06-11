@@ -114,6 +114,7 @@ function OSboot(){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
         }
 	curr_page = 0
+	palette = [1724,86]
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
