@@ -38,7 +38,7 @@ function drawCursor(){
                         let tmp = display[s[7]+i][s[8]+j][1]
                         api.setBlock(pos,api.blockIdToBlockName(tmp))
                         pos = [s[2]+i-64,64-s[3]-j,50]
-                        api.setBlock(pos,api.blockIdToBlockName(1724-1638*m[3*i+j]))
+                        api.setBlock(pos,api.blockIdToBlockName(palette[m[3*i+j]]))
                 }
         }
         s[7] = s[2]
@@ -51,9 +51,9 @@ function dtxt(x,y,m){
                         for(let dx = 0; dx < 3; dx++){
                                 r = font[m[i]][3 * dy + dx]
                                 if(r == "#"){
-                                        display[x + dx][y + dy][1] = 86
+                                        display[x + dx][y + dy][1] = palette[1]
                                 } else {
-                                        display[x + dx][y + dy][1] = 1724
+                                        display[x + dx][y + dy][1] = palette[0]
                                 }
                         }
                 }
@@ -100,12 +100,12 @@ function clearScreen(obj){
         for(let i = 0; i < 128;i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push([1724,1724])
+                        display[display.length - 1].push([palette[0],palette[0]])
                 }
         }
 		
         for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
+                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], api.blockIdToBlockName(palette[0]))
         }
         return task[1]
 }
@@ -124,6 +124,7 @@ function tick(){
 					dtxt(0, 12, "Back")
 					dtxt(24,12, "Next")
 					dtxt(48,12, "Shut Off")
+					dtxt(88,12, "Dark Mode")
 				updateDisplay()
                                 task = ["displayFileNames",0]
                                 break
@@ -160,6 +161,11 @@ function tick(){
 					}
 					if(inBounds(s[2],48,80)){
 						osOn = false
+					}
+					if(inBounds(s[2],88,124)){
+						tmp = palette[0]
+						palette[0] = palette[1]
+						palette[1] = tmp
 					}
 				}
 				break
