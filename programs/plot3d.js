@@ -104,9 +104,9 @@ init()
 function t(){
   i++
   i %= squareMesh.length
-  if(i == 0){updateDisplay();csc();tick++;}
-  j = squareMesh[i].map(v => [...v]); s = Math.sin(tick); c = Math.cos(tick)
-  hs = Math.sin(tick/2); hc = Math.cos(tick/2)
+  if(i == 0){updateDisplay();csc();time++;}
+  j = squareMesh[i].map(v => [...v]); s = Math.sin(time); c = Math.cos(time)
+  hs = Math.sin(time/2); hc = Math.cos(time/2)
   matrotz = [
 [c,s,0],
 [-s,c,0],
