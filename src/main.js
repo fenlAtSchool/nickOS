@@ -1,4 +1,5 @@
 
+
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -150,7 +151,7 @@ function tick(){
 				} else {
 					task = ["directWaitClick"]
 				}
-				if(inBounds(s[3],6,12)){
+				if(inBounds(s[3],12,18)){
 					if(inBounds(s[2],0,16)){
 						curr_page -= 6
 						task = ["clearScreen",["initmenu"]]
@@ -166,6 +167,7 @@ function tick(){
 						tmp = palette[0]
 						palette[0] = palette[1]
 						palette[1] = tmp
+						task = ["clearScreen",["initmenu"]]
 					}
 				}
 				break
