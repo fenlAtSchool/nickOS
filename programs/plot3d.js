@@ -7,7 +7,7 @@ function init(){
   fov = 160
   a = 0.5
   i = 0
-  tick = 37  
+  time = 37  
   display = []
   for(let i = 0; i < 64; i++){
 	display.push([])
