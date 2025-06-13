@@ -120,7 +120,7 @@ function tick(){
 		try{drawCursor()}catch{}
                 switch(task[0]){
                         case "initmenu":
-                                dtxt(0, 0, "NickOS Beta V1.28.23")
+                                dtxt(0, 0, "NickOS Beta V1.29.25")
         			dtxt(0, 6, "Files: (Click to open)")
 					dtxt(0, 12, "Back")
 					dtxt(24,12, "Next")
