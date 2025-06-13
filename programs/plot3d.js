@@ -17,7 +17,7 @@ function init(){
   }
 }
 function vecxmatr(x,y){
-	out = []
+	let out = []
 	for(let i = 0; i < y[0].length; i++){
 		sum = 0
 		for(let j = 0; j < y.length; j++){
@@ -41,7 +41,7 @@ function project(coord){
   let f = 1 / Math.tan(fov * Math.PI / 90)
   let q = render_dist / (render_dist - 0.3)
   coord.push(1)
-  ret = vecxmatr(coord,[[a*f,0,0,0],[0,f,0,0],[0,0,q,1],[0,0,0-coord[2]*0.3,0]])
+  let ret = vecxmatr(coord,[[a*f,0,0,0],[0,f,0,0],[0,0,q,1],[0,0,0-coord[2]*0.3,0]])
   ret[0] /= ret[3]
   ret[1] /= ret[3]
   return ret
@@ -73,17 +73,27 @@ function draw3dline(a,b,color){
   api.log(`d: ${project(a)} e: ${project(b)}`)
   drawLine(d,e,color)
 }
-function draw3dtri(k,color){
-  draw3dline(k[0],k[1],color)
-  draw3dline(k[0],k[2],color)
-  draw3dline(k[1],k[2],color)
-}
 function csc(){
 	for(let i = 0; i < 64; i++){
 	 for(let j = 0; j < 128; j++){
 		display[i][j][1] = 1724
 	 }
    }
+}
+function getNormal(tri){
+	let diff = [[tri[1][0] - tri[0][0],tri[1][1] - tri[0][1],tri[1][2] - tri[0][2]],[tri[2][0] - tri[0][0],tri[2][1] - tri[0][1],tri[2][2] - tri[0][2]]]
+	let normal = [diff[0][1] * diff[1][2] - diff[1][1] * diff[0][2], diff[0][2] * diff[1][0] - diff[0][0] * diff[1][2], diff[0][0] * diff[1][1] - diff[0][1] * diff[1][0]]
+	let dist = Math.sqrt(normal[0]**2 + normal[1]**2 + normal[2]**2) // L no Fast Inverse Sqrt
+	normal = normal.map(v => v/dist)
+	return normal
+}
+function draw3dtri(k,color){
+  let n = getNormal(k)
+  if(n[2] < 0{
+  	draw3dline(k[0],k[1],color)
+  	draw3dline(k[0],k[2],color)
+  	draw3dline(k[1],k[2],color)
+  }
 }
 
 squareMesh = [
@@ -105,8 +115,8 @@ function t(){
   i++
   i %= squareMesh.length
   if(i == 0){updateDisplay();csc();time++;}
-  j = squareMesh[i].map(v => [...v]); s = Math.sin(time); c = Math.cos(time)
-  hs = Math.sin(time/2); hc = Math.cos(time/2)
+  j = squareMesh[i].map(v => [...v]); let s = Math.sin(time); let c = Math.cos(time)
+  let hs = Math.sin(time/2); let hc = Math.cos(time/2)
   matrotz = [
 [c,s,0],
 [-s,c,0],
