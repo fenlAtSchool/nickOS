@@ -122,7 +122,9 @@ squareMesh = [
 ]
 init()
 function t(){
-  j = squareMesh[curr_tri].map(v => [...v]); let s = Math.sin(time); let c = Math.cos(time)
+  j = api.getStandardChestItemSlot([curr_tri,0,52],0)
+  j = [parseInt(j[0]),parseInt(j[1]),parseInt(j[2])]
+  let s = Math.sin(time); let c = Math.cos(time)
   let hs = Math.sin(time/2); let hc = Math.cos(time/2)
   matrotz = [
 [c,s,0],
@@ -145,13 +147,14 @@ function t(){
 on = false
 curr_tri = 0
 task = "tick"
+objcount = parseInt(api.getStandardChestItemSlot([0,0,52],0).attributes.customAttributes.pages[0])
 function tick(){
   if(on){
 	switch(task){
 		case "tick":
-			if(curr_tri == squareMesh.length - 1){
+			if(curr_tri > objcount){
 				time += 0.2;
-				curr_tri = 0;
+				curr_tri = 1;
 				task = "updateDisplay"
 			} else {
 				t()
