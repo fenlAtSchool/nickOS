@@ -22,16 +22,18 @@ k = open(k,"w")
 k.write("squareMesh = [] \n")
 for i in sqm:
     k.write("j = " + str(i))
-    k.write("\nfor(let i = 0; i < j.length; i++){\n   squareMesh.push(j[i])\n}\n")
+    k.write("fpos = [parseInt(api.getStandardChestItemSlot([0,0,52],0).attributes.customAttributes.pages[0]),0,52]\nfor(let m = 0; m < 48; m++){\nfpos[2]++\napi.setBlock(fpos,'Chest')\napi.setStandardChestItemSlot(fpos,0,'Book',1,undefined,{'customAttributes': {'pages': j[m].map(x=>toString(x))  }})\n}\napi.setStandardChestItemSlot([0,0,51],0,'Book',1,undefined,{'customAttributes': {'pages': fpos[2] }})\n")
 k.close()
 
 '''
-fpos = [parseInt(api.getChestItemSlot([0,0,51]).attributes.customAttributes.pages[0]),0,51]
+fpos = [parseInt(api.getChestItemSlot([0,0,52]).attributes.customAttributes.pages[0]),0,52]
 for(let m = 0; m < 48; m++){
     fpos[2]++
     api.setBlock(fpos,"Chest")
     api.setStandardChestItemSlot(fpos,0,'Book',1,undefined,{'customAttributes': {'pages': j[m].map(x=>x)  }})
 }
 api.setStandardChestItemSlot([0,0,51],0,'Book',1,undefined,{'customAttributes': {'pages': fpos[2] }})
+
+fpos = [parseInt(api.getChestItemSlot([0,0,52]).attributes.customAttributes.pages[0]),0,52]\nfor(let m = 0; m < 48; m++){\nfpos[2]++\napi.setBlock(fpos,"Chest")\napi.setStandardChestItemSlot(fpos,0,'Book',1,undefined,{'customAttributes': {'pages': j[m].map(x=>x)  }})\n}\napi.setStandardChestItemSlot([0,0,51],0,'Book',1,undefined,{'customAttributes': {'pages': fpos[2] }})
 
 '''
