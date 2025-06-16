@@ -32,4 +32,6 @@ for(let m = 0; m < 48; m++){
     api.setBlock(fpos,"Chest")
     api.setStandardChestItemSlot(fpos,0,'Book',1,undefined,{'customAttributes': {'pages': j[m].map(x=>x)  }})
 }
+api.setStandardChestItemSlot([0,0,51],0,'Book',1,undefined,{'customAttributes': {'pages': fpos[2] }})
+
 '''
