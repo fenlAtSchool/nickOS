@@ -1,19 +1,21 @@
 		
-	
+			
 const inb = (x,y,z) => (x >= y && x <= z)
 
 function init(){
-  render_dist = 10
+  render_dist = 20
   fov = 160
   a = 0.5
   i = 0
+  nr = 0.2
   time = 37  
   display = []
+  camera = [0,0,0]
   for(let i = 0; i < 64; i++){
-	display.push([])
-	for(let j = 0; j < 128; j++){
-	  display[display.length - 1].push([0,1724])
-	}
+		display.push([])
+		for(let j = 0; j < 128; j++){
+	 	 display[display.length - 1].push([0,1724])
+		}
   }
 }
 function vecxmatr(x,y){
@@ -31,7 +33,7 @@ function updateDisplay(){
 	for(let i = 0; i < 64; i++){
 		for(let j = 0; j < 128; j++){
 			if(display[i][j][0] != display[i][j][1]){
-				api.setBlock(j-64,i,50,api.blockIdToBlockName(display[i][j][1]))
+				api.setBlock(j-64,64-i,50,api.blockIdToBlockName(display[i][j][1]))
 				display[i][j][0] = display[i][j][1]
 			}
 		}
@@ -39,9 +41,9 @@ function updateDisplay(){
 }
 function project(coord){
   let f = 1 / Math.tan(fov * Math.PI / 90)
-  let q = render_dist / (render_dist - 0.3)
+  let q = render_dist / (render_dist - nr)
   coord.push(1)
-  let ret = vecxmatr(coord,[[a*f,0,0,0],[0,f,0,0],[0,0,q,1],[0,0,0-coord[2]*0.3,0]])
+  let ret = vecxmatr(coord,[[a*f,0,0,0],[0,f,0,0],[0,0,q,1],[0,0,0-coord[2]*nr*q,0]])
   ret[0] /= ret[3]
   ret[1] /= ret[3]
   return ret
@@ -58,20 +60,24 @@ function drawLine(a, b, color){
     }
   }
 }
+function fillTri(x,y,z,color){
+	let pos = [...x]
+	let tmp = [0,0]
+	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1])
+	api.log(`x: ${x} y: ${y} z: ${z}`)
+	for(let i = 0; i < manhattanDist; i++){
+		tmp[0] = pos[0] + i*(z[0]-x[0])/manhattanDist
+		tmp[1] = pos[1] + i*(z[1]-x[1])/manhattanDist
+		drawLine(tmp,y,color)
+	}
+}
 function scale(d){
   d[0] += 1
   \u{64}[1] += 1
   \u{64}[0] *= 64
   d[1] *= 32
   d[1] = 63 - d[1]
-  return d
-}
-function draw3dline(a,b,color){
-  api.log(`a: ${a} b: ${b}`)
-  let d = scale(project(a))
-  let e = scale(project(b))
-  api.log(`d: ${project(a)} e: ${project(b)}`)
-  drawLine(d,e,color)
+  return [d[0],d[1]]
 }
 function csc(){
 	for(let i = 0; i < 64; i++){
@@ -89,10 +95,14 @@ function getNormal(tri){
 }
 function draw3dtri(k,color){
   let n = getNormal(k)
-  if(n[2] < 0{
-  	draw3dline(k[0],k[1],color)
-  	draw3dline(k[0],k[2],color)
-  	draw3dline(k[1],k[2],color)
+  if(n[0] * (k[0][0]-camera[0]) + n[1] * (k[0][1]-camera[1]) + n[2] * (k[0][2]-camera[2]) < 0){
+	k = k.map(v => scale(project(v)))
+	fillTri(k[0],k[1],k[2],color)
+	/*
+  	drawLine(k[0],k[1],color+1)
+  	drawLine(k[0],k[2],color+1)
+  	drawLine(k[1],k[2],color+1)
+	*/
   }
 }
 
@@ -112,10 +122,7 @@ squareMesh = [
 ]
 init()
 function t(){
-  i++
-  i %= squareMesh.length
-  if(i == 0){updateDisplay();csc();time++;}
-  j = squareMesh[i].map(v => [...v]); let s = Math.sin(time); let c = Math.cos(time)
+  j = squareMesh[curr_tri].map(v => [...v]); let s = Math.sin(time); let c = Math.cos(time)
   let hs = Math.sin(time/2); let hc = Math.cos(time/2)
   matrotz = [
 [c,s,0],
@@ -127,19 +134,38 @@ function t(){
 [0,-hs,c],
 [1,0,0]
 ]
-  for(let i = 0; i < 3; i++){
-    j[i] = vecxmatr(j[i],matrotx)
-	j[i] = vecxmatr(j[i],matrotz)
-	j[i][2] += 4
-	j[i][0] *= 3
-	j[i][1] *= 3
+  for(let m = 0; m < 3; m++){
+    j[m] = vecxmatr(j[m],matrotx)
+	j[m] = vecxmatr(j[m],matrotz)
+	j[m][2] += 4
   }
-  draw3dtri(j,86)
-
+  draw3dtri(j,40 + curr_tri)
+	
 }
 on = false
+curr_tri = 0
+task = "tick"
 function tick(){
   if(on){
-   t()
+	switch(task){
+		case "tick":
+			if(curr_tri == squareMesh.length - 1){
+				time += 0.2;
+				curr_tri = 0;
+				task = "updateDisplay"
+			} else {
+				t()
+				curr_tri++
+			}
+			break
+		case "updateDisplay":
+			updateDisplay()
+			task = "csc"
+			break
+		case "csc":
+			csc()
+			task = "tick"
+			break
+	}
   }
 }
