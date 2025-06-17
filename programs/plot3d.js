@@ -8,14 +8,13 @@ function init(){
 	time = 37  
 	display = []
 	camera = [0,0,0]
-	light = [0,0,-1]
+	light = normalize([0,0,-1])
 	for(let i = 0; i < 64; i++){
 		display.push([])
 		for(let j = 0; j < 128; j++){
 	 		display[display.length - 1].push([0,90])
 		}
 	}
-	light = normalize(light)
 }
 function vecxmatr(x,y){
 	let out = []
@@ -69,13 +68,20 @@ function normalize(x){
 	let dist = Math.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
 	return x.map(v => v/dist)
 }
+function crossProduct(x,y){
+	let result = []
+	result.push(x[1] * y[2] - x[2] * y[1])
+	result.push(x[0] * y[2] - x[2] * y[0])
+	result.push(x[0] * y[1] - x[1] * y[0])
+	return result
+}
 function fillTri(n,color){
 	let x = n[0]
 	let y = n[1]
 	let z = n[2]
 	let pos = [...x]
 	let tmp = [0,0]
-	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1]) + 1
+	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1])
 	// api.log(`x: ${x} y: ${y} z: ${z}`)
 	for(let i = 0; i < manhattanDist; i++){
 		tmp[0] = pos[0] + i*(z[0]-x[0])/manhattanDist
@@ -101,7 +107,7 @@ function csc(){
 }
 function getNormal(tri){
 	let diff = [difference(tri[1],tri[0]),difference(tri[2],tri[0])]
-	let normal = [diff[0][1] * diff[1][2] - diff[1][1] * diff[0][2], diff[0][2] * diff[1][0] - diff[0][0] * diff[1][2], diff[0][0] * diff[1][1] - diff[0][1] * diff[1][0]]
+	let normal = crossProduct(diff[0],diff[1])
 	return normalize(normal)
 }
 function draw3dtri(k,color){
@@ -126,7 +132,7 @@ function getColor(norm){
 	} else if (norm > 1){
 		return 86
 	} else {
-		return 97
+		return 8
 	}
 }
 
