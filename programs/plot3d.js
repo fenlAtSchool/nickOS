@@ -1,5 +1,5 @@
-		
-			
+						
+				
 const inb = (x,y,z) => (x >= y && x <= z)
 
 function init(){
@@ -8,7 +8,7 @@ function init(){
   a = 0.5
   i = 0
   nr = 0.2
-  time = 37  
+  time = 0
   display = []
   camera = [0,0,0]
   for(let i = 0; i < 64; i++){
@@ -64,7 +64,7 @@ function fillTri(x,y,z,color){
 	let pos = [...x]
 	let tmp = [0,0]
 	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1])
-	api.log(`x: ${x} y: ${y} z: ${z}`)
+	// api.log(`x: ${x} y: ${y} z: ${z}`)
 	for(let i = 0; i < manhattanDist; i++){
 		tmp[0] = pos[0] + i*(z[0]-x[0])/manhattanDist
 		tmp[1] = pos[1] + i*(z[1]-x[1])/manhattanDist
@@ -122,8 +122,8 @@ squareMesh = [
 ]
 init()
 function t(){
-  j = api.getStandardChestItemSlot([curr_tri,0,52],0)
-  j = [parseInt(j[0]),parseInt(j[1]),parseInt(j[2])]
+  j = api.getStandardChestItemSlot([0,0,52+curr_page],curr_tri).attributes.customAttributes.pages
+  j = [JSON.parse(j[0]),JSON.parse(j[1]),JSON.parse(j[2])]
   let s = Math.sin(time); let c = Math.cos(time)
   let hs = Math.sin(time/2); let hc = Math.cos(time/2)
   matrotz = [
@@ -141,7 +141,7 @@ function t(){
 	j[m] = vecxmatr(j[m],matrotz)
 	j[m][2] += 4
   }
-  draw3dtri(j,40 + curr_tri)
+  draw3dtri(j,40 + curr_page)
 	
 }
 on = false
@@ -152,13 +152,23 @@ function tick(){
   if(on){
 	switch(task){
 		case "tick":
-			if(curr_tri > objcount){
+			if(curr_page == objcount){
 				time += 0.2;
-				curr_tri = 1;
+				curr_page = 1;
 				task = "updateDisplay"
 			} else {
+				for(let i = 0; i < 9; i++){
 				t()
 				curr_tri++
+				if(curr_tri % 12 == 0){
+					api.log(curr_page)
+				}
+				if(curr_tri > 35){
+				curr_page++
+				curr_tri = 0
+				break
+				}
+				}
 			}
 			break
 		case "updateDisplay":
