@@ -13,7 +13,7 @@ for x in obj:
     if(tmp[0] == "v"):
         for i in range(1,4):
             tmp[i] = float(tmp[i])
-        vertexes.append([float(tmp[1]),float(tmp[2]),float(tmp[3])])
+        vertexes.append(tmp[1:])
     if(tmp[0] == "f"):
         for i in range(1,4):
             tmp[i] = int(tmp[i]) - 1
@@ -21,6 +21,7 @@ for x in obj:
         if not m in sqm:
             sqm.append(m)
 obj.close()
+print(len(sqm))
 sqm = [sqm[i:i + 108] for i in range(0, len(sqm), 108)]
 sqm[-1] += [[0,0,0],[0,0,0],[0,0,0]] * (108 - len(sqm[-1]))
 k = input("Save as: ")
