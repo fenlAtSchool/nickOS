@@ -13,7 +13,7 @@ for x in obj:
     if(tmp[0] == "v"):
         for i in range(1,4):
             tmp[i] = float(tmp[i])
-        vertexes.append(tmp[1:])
+        vertexes.append(tmp[1:-1])
     if(tmp[0] == "f"):
         for i in range(1,4):
             tmp[i] = int(tmp[i]) - 1
