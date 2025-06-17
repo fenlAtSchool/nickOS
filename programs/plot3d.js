@@ -11,12 +11,16 @@ function init(){
   time = 0
   display = []
   camera = [0,0,0]
+	light = [0,0,-1]
   for(let i = 0; i < 64; i++){
 		display.push([])
 		for(let j = 0; j < 128; j++){
 	 	 display[display.length - 1].push([0,1724])
 		}
   }
+	dist = light[0]**2 + light[1]**2 + light[2]**2
+	dist = Math.sqrt(dist)
+	light = light.map(v => v/dist)
 }
 function vecxmatr(x,y){
 	let out = []
@@ -93,11 +97,16 @@ function getNormal(tri){
 	normal = normal.map(v => v/dist)
 	return normal
 }
+function getColor(col){
+	let colors = [1724,8,97,85,84,86]
+	return colors[Math.floor(col*6)]
+}
 function draw3dtri(k,color){
   let n = getNormal(k)
   if(n[0] * (k[0][0]-camera[0]) + n[1] * (k[0][1]-camera[1]) + n[2] * (k[0][2]-camera[2]) < 0){
-	k = k.map(v => scale(project(v)))
-	fillTri(k[0],k[1],k[2],color)
+		k = k.map(v => scale(project(v)))
+		color = getColor(light[0]*n[0] + light[1]*n[1] + light[2]*n[2])
+		fillTri(k[0],k[1],k[2],color)
 	/*
   	drawLine(k[0],k[1],color+1)
   	drawLine(k[0],k[2],color+1)
