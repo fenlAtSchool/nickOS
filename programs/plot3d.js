@@ -1,8 +1,6 @@
-						
-				
+		
 const inb = (x,y,z) => (x >= y && x <= z)
-
-function init(){
+function init(){	
   render_dist = 20
   fov = 160
   a = 0.5
@@ -86,7 +84,7 @@ function scale(d){
 function csc(){
 	for(let i = 0; i < 64; i++){
 	 for(let j = 0; j < 128; j++){
-		display[i][j][1] = 1724
+		display[i][j][1] = 90
 	 }
    }
 }
@@ -99,13 +97,20 @@ function getNormal(tri){
 }
 function getColor(col){
 	let colors = [1724,8,97,85,84,86]
-	return colors[Math.floor(col*6)]
+	let x = Math.floor(col*6)
+	if(inb(x,0,5)){
+		return colors[x]
+	} else if (x < 0){
+		return 1724
+	} else {
+		return 86
+	}
 }
 function draw3dtri(k,color){
   let n = getNormal(k)
-  if(n[0] * (k[0][0]-camera[0]) + n[1] * (k[0][1]-camera[1]) + n[2] * (k[0][2]-camera[2]) < 0){
+  if(n[0] * (k[0][0]-camera[0]) + n[1] * (k[0][1]-camera[1]) + n[2] * (k[0][2]-camera[2])){
 		k = k.map(v => scale(project(v)))
-		color = getColor(light[0]*n[0] + light[1]*n[1] + light[2]*n[2])
+		// color = getColor(light[0]*n[0] + light[1]*n[1] + light[2]*n[2])
 		fillTri(k[0],k[1],k[2],color)
 	/*
   	drawLine(k[0],k[1],color+1)
@@ -115,20 +120,7 @@ function draw3dtri(k,color){
   }
 }
 
-squareMesh = [
-  [[0,0,0],[0,1,0],[1,1,0]],
-  [[0,0,0],[1,1,0],[1,0,0]],
-  [[1,0,0],[1,1,0],[1,1,1]],
-  [[1,0,0],[1,1,1],[1,0,1]],
-  [[1,0,1],[1,1,1],[0,1,1]],
-  [[1,0,1],[0,1,1],[0,0,1]],
-  [[0,0,1],[0,1,1],[0,1,0]],
-  [[0,0,1],[0,1,0],[0,0,0]],
-  [[0,1,0],[0,1,1],[1,1,1]],
-  [[0,1,0],[1,1,1],[1,1,0]],
-  [[1,0,1],[0,0,1],[0,0,0]],
-  [[1,0,1],[0,0,0],[1,0,0]]
-]
+
 init()
 function t(){
   j = api.getStandardChestItemSlot([0,0,52+curr_page],curr_tri).attributes.customAttributes.pages
@@ -148,7 +140,7 @@ function t(){
   for(let m = 0; m < 3; m++){
     j[m] = vecxmatr(j[m],matrotx)
 	j[m] = vecxmatr(j[m],matrotz)
-	j[m][2] += 4
+	j[m][2] += 10
   }
   draw3dtri(j,40 + curr_page)
 	
@@ -157,6 +149,7 @@ on = false
 curr_tri = 0
 task = "tick"
 objcount = parseInt(api.getStandardChestItemSlot([0,0,52],0).attributes.customAttributes.pages[0])
+
 function tick(){
   if(on){
 	switch(task){
