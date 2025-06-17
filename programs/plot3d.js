@@ -1,21 +1,21 @@
 const inb = (x,y,z) => (x >= y && x <= z)
 			
 function init(){
-  render_dist = 20
-  fov = 160
-  a = 0.5
-  i = 0
-  nr = 0.2
-  time = 37  
-  display = []
-  camera = [0,0,0]
-  light = [0,0,-1]
-  for(let i = 0; i < 64; i++){
+	render_dist = 20
+	fov = 160
+	a = 0.5
+	nr = 0.2
+	time = 37  
+	display = []
+	camera = [0,0,0]
+	light = [0,0,-1]
+	for(let i = 0; i < 64; i++){
 		display.push([])
 		for(let j = 0; j < 128; j++){
-	 	 display[display.length - 1].push([0,90])
+	 		display[display.length - 1].push([0,90])
 		}
-  }
+	}
+	light = normalize(light)
 }
 function vecxmatr(x,y){
 	let out = []
@@ -59,7 +59,20 @@ function drawLine(a, b, color){
     }
   }
 }
-function fillTri(x,y,z,color){
+function dotProduct(x,y){
+	return x[0] * y[0] + x[1] * y[1] + x[2] * y[2]
+}
+function difference(x,y){
+	return [x[0]-y[0], x[1]-y[1], x[2]-y[2]]
+}
+function normalize(x){
+	let dist = Math.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
+	return x.map(v => v/dist)
+}
+function fillTri(n,color){
+	let x = n[0]
+	let y = n[1]
+	let z = n[2]
 	let pos = [...x]
 	let tmp = [0,0]
 	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1]) + 1
@@ -87,18 +100,18 @@ function csc(){
    }
 }
 function getNormal(tri){
-	let diff = [[tri[1][0] - tri[0][0],tri[1][1] - tri[0][1],tri[1][2] - tri[0][2]],[tri[2][0] - tri[0][0],tri[2][1] - tri[0][1],tri[2][2] - tri[0][2]]]
+	let diff = [difference(tri[1],tri[0]),difference(tri[2],tri[0])]
 	let normal = [diff[0][1] * diff[1][2] - diff[1][1] * diff[0][2], diff[0][2] * diff[1][0] - diff[0][0] * diff[1][2], diff[0][0] * diff[1][1] - diff[0][1] * diff[1][0]]
-	let dist = Math.sqrt(normal[0]**2 + normal[1]**2 + normal[2]**2) // L no Fast Inverse Sqrt
-	normal = normal.map(v => v/dist)
-	return normal
+	return normalize(normal)
 }
 function draw3dtri(k,color){
-  let n = getNormal(k)
-  // n[0] * (k[0][0]-camera[0]) + n[1] * (k[0][1]-camera[1]) + n[2] * (k[0][2]-camera[2]) < 0
-	k = k.map(v => scale(project(v)))
-	color = getColor(light[0] * n[0] + light[1] * n[1] + light[2] * n[2])
-	fillTri(k[0],k[1],k[2],color)
+	let n = getNormal(k)
+	let tmp = difference(k[0],camera)
+	if(dotProduct(n,tmp) < 0){
+		k = k.map(v => scale(project(v)))
+		color = getColor(dotProduct(light,n))
+		fillTri(k,color)
+	}
 	/*
   	drawLine(k[0],k[1],color+1)
   	drawLine(k[0],k[2],color+1)
@@ -133,29 +146,29 @@ squareMesh = [
 ]
 init()
 function t(){
-  j = api.getStandardChestItemSlot([0,0,52+curr_page],curr_tri).attributes.customAttributes.pages
-  j = [JSON.parse(j[0]),JSON.parse(j[1]),JSON.parse(j[2])]
+ 	 j = api.getStandardChestItemSlot([0,0,52+curr_page],curr_tri).attributes.customAttributes.pages
+ 	 j = j.map(v => JSON.parse(v))
 
-  let s = Math.sin(time); let c = Math.cos(time)
-  let hs = Math.sin(time/2); let hc = Math.cos(time/2)
-  matrotz = [
-[c,s,0],
-[-s,c,0],
-[0,0,1]
-]
-  matrotx = [
-[0,hc,hs],
-[0,-hs,c],
-[1,0,0]
-]
-  for(let m = 0; m < 3; m++){
-    j[m] = vecxmatr(j[m],matrotx)
-	j[m] = vecxmatr(j[m],matrotz)
-	j[m][2] += 15
-  }
-  draw3dtri(j,40 + curr_page)
+ 	 let s = Math.sin(time); let c = Math.cos(time)
+ 	 let hs = Math.sin(time/2); let hc = Math.cos(time/2)
+ 	 matrotz = [
+	[c,s,0],
+	[-s,c,0],
+	[0,0,1]
+	]
+  	matrotx = [
+	[0,hc,hs],
+	[0,-hs,c],
+	[1,0,0]
+	]
+  	for(let m = 0; m < 3; m++){
+		j[m] = vecxmatr(j[m],matrotx)
+		j[m] = vecxmatr(j[m],matrotz)
+		j[m][2] += 15
+	}
+	draw3dtri(j,40 + curr_page)
 	
-}
+}	
 on = false
 curr_page = 1
 task = "tick"
