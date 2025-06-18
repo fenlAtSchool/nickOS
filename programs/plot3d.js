@@ -46,7 +46,7 @@ function project(coord){
   ret[1] /= ret[3]
   return ret
 }
-function drawLine(a, b, color){
+function drawLine(a, b, color, z){
   let xd = a[0] - b[0]
   let xy = a[1] - b[1]
   let distance = Math.abs(xd) + Math.abs(xy)
@@ -54,7 +54,10 @@ function drawLine(a, b, color){
     let x = Math.floor(b[0] + (i * xd)/distance)
     let y = Math.floor(b[1] + (i * xy)/distance)
     if(inb(x,0, 127) && inb(y,0,63)){
-      display[y][x][1] = color
+			if(display[y][x][2] > z){
+      	display[y][x][1] = color
+				display[y][x][2] = z
+			}
     }
   }
 }
@@ -75,7 +78,7 @@ function crossProduct(x,y){
 	result.push(x[0] * y[1] - x[1] * y[0])
 	return result
 }
-function fillTri(n,color){
+function fillTri(n,color, z){
 	let x = n[0]
 	let y = n[1]
 	let z = n[2]
@@ -86,7 +89,7 @@ function fillTri(n,color){
 	for(let i = 0; i < manhattanDist; i++){
 		tmp[0] = pos[0] + i*(z[0]-x[0])/manhattanDist
 		tmp[1] = pos[1] + i*(z[1]-x[1])/manhattanDist
-		drawLine(tmp,y,color)
+		drawLine(tmp,y,color, z)
 	}
 }
 function scale(d){
@@ -114,9 +117,9 @@ function draw3dtri(k,color){
 	let n = getNormal(k)
 	let tmp = difference(k[0],camera)
 	if(dotProduct(n,tmp) < 0){
-		k = k.map(v => scale(project(v)))
+		let tritorend = k.map(v => scale(project(v)))
 		color = getColor(dotProduct(light,n))
-		fillTri(k,color)
+		fillTri(tritorend,color,k[0][2] + k[1][2] + k[2][2])
 	}
 	/*
   	drawLine(k[0],k[1],color+1)
