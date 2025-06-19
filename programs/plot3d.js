@@ -9,12 +9,6 @@ function init(){
 	display = []
 	camera = [0,0,0]
 	light = normalize([0,0,-1])
-	for(let i = 0; i < 64; i++){
-		display.push([])
-		for(let j = 0; j < 128; j++){
-	 		display[display.length - 1].push([0,90])
-		}
-	}
 }
 function vecxmatr(x,y){
 	let out = []
@@ -40,8 +34,12 @@ function updateDisplay(){
 function project(coord){
   let f = 1 / Math.tan(fov * Math.PI / 90)
   let q = render_dist / (render_dist - nr)
-  coord.push(1)
-  let ret = vecxmatr(coord,[[a*f,0,0,0],[0,f,0,0],[0,0,q,1],[0,0,0-coord[2]*nr*q,0]])
+  let ret = vecxmatr([...coord,1],[
+[a*f  ,0    ,0    ,0    ],
+[0    ,f    ,0    ,0    ],
+[0    ,0    ,q    ,1    ],
+[0    ,0    ,-nr*q,0    ]
+])
   ret[0] /= ret[3]
   ret[1] /= ret[3]
   return ret
@@ -72,24 +70,24 @@ function normalize(x){
 	return x.map(v => v/dist)
 }
 function crossProduct(x,y){
-	let result = []
-	result.push(x[1] * y[2] - x[2] * y[1])
-	result.push(x[0] * y[2] - x[2] * y[0])
-	result.push(x[0] * y[1] - x[1] * y[0])
-	return result
+	return [
+	(x[1] * y[2] - x[2] * y[1]),
+	(x[2] * y[0] - x[0] * y[2]),
+	(x[0] * y[1] - x[1] * y[0])
+	]
 }
-function fillTri(n,color, z){
+function fillTri(n,color, mz){
 	let x = n[0]
 	let y = n[1]
 	let z = n[2]
 	let pos = [...x]
 	let tmp = [0,0]
 	let manhattanDist = Math.abs(z[0]-x[0]) + Math.abs(z[1]-x[1])
-	// api.log(`x: ${x} y: ${y} z: ${z}`)
+	// api.log(`x: ${x} y: ${y} z: ${mz}`)
 	for(let i = 0; i < manhattanDist; i++){
 		tmp[0] = pos[0] + i*(z[0]-x[0])/manhattanDist
 		tmp[1] = pos[1] + i*(z[1]-x[1])/manhattanDist
-		drawLine(tmp,y,color, z)
+		drawLine(tmp,y,color, mz)
 	}
 }
 function scale(d){
@@ -105,6 +103,7 @@ function csc(){
 	for(let i = 0; i < 64; i++){
 	 for(let j = 0; j < 128; j++){
 		display[i][j][1] = 90
+		display[i][j][2] = 9999
 	 }
    }
 }
@@ -119,7 +118,15 @@ function draw3dtri(k,color){
 	if(dotProduct(n,tmp) < 0){
 		let tritorend = k.map(v => scale(project(v)))
 		color = getColor(dotProduct(light,n))
-		fillTri(tritorend,color,k[0][2] + k[1][2] + k[2][2])
+		if (
+	tritorend[0][0] === tritorend[1][0] && tritorend[0][1] === tritorend[1][1] ||
+	tritorend[0][0] === tritorend[2][0] && tritorend[0][1] === tritorend[2][1] ||
+	tritorend[1][0] === tritorend[2][0] && tritorend[1][1] === tritorend[2][1]
+		){
+	api.log("Degenerate triangle skipped")
+	return
+		}
+		fillTri(tritorend,color,(k[0][2] + k[1][2] + k[2][2])/3)
 	}
 	/*
   	drawLine(k[0],k[1],color+1)
@@ -129,13 +136,13 @@ function draw3dtri(k,color){
 	
 }
 function getColor(norm){
-	colors = [1724,8,97,85,84,86]
+	colors = [1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86]
 	if(inb(norm,0,1)){
-		return colors[Math.floor(norm*6)]
+		return colors[Math.floor(norm*23)]
 	} else if (norm > 1){
 		return 86
 	} else {
-		return 8
+		return 1724
 	}
 }
 
@@ -157,7 +164,6 @@ init()
 function t(){
  	 j = api.getStandardChestItemSlot([0,0,52+curr_page],curr_tri).attributes.customAttributes.pages
  	 j = j.map(v => JSON.parse(v))
-
  	 let s = Math.sin(time); let c = Math.cos(time)
  	 let hs = Math.sin(time/2); let hc = Math.cos(time/2)
  	 matrotz = [
@@ -185,7 +191,7 @@ function tick(){
   if(on){
 	switch(task){
 		case "tick":
-			if(curr_page == objcount){
+			if(curr_page > objcount){
 				time += 0.2;
 				curr_page = 1;
 				task = "updateDisplay"
@@ -195,6 +201,7 @@ function tick(){
 				curr_tri++
 				if(curr_tri == 36){
 					curr_tri = 0
+					api.setBlock([0,1,52+curr_page],"Glass")
 					curr_page++
 					api.log(curr_page)
 					break
