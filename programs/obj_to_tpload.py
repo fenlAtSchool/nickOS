@@ -16,23 +16,24 @@ for x in obj:
         vertexes.append(tmp[1:-1])
     if(tmp[0] == "f"):
         for i in range(1,4):
-            tmp[i] = int(tmp[i]) - 1
+            tmp[i] = int(tmp[i].split("/")[0]) - 1
         m = [vertexes[tmp[1]],vertexes[tmp[2]],vertexes[tmp[3]]]
         if not m in sqm:
             sqm.append(m)
 obj.close()
 print(len(sqm))
 sqm = [sqm[i:i + 108] for i in range(0, len(sqm), 108)]
-sqm[-1] += [[0,0,0],[0,0,0],[0,0,0]] * (108 - len(sqm[-1]))
+for i in range(108 - len(sqm[-1])):
+    sqm[-1].append([[0,0,0],[0,0,0],[0,0,0]])
 k = input("Save as: ")
 k = open(k,"w")
 for i in sqm:
     k.write("j = " + str(i) + "\n")
     k.write("fpos = [0,0,53+parseInt(api.getStandardChestItemSlot([0,0,52],0).attributes.customAttributes.pages[0])]\n")
     k.write("for(let i = 0; i < 3; i++){\n")
+    k.write("    api.setBlock(fpos,'Chest')\n")
     k.write("    for(let m = 0; m < 36; m++){\n")
-    k.write("        api.setBlock(fpos,'Chest')\n")
-    k.write("        api.setStandardChestItemSlot(fpos,m,'Book',1,undefined,{'customAttributes': {'pages': j[m].map(x=>JSON.stringify(x))  }})\n")
+    k.write("        api.setStandardChestItemSlot(fpos,m,'Book',1,undefined,{'customAttributes': {'pages': j[36*i+m].map(x=>JSON.stringify(x))  }})\n")
     k.write("    }; fpos[2]++\n")
     k.write("}; api.setStandardChestItemSlot([0,0,52],0,'Book',1,undefined,{'customAttributes': {'pages': [(fpos[2] - 53).toString()]}})\n")
     k.write("api.log('SUCCESS')\n\n")
