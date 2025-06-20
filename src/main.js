@@ -1,5 +1,4 @@
 
-
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -97,13 +96,12 @@ function waitClick(obj){
         return task[1]
 }
 function clearScreen(obj){
-        display = []
         for(let i = task[2]; i < 128;i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push([palette[0],palette[0]])
+                        display[i][z] = [palette[0],palette[0]]
                 }
-		api.setBlockRect([i-64,64,50],[i-63,0,50],api.blockIdToBlockName(palette[0]))
+		api.setBlockRect([i-64,64,50],[i-64,0,50],api.blockIdToBlockName(palette[0]))
 		task[2] = i
         }
         return task[1]
