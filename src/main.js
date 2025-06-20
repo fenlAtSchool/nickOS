@@ -98,15 +98,13 @@ function waitClick(obj){
 }
 function clearScreen(obj){
         display = []
-        for(let i = 0; i < 128;i++){
+        for(let i = task[2]; i < 128;i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
                         display[display.length - 1].push([palette[0],palette[0]])
                 }
-        }
-		
-        for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], api.blockIdToBlockName(palette[0]))
+		api.setBlockRect([i-64,64,50],[i-63,0,50],api.blockIdToBlockName(palette[0]))
+		task[2] = i
         }
         return task[1]
 }
@@ -147,18 +145,18 @@ function tick(){
 			case "mainMenuClicked":
 				cpace = Math.floor((s[3])/6) - 2
 				if(inBounds(cpace, 1, filecount)){
-					task = ["clearScreen",["drawFileMenu"]]
+					task = ["clearScreen",["drawFileMenu"],0]
 				} else {
 					task = ["directWaitClick"]
 				}
 				if(inBounds(s[3],12,18)){
 					if(inBounds(s[2],0,16)){
 						curr_page -= 6
-						task = ["clearScreen",["initmenu"]]
+						task = ["clearScreen",["initmenu"],0]
 					}
 					if(inBounds(s[2],24,40)){
 						curr_page += 6
-						task = ["clearScreen",["initmenu"]]
+						task = ["clearScreen",["initmenu"],0]
 					}
 					if(inBounds(s[2],48,80)){
 						osOn = false
@@ -167,7 +165,7 @@ function tick(){
 						tmp = palette[0]
 						palette[0] = palette[1]
 						palette[1] = tmp
-						task = ["clearScreen",["initmenu"]]
+						task = ["clearScreen",["initmenu"],0]
 					}
 				}
 				break
@@ -190,16 +188,16 @@ function tick(){
 						task[1] -= 256
 						task[2] -= 256
 						task[0] = "displayFile"
-						task = ["clearScreen",task]
+						task = ["clearScreen",task,0]
 					}
 					if(inBounds(s[2],24,40)){
 						task[1] += 256
 						task[2] += 256
 						task[0] = "displayFile"
-						task = ["clearScreen",task]
+						task = ["clearScreen",task,0]
 					}
 					if(inBounds(s[2],48,64)){
-						task = ["clearScreen",["drawFileMenu"]]
+						task = ["clearScreen",["drawFileMenu"],0]
 					}
 				}
 				break
@@ -212,18 +210,18 @@ function tick(){
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
-							task = ["clearScreen",["initexecute"]]
+							task = ["clearScreen",["initexecute"],0]
 							memory = []
 							break
 						case 3:
 							api.log("DISPLAYING")
-							task = ["clearScreen",["displayFile",0,256]]
+							task = ["clearScreen",["displayFile",0,256],0]
 							break
 						case 4:
 							break
 						case 5:
 							curr_page = 0
-							task = ["clearScreen",["initmenu"]]
+							task = ["clearScreen",["initmenu"],0]
 							break
 					}
 				} else {
@@ -232,7 +230,7 @@ function tick(){
 				break
 			case "execute":
 				if(s[3]<6 && s[4] == 0.5){
-					task = ["clearScreen",["drawFileMenu"]]
+					task = ["clearScreen",["drawFileMenu"],0]
 				}
 				eval(program)
 				dtxt(0,0,"Exit")
