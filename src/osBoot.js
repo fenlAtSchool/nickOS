@@ -105,20 +105,20 @@ function OSboot(){
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
         display = [] //sulfrox code format used
+	palette = [1724,86]
         filecount = parseInt(api.getStandardChes\u{74}\u{49}\u{74}emSlot([0,0,51],0)["attributes"]["customAttributes"]["pages"][0])
         for(let i = 0; i < 128; i++){
                 display.push([])
                 for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push([1724,1724])
+                        display[display.length - 1].push([palette[0],palette[0]])
                 }
         }
         task = ["initmenu"]
         loadFont()
-		for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 64, 0, 50], "White Chalk")
+		for(let i = 0; i < 128; i++){
+                api.setBlockRect([i - 64, 65, 50], [i - 64, 1, 50], api.blockIdToBlockName(palette))
         }
 	curr_page = 0
-	palette = [1724,86]
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
