@@ -1,5 +1,5 @@
 const inb = (x,y,z) => (x >= y && x <= z)
-			
+				
 function init(){
 	render_dist = 20
 	fov = 160
@@ -8,7 +8,7 @@ function init(){
 	time = 37  
 	display = []
 	camera = [0,0,0]
-	light = normalize([0,0,-1])
+	light = normalize([1, 0, 0])
 }
 function vecxmatr(x,y){
 	let out = []
@@ -25,7 +25,7 @@ function updateDisplay(){
 	for(let i = 0; i < 64; i++){
 		for(let j = 0; j < 128; j++){
 			if(display[i][j][0] != display[i][j][1]){
-				api.setBlock(j-64,64-i,50,api.blockIdToBlockName(display[i][j][1]))
+				api.setBlock(j-64,i,50,api.blockIdToBlockName(display[i][j][1]))
 				display[i][j][0] = display[i][j][1]
 			}
 		}
@@ -117,15 +117,7 @@ function draw3dtri(k,color){
 	let tmp = difference(k[0],camera)
 	if(dotProduct(n,tmp) < 0){
 		let tritorend = k.map(v => scale(project(v)))
-		color = getColor(dotProduct(light,n))
-		if (
-	tritorend[0][0] === tritorend[1][0] && tritorend[0][1] === tritorend[1][1] ||
-	tritorend[0][0] === tritorend[2][0] && tritorend[0][1] === tritorend[2][1] ||
-	tritorend[1][0] === tritorend[2][0] && tritorend[1][1] === tritorend[2][1]
-		){
-	api.log("Degenerate triangle skipped")
-	return
-		}
+		color = getColor(dotProduct(light,n)/4 + 0.5)
 		fillTri(tritorend,color,(k[0][2] + k[1][2] + k[2][2])/3)
 	}
 	/*
@@ -136,9 +128,9 @@ function draw3dtri(k,color){
 	
 }
 function getColor(norm){
-	colors = [1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86]
+	colors = [1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
 	if(inb(norm,0,1)){
-		return colors[Math.floor(norm*23)]
+		return colors[Math.floor(norm*22)]
 	} else if (norm > 1){
 		return 86
 	} else {
@@ -179,7 +171,7 @@ function t(){
   	for(let m = 0; m < 3; m++){
 		j[m] = vecxmatr(j[m],matrotx)
 		j[m] = vecxmatr(j[m],matrotz)
-		j[m][2] += 15
+		j[m][2] += 10
 	}
 	draw3dtri(j,40 + curr_page)
 	
@@ -192,11 +184,11 @@ function tick(){
 	switch(task){
 		case "tick":
 			if(curr_page > objcount){
-				time += 0.2;
+				time += 0.4;
 				curr_page = 1;
 				task = "updateDisplay"
 			} else {
-				for(let i = 0; i < 12; i++){
+				while(1){
 				t()
 				curr_tri++
 				if(curr_tri == 36){
