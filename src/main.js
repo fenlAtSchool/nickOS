@@ -101,7 +101,7 @@ function clearScreen(obj){
                 for(let z = 0; z < 64; z++){
                         display[i][z] = [palette[0],palette[0]]
                 }
-		api.setBlockRect([i-64,64,50],[i-64,0,50],api.blockIdToBlockName(palette[0]))
+		api.setBlockRect([i-64,65,50],[i-64,1,50],api.blockIdToBlockName(palette[0]))
 		task[2] = i
         }
         return task[1]
