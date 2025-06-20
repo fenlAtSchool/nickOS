@@ -1,5 +1,5 @@
 const inb = (x,y,z) => (x >= y && x <= z)
-				
+					
 function init(){
 	render_dist = 20
 	fov = 160
@@ -57,9 +57,10 @@ function difference(x,y){
 	return [x[0]-y[0], x[1]-y[1], x[2]-y[2]]
 }
 function add(x,y){
+	let out = []
 	for(let i = 0; i < 3; i++){
-		x[i] += y[i]
-	} return x
+		out.push(x[i] + y[i])
+	} return out
 }
 function normalize(x){
 	let dist = Math.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
@@ -97,7 +98,7 @@ function convert(camera, pos, up){
 		[newF[0],newF[1],newF[2],1],
 		[pos[0],pos[1],pos[2],1]
 	]
-
+	return mat
 
 }
 function invert(m){
@@ -156,11 +157,14 @@ function getNormal(tri){
 	let normal = crossProduct(diff[0],diff[1])
 	return normalize(normal)
 }
-function draw3dtri(k,matCam){
+function draw3dtri(k,mat){
 	let n = getNormal(k)
 	let tmp = difference(k[0],camera)
-	if(dotProduct(n,tmp) < 0){
-		let tritorend = k.map(v => scale(project(vecxmatr(v,matCam))))
+	if(dotProduct(n,tmp) < 0 && n[2] < 0){
+		let tritorend = k.map(v => [...v,1])
+		tritorend = tritorend.map(v => vecxmatr(v,mat))
+		tritorend = tritorend.map(v => difference(v,camera))
+		tritorend = tritorend.map(v => scale(project(v)))
 		let color = getColor(dotProduct(light,n)/4 + 0.5)
 		fillTri(tritorend,color,(k[0][2] + k[1][2] + k[2][2])/3)
 	}
@@ -188,12 +192,13 @@ function t(){
 	]
 	let up = [0,1,0]
 	let target = add(camera,lookDir)
-	let matCam = invert(convert(camera,target,up))
+	let matCam = convert(camera,target,up)
+	matCam = invert(matCam)
   	for(let m = 0; m < 3; m++){
 		j[m] = vecxmatr(j[m],matrotx)
 		j[m] = vecxmatr(j[m],matrotz)
-		j[m][2] += 10
 	}
+	api.log(j)
 	draw3dtri(j,matCam)
 	
 }	
@@ -205,7 +210,7 @@ function tick(){
 	switch(task){
 		case "tick":
 			if(curr_page > objcount){
-				time += 0.4;
+				time += 0.15;
 				curr_page = 1;
 				task = "updateDisplay"
 			} else {
@@ -233,3 +238,4 @@ function tick(){
 	}
   }
 }
+
