@@ -14,7 +14,7 @@ function ctrack(){
         ctmp[0] = ctmp[0] * ((50-vec[2]) / ctmp[2]) + vec[0]
         ctmp[1] = ctmp[1] * ((50-vec[2]) / ctmp[2]) + vec[1]
         ctmp[0] = Math.round(ctmp[0] + 64)
-        ctmp[1] = Math.round(64 - ctmp[1])
+        ctmp[1] = Math.round(65 - ctmp[1])
         if(inBounds(ctmp[0], 0, 125) && inBounds(ctmp[1],0,61)){
                 return ctmp
         }
@@ -34,10 +34,10 @@ function drawCursor(){
         let m = "100011010"
         for(let i = 0; i < 3; i++){
                 for(let j = 0; j < 3; j++){
-                        let pos = [s[7]-64+i,64-s[8]-j,50]
+                        let pos = [s[7]-64+i,65-s[8]-j,50]
                         let tmp = display[s[7]+i][s[8]+j][1]
                         api.setBlock(pos,api.blockIdToBlockName(tmp))
-                        pos = [s[2]+i-64,64-s[3]-j,50]
+                        pos = [s[2]+i-64,65-s[3]-j,50]
                         api.setBlock(pos,api.blockIdToBlockName(palette[m[3*i+j]]))
                 }
         }
@@ -83,7 +83,7 @@ function updateDisplay(){
                         if(val[0] != val[1]){
                                 val[0] = val[1]
                                 let tmp = api.blockIdToBlockName(val[1])
-                                api.setBlock([y - 64,64 - x,50],tmp)
+                                api.setBlock([y - 64,65 - x,50],tmp)
                                 display[y][x] = val
                         }
                 }
