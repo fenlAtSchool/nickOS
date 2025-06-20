@@ -116,7 +116,7 @@ function OSboot(){
         task = ["initmenu"]
         loadFont()
 		for(let i = 0; i < 128; i++){
-                api.setBlockRect([i - 64, 65, 50], [i - 64, 1, 50], api.blockIdToBlockName(palette))
+                api.setBlockRect([i - 64, 65, 50], [i - 64, 1, 50], api.blockIdToBlockName(palette[0]))
         }
 	curr_page = 0
         api.log("osSuccesfullyBooted")
