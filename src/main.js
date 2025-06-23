@@ -83,6 +83,7 @@ function OSboot(){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 65, 0, 50], api.blockIdToBlockName(palette[0]))
         }
 	curr_page = 0
+	parentFolder = [0,0,51]
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
@@ -205,11 +206,11 @@ function dtxt(x,y,m){
 		}
         }
 }
-function displayFileNames(obj,page){ // [task, progress, starting val]
-        if(obj[1] < 7 && filecount > obj[1] + page){  
-                let m = "api.getStandardChest"
-                m += `Items([${obj[1] + page + 1},0,51])`
-                m = eval(m)[0]["attributes"]["customAttributes"]["pages"][0]
+function displayFolderSons(obj){ // [task, progress, starting val]
+        if(obj[1] < 7 && obj[1] + obj[2] < 46){  
+                let m = api.getStandardChestItemSlot(parentFolder.at(-1), obj[1]+obj[2]+2).attributes.customDescription
+		m = api.getStandardChestItemSlot([0,0,parseInt(m)], 0).attributes.customDescription
+		m += api.getStandardChestItemSlot([0,0,parseInt(m)], 1).attributes.customDescription
                 m = ">" + m
                 dtxt(0, obj[1]*6 + 18, m)
                 obj[1]++
@@ -259,14 +260,14 @@ function tick(){
                         case "initmenu":
                                 dtxt(0, 0, "NickOS Beta V1.29.25")
         			dtxt(0, 6, "Files: (Click to open)")
-					dtxt(0, 12, "Back")
-					dtxt(24,12, "Next")
-					dtxt(88,12, "Dark Mode")
+				dtxt(0, 12, "Back")
+				dtxt(24,12, "Next")
+				dtxt(88,12, "Dark Mode")
 				updateDisplay()
-                                task = ["displayFileNames",0]
+                                task = ["displayFolderSons",0,curr_page]
                                 break
-                        case "displayFileNames":
-                                task = displayFileNames(task,curr_page)
+                        case "displayFolderSons":
+                                task = displayFolderSons(task)
                                 break
                         case "updateDisplay":
                                 task = updateDisplay()
@@ -285,10 +286,17 @@ function tick(){
 				break
 			case "mainMenuClicked":
 				cpace = Math.floor((s[3])/6) - 2
-				if(inBounds(cpace, 1, filecount)){
-					task = ["clearScreen",["drawFileMenu"],0]
-				} else {
-					task = ["directWaitClick"]
+				let f = api.getStandardChestItemSlot(parentFolder.at(-1), cpace+1).attributes??.customDescription??
+				if(f == "null"){
+					break
+				}
+				f = parseInt(f)
+				f = api.getStandardChestItems([0,0,f])
+				if(f[1].attributes.customDescription == ".fol"){
+					parentFolder.push(f[0].attributes.customDescription)
+					curr_page = 0
+					task = ["initmenu"]
+					break
 				}
 				if(inBounds(s[3],12,18)){
 					if(inBounds(s[2],0,16)){
@@ -342,7 +350,7 @@ function tick(){
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
 				program = ""
-				for(let i = 0; i < 47; i++){
+				for(let i = 2; i < 48; i++){
 					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
 				}
 				if(inBounds(cp2,2,5)){
