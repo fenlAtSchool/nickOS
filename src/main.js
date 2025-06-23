@@ -83,7 +83,8 @@ function OSboot(){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 65, 0, 50], api.blockIdToBlockName(palette[0]))
         }
 	curr_page = 0
-	parentFolder = [0,0,51]
+	parentFolder = [0]
+	directory = ["~"]
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
@@ -208,9 +209,9 @@ function dtxt(x,y,m){
 }
 function displayFolderSons(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && obj[1] + obj[2] < 46){  
-                let m = api.getStandardChestItemSlot(parentFolder.at(-1), obj[1]+obj[2]+2).attributes.customDescription
-		m = api.getStandardChestItemSlot([0,0,parseInt(m)], 0).attributes.customDescription
-		m += api.getStandardChestItemSlot([0,0,parseInt(m)], 1).attributes.customDescription
+                let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2).attributes.customDescription
+		m = api.getStandardChestItemSlot([parseInt(m),0,51], 0).attributes.customDescription
+		m += api.getStandardChestItemSlot([parseInt(m),0,51], 1).attributes.customDescription
                 m = ">" + m
                 dtxt(0, obj[1]*6 + 18, m)
                 obj[1]++
@@ -258,11 +259,16 @@ function tick(){
 		try{drawCursor()}catch{}
                 switch(task[0]){
                         case "initmenu":
+				let txt = ""
+				for(const i of directory){
+					txt += "/" + i
+				}
                                 dtxt(0, 0, "NickOS Beta V1.29.25")
-        			dtxt(0, 6, "Files: (Click to open)")
+        			dtxt(0, 6, `Directory: ${txt}`)
 				dtxt(0, 12, "Back")
 				dtxt(24,12, "Next")
 				dtxt(88,12, "Dark Mode")
+				dtxt(0, 18, `Return to ${directory.at(-2)}`)
 				updateDisplay()
                                 task = ["displayFolderSons",0,curr_page]
                                 break
@@ -285,17 +291,18 @@ function tick(){
 				osOn = false
 				break
 			case "mainMenuClicked":
-				cpace = Math.floor((s[3])/6) - 2
+				cpace = curr_page + Math.floor((s[3])/6) - 2
 				let f = api.getStandardChestItemSlot(parentFolder.at(-1), cpace+1).attributes??.customDescription??
 				if(f == "null"){
 					break
 				}
 				f = parseInt(f)
-				f = api.getStandardChestItems([0,0,f])
-				if(f[1].attributes.customDescription == ".fol"){
-					parentFolder.push(f[0].attributes.customDescription)
+				let zf = api.getStandardChestItems([f,0,51])
+				if(zf[1].attributes.customDescription == ".fol"){
+					directory.push(zf[0].attributes.customDescription)
+					parentFolder.push(f)
 					curr_page = 0
-					task = ["initmenu"]
+					task = ["clearScreen",["initmenu"],0]
 					break
 				}
 				if(inBounds(s[3],12,18)){
@@ -316,6 +323,7 @@ function tick(){
 				}
 				break
 			case "drawFileMenu":
+				name = api.getStandardChestItemSlot(parentFolder, cpace)
 				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0).attributes.customAttributes.pages[0]
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
