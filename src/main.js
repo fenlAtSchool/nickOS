@@ -1,5 +1,4 @@
 
-
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -69,7 +68,6 @@ function OSboot(){
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
         display = [] //sulfrox code format used
-        filecount = parseInt(api.getStandardChes\u{74}\u{49}\u{74}emSlot([0,0,51],0)["attributes"]["customAttributes"]["pages"][0])
 		palette = [144,86]
         for(let i = 0; i < 128; i++){
                 display.push([])
@@ -157,7 +155,6 @@ font = {
 "=":"___###___###___",
 "_":"____________###",
 "+":"___ # ### # ___",
-"*":"___# # # # #___",
 "/":"__#_#__#__#_#__",
 " ":"               ",
 ".":"_____________#_",
@@ -182,7 +179,8 @@ font = {
 "%":"#____#_#_#____#",
 "*":"#_#_#_#_#______",
 "{":"_##_#_##__#__##",
-"}":"##__#__##_#_##_"
+"}":"##__#__##_#_##_",
+"~":"______#_#_#____"
 }
 
 
@@ -209,11 +207,14 @@ function dtxt(x,y,m){
 }
 function displayFolderSons(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && obj[1] + obj[2] < 46){  
+				api.log(parentFolder)
                 let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2).attributes.customDescription
+				if(m != "null"){
 		m = api.getStandardChestItemSlot([parseInt(m),0,51], 0).attributes.customDescription
 		m += api.getStandardChestItemSlot([parseInt(m),0,51], 1).attributes.customDescription
                 m = ">" + m
                 dtxt(0, obj[1]*6 + 18, m)
+				}
                 obj[1]++
                 return ["updateDisplay",task]
         }
@@ -268,7 +269,9 @@ function tick(){
 				dtxt(0, 12, "Back")
 				dtxt(24,12, "Next")
 				dtxt(88,12, "Dark Mode")
-				dtxt(0, 18, `Return to ${directory.at(-2)}`)
+				if(txt != "/~"){
+					dtxt(0, 18, `Return to ${directory.at(-2)}`     )
+				}
 				updateDisplay()
                                 task = ["displayFolderSons",0,curr_page]
                                 break
@@ -292,7 +295,7 @@ function tick(){
 				break
 			case "mainMenuClicked":
 				cpace = curr_page + Math.floor((s[3])/6) - 2
-				let f = api.getStandardChestItemSlot(parentFolder.at(-1), cpace+1).attributes??.customDescription??
+				let f = api.getStandardChestItemSlot(parentFolder.at(-1), cpace+1).attributes.customDescription
 				if(f == "null"){
 					break
 				}
@@ -324,7 +327,7 @@ function tick(){
 				break
 			case "drawFileMenu":
 				name = api.getStandardChestItemSlot(parentFolder, cpace)
-				name = api.getStandardChes\u{74}\u{49}\u{74}emSlot([cpace,0,51],0).attributes.customAttributes.pages[0]
+				name = name.attributes.customDescription
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
 				dtxt(0,12,"View file")
