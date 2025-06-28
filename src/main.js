@@ -155,7 +155,7 @@ font = {
 "=":"___###___###___",
 "_":"____________###",
 "+":"___ # ### # ___",
-"/":"__#_#__#__#_#__",
+"/":"__#_##_#_##_#__",
 " ":"               ",
 ".":"_____________#_",
 "!":"_#__#__#_____#_",
@@ -207,18 +207,18 @@ function dtxt(x,y,m){
 }
 function displayFolderSons(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && obj[1] + obj[2] < 46){  
-				api.log(parentFolder)
-                let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2).attributes.customDescription
-				if(m != "null"){
-		m = api.getStandardChestItemSlot([parseInt(m),0,51], 0).attributes.customDescription
-		m += api.getStandardChestItemSlot([parseInt(m),0,51], 1).attributes.customDescription
-                m = ">" + m
-                dtxt(0, obj[1]*6 + 18, m)
+                let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2)
+				if(m !== null){
+					m = parseInt(m.attributes.customDescription)
+					let f = api.getStandardChestItemSlot([m,0,51], 0).attributes.customDescription
+					f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
+                	f = ">" + f
+                	dtxt(0, obj[1]*6 + 24, f)
 				}
                 obj[1]++
-                return ["updateDisplay",task]
+                return task
         }
-        return ["waitClick",["directwaitClick"],["ptrc"]]
+        return ["updateDisplay",["waitTC",["mainMenuClicked"]]]
 }
 function updateDisplay(){
         for(let y = 0; y < 128; y++){
@@ -235,9 +235,9 @@ function updateDisplay(){
 }
 function waitClick(obj){
         if(s[4] == 0.5){
-                return task[2]
+                return obj[2]
         }
-        return task[1]
+        return obj[1]
 }
 function clearScreen(obj){
         for(let i = task[2]; i < 128;i++){
@@ -262,14 +262,14 @@ function tick(){
                         case "initmenu":
 				let txt = ""
 				for(const i of directory){
-					txt += "/" + i
+					txt += i + "/"
 				}
-                                dtxt(0, 0, "NickOS Beta V1.29.25")
+                                dtxt(0, 0, "NickOS Beta V2.1.5")
         			dtxt(0, 6, `Directory: ${txt}`)
 				dtxt(0, 12, "Back")
 				dtxt(24,12, "Next")
 				dtxt(88,12, "Dark Mode")
-				if(txt != "/~"){
+				if(txt != "~/"){
 					dtxt(0, 18, `Return to ${directory.at(-2)}`     )
 				}
 				updateDisplay()
@@ -281,12 +281,14 @@ function tick(){
                         case "updateDisplay":
                                 task = updateDisplay()
                                 break
-			case "directwaitClick":
-				task = ["waitClick",["directwaitClick"],["mainMenuClicked"]]
-				break
                         case "waitClick":
-                                task = waitClick()
+                                task = waitClick(task)
                                 break
+						case "waitTC":
+								if(s[4] == 0.5){
+									task = task[1]
+								}
+								break
 			case "clearScreen":
 				task = clearScreen()
 				break
@@ -294,12 +296,39 @@ function tick(){
 				osOn = false
 				break
 			case "mainMenuClicked":
+				if(inBounds(s[3],12,18)){
+					if(inBounds(s[2],0,16)){
+						curr_page -= 6
+						task = ["clearScreen",["initmenu"],0]
+						break
+					}
+					if(inBounds(s[2],24,40)){
+						curr_page += 6
+						task = ["clearScreen",["initmenu"],0]
+						break
+					}
+					if(inBounds(s[2],88,124)){
+						tmp = palette[0]
+						palette[0] = palette[1]
+						palette[1] = tmp
+						task = ["clearScreen",["initmenu"],0]
+						break
+					}
+				}
 				cpace = curr_page + Math.floor((s[3])/6) - 2
-				let f = api.getStandardChestItemSlot(parentFolder.at(-1), cpace+1).attributes.customDescription
-				if(f == "null"){
+				let f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
+
+				if(cpace == 1 && parentFolder.length > 1){
+					parentFolder.pop()
+					directory.pop()
+					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				f = parseInt(f)
+				if(f === null || cpace < 2){
+					task = ["waitTC", ["mainMenuClicked"]]
+					break
+				}
+				f = parseInt(f.attributes.customDescription)
 				let zf = api.getStandardChestItems([f,0,51])
 				if(zf[1].attributes.customDescription == ".fol"){
 					directory.push(zf[0].attributes.customDescription)
@@ -308,36 +337,18 @@ function tick(){
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				if(inBounds(s[3],12,18)){
-					if(inBounds(s[2],0,16)){
-						curr_page -= 6
-						task = ["clearScreen",["initmenu"],0]
-					}
-					if(inBounds(s[2],24,40)){
-						curr_page += 6
-						task = ["clearScreen",["initmenu"],0]
-					}
-					if(inBounds(s[2],88,124)){
-						tmp = palette[0]
-						palette[0] = palette[1]
-						palette[1] = tmp
-						task = ["clearScreen",["initmenu"],0]
-					}
-				}
+				task = ["clearScreen",["drawFileMenu",zf],0]
 				break
 			case "drawFileMenu":
-				name = api.getStandardChestItemSlot(parentFolder, cpace)
-				name = name.attributes.customDescription
+				cItems = task[1].slice()
+				let name = cItems[0].attributes.customDescription + cItems[1].attributes.customDescription
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
 				dtxt(0,12,"View file")
 				dtxt(0,18,"Delete file")
 				dtxt(0,24,"Back")
 				updateDisplay()
-				task = ["menuCallBackWait"]
-				break
-			case "menuCallBackWait":
-				task = ["waitClick",["menuCallBackWait"],["menuOptionClicked"]]
+				task = ["waitTC",["menuOptionClicked"]]
 				break
 			case "viewingTextRedir":
 				if(s[4] == 0.5 && inBounds(s[3],6,12)){
@@ -362,7 +373,7 @@ function tick(){
 				cp2 = Math.floor((s[3])/6) + 1
 				program = ""
 				for(let i = 2; i < 48; i++){
-					program += api.getStandardChestItemSlot([cpace,0,51], i)?.attributes?.customDescription ?? "";
+					program += cItems[i]?.attributes?.customDescription ?? "";
 				}
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
@@ -371,7 +382,6 @@ function tick(){
 							memory = []
 							break
 						case 3:
-							api.log("DISPLAYING")
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
 						case 4:
@@ -382,7 +392,7 @@ function tick(){
 							break
 					}
 				} else {
-					task = ["menuCallBackWait"]
+					task = ["waitTC",["menuOptionClicked"]]
 				}
 				break
 			case "execute":
@@ -394,7 +404,8 @@ function tick(){
 				updateDisplay()
 				break
 			case "displayFile":
-				dtxt(0,0,name)
+				dtxt(0,0,cItems[0].attributes.customDescription + cItems[1].attributes.customDescription)
+				api.log(program)
 				dtxt(0,6,"Back")
 				dtxt(24,6,"Next")
 				dtxt(48,6,"Exit")
