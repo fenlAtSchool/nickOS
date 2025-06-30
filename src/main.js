@@ -1,4 +1,5 @@
 
+
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -208,12 +209,13 @@ function dtxt(x,y,m){
 function displayFolderSons(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && obj[1] + obj[2] < 46){  
                 let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2)
-				if(m !== null){
+				if(m != null){
 					m = parseInt(m.attributes.customDescription)
 					let f = api.getStandardChestItemSlot([m,0,51], 0).attributes.customDescription
 					f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
                 	f = ">" + f
-                	dtxt(0, obj[1]*6 + 24, f)
+                	dtxt(0, obj[3]*6 + 18, f)
+					obj[3]
 				}
                 obj[1]++
                 return task
@@ -264,16 +266,16 @@ function tick(){
 				for(const i of directory){
 					txt += i + "/"
 				}
-                                dtxt(0, 0, "NickOS Beta V2.1.5")
-        			dtxt(0, 6, `Directory: ${txt}`)
-				dtxt(0, 12, "Back")
-				dtxt(24,12, "Next")
-				dtxt(88,12, "Dark Mode")
+        			dtxt(0, 0, txt.slice(0,32))
+				dtxt(0, 6, "Back")
+				dtxt(24,6, "Next")
+				dtxt(44,6, "Option")
+				dtxt(88,6, "Dark Mode")
 				if(txt != "~/"){
-					dtxt(0, 18, `Return to ${directory.at(-2)}`     )
+					dtxt(0, 12, `Return to ${directory.at(-2)}`     )
 				}
 				updateDisplay()
-                                task = ["displayFolderSons",0,curr_page]
+                                task = ["displayFolderSons",0,curr_page,0]
                                 break
                         case "displayFolderSons":
                                 task = displayFolderSons(task)
@@ -296,7 +298,7 @@ function tick(){
 				osOn = false
 				break
 			case "mainMenuClicked":
-				if(inBounds(s[3],12,18)){
+				if(inBounds(s[3],6,12)){
 					if(inBounds(s[2],0,16)){
 						curr_page -= 6
 						task = ["clearScreen",["initmenu"],0]
@@ -305,6 +307,10 @@ function tick(){
 					if(inBounds(s[2],24,40)){
 						curr_page += 6
 						task = ["clearScreen",["initmenu"],0]
+						break
+					}
+					if(inBounds(s[2],44,68)){
+						task = ["clearScreen",["folderMenu"],0]
 						break
 					}
 					if(inBounds(s[2],88,124)){
@@ -318,13 +324,13 @@ function tick(){
 				cpace = curr_page + Math.floor((s[3])/6) - 2
 				let f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
 
-				if(cpace == 1 && parentFolder.length > 1){
+				if(cpace == 0 && parentFolder.length > 1){
 					parentFolder.pop()
 					directory.pop()
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				if(f === null || cpace < 2){
+				if(f === null || cpace < 1){
 					task = ["waitTC", ["mainMenuClicked"]]
 					break
 				}
@@ -337,10 +343,12 @@ function tick(){
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				task = ["clearScreen",["drawFileMenu",zf],0]
+				task = ["clearScreen",["drawFileMenu",zf,f,cpace],0]
 				break
 			case "drawFileMenu":
 				cItems = task[1].slice()
+				chestPos = task[2] + 0
+				cpace = task[3] + 0
 				let name = cItems[0].attributes.customDescription + cItems[1].attributes.customDescription
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
@@ -385,6 +393,9 @@ function tick(){
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
 						case 4:
+							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace, "Air", 1, undefined)
+							api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
+							task = ["clearScreen",["initmenu"],0]
 							break
 						case 5:
 							curr_page = 0
@@ -418,7 +429,39 @@ function tick(){
 				updateDisplay()
 				task = ["execute"]
 				break
-				
-                }
+			case "folderMenu":
+				dtxt(0,0,"About")
+				dtxt(0,6,"Exit")
+				dtxt(0,12,"Upload")
+				dtxt(0,18,"Delete")
+				task = ["updateDisplay",["waitTC",["folderMenuClicked"]]]
+				break
+			case "folderMenuClicked":
+				if(inBounds(s[3], 0, 24)){
+					if(inBounds(s[3],0,6)){
+						task = ["clearScreen",["about"]]
+						break
+					}
+					if(inBounds(s[3],7,12)){
+						task = ["clearScreen",["initmenu"]]
+						break
+					}
+					if(inBounds(s[3],13,18)){
+						task = ["clearScreen",["upload"]]
+						break
+					}
+					
+				}
+				task = ["waitTC",["folderMenuClicked"]]
+				break
+			case "about":
+				dtxt(0,0,"NickOS V2.2.0 (c) 2025 fenl_")
+				dtxt(0,6,"GPLV3 github.com/tendergalaxy/nickos")
+				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
+				dtxt(0,30,"Click to exit")
+				updateDisplay()
+				task = ["waitTC", ["clearScreen",["folderMenu"],0]]
+				break
+            }
         }
 }
