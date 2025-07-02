@@ -462,6 +462,13 @@ function tick(){
 				updateDisplay()
 				task = ["waitTC", ["clearScreen",["folderMenu"],0]]
 				break
+			case "upload":
+				dtxt(0,0,"Waiting for user input")
+				dtxt(0,6,"NickOS Proxy")
+				updateDisplay()
+				task = ["waitUpload"]
+			case "waitUpload":
+				
             }
         }
 }
