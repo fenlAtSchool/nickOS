@@ -207,7 +207,7 @@ function dtxt(x,y,m){
         }
 }
 function displayFolderSons(obj){ // [task, progress, starting val]
-        if(obj[1] < 7 && obj[1] + obj[2] < 46){  
+        if(obj[1] < 7 && obj[1] + obj[2] < 36){  
                 let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2)
 				if(m != null){
 					m = parseInt(m.attributes.customDescription)
@@ -380,7 +380,7 @@ function tick(){
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
 				program = ""
-				for(let i = 2; i < 48; i++){
+				for(let i = 2; i < 36; i++){
 					program += cItems[i]?.attributes?.customDescription ?? "";
 				}
 				if(inBounds(cp2,2,5)){
