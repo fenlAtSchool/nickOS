@@ -1,4 +1,5 @@
 
+	
 
 user = "doesNotExist"     
 s = [0,0,0,0,0]
@@ -216,7 +217,7 @@ function displayFolderSons(obj){ // [task, progress, starting val]
 					f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
                 	f = ">" + f
                 	dtxt(0, obj[3]*6 + 18, f)
-					obj[3]
+					obj[3]++
 				}
                 obj[1]++
                 return task
@@ -482,17 +483,20 @@ function tick(){
 				}
 			case "findChest":
 				cpos = 0
-				while(api.getBlock(i,0,51) != "Chest"){
+				while(api.getBlock(cpos,0,51).startsWith("Chest")){
 					cpos++
 				}
 				task = ["waitUpload"]
 			case "waitUpload": // isFile contents fileName extension
 				if(isFile){
-					api.setStandardChestItemSlot([parentFolder.at(-1),0,51], p, "Net", 1, undefined, {attributes: {customDescription: cpos.toString()  }})
-					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {attributes: {customDescription: fileName }})
-					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {attributes: {customDescription: extension}})
+					api.log(cpos)
+					api.log(p)
+					api.setStandardChestItemSlot([parentFolder.at(-1),0,51], p, "Net", 1, undefined, {customDescription: cpos.toString()  })
+					api.setBlock([cpos,0,51], "Chest")
+					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {customDescription: fileName })
+					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {customDescription: extension} )
 					for(let i = 0; i < 34; i++){
-						api.setStandardChestItemSlot([cpos,0,51], i+2, "Net", 1, undefined, {attributes: {customDescription: contents[i]}})
+						api.setStandardChestItemSlot([cpos,0,51], i+2, "Net", 1, undefined, {customDescription: contents[i]} )
 					}
 					isFile = false
 					task = ["clearScreen", ["about"]]
