@@ -469,22 +469,38 @@ function tick(){
 				dtxt(0,0,"Waiting for user input")
 				dtxt(0,6,"Click to exit")
 				updateDisplay()
-				i = 0
-				while(i < 36 && api.getStandardChestItemSlot(parentFolder.at(-1),i) != null ){
-					i++
+				p = 0
+				while(p < 36 && api.getStandardChestItemSlot([parentFolder.at(-1),0,51],p) != null ){
+					p++
 				}
-				if(i == 36){
+				if(p == 36){
 					dtxt(0,12,"Folder Space Full")
 					dtxt(0,18,"Delete a file to clear space")
+					task = ["updateDisplay",["waitTC",["clearScreen",["about"]]]]
+				} else {
+					task = ["findChest"]
+				}
+			case "findChest":
+				cpos = 0
+				while(api.getBlock(i,0,51) != "Chest"){
+					cpos++
 				}
 				task = ["waitUpload"]
-			case "waitUpload":
+			case "waitUpload": // isFile contents fileName extension
+				if(isFile){
+					api.setStandardChestItemSlot([parentFolder.at(-1),0,51], p, "Net", 1, undefined, {attributes: {customDescription: cpos.toString()  }})
+					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {attributes: {customDescription: fileName }})
+					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {attributes: {customDescription: extension}})
+					for(let i = 0; i < 34; i++){
+						api.setStandardChestItemSlot([cpos,0,51], i+2, "Net", 1, undefined, {attributes: {customDescription: contents[i]}})
+					}
+					isFile = false
+					task = ["clearScreen", ["about"]]
+					break
+				}
 				if(s[4] == 0.5){
 					task = ["clearScreen",["folderMenu"]]
 					break
-				}
-				if(isFile){
-					
 				}
             }
         }
