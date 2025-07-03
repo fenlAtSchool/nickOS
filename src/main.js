@@ -84,6 +84,7 @@ function OSboot(){
 	curr_page = 0
 	parentFolder = [0]
 	directory = ["~"]
+	itemSlotPath = []
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
@@ -327,6 +328,7 @@ function tick(){
 				if(cpace == 0 && parentFolder.length > 1){
 					parentFolder.pop()
 					directory.pop()
+					itemSlotPath.pop()
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
@@ -339,6 +341,7 @@ function tick(){
 				if(zf[1].attributes.customDescription == ".fol"){
 					directory.push(zf[0].attributes.customDescription)
 					parentFolder.push(f)
+					itemSlotPath.push(cpace)
 					curr_page = 0
 					task = ["clearScreen",["initmenu"],0]
 					break
@@ -464,11 +467,25 @@ function tick(){
 				break
 			case "upload":
 				dtxt(0,0,"Waiting for user input")
-				dtxt(0,6,"NickOS Proxy")
+				dtxt(0,6,"Click to exit")
 				updateDisplay()
+				i = 0
+				while(i < 36 && api.getStandardChestItemSlot(parentFolder.at(-1),i) != null ){
+					i++
+				}
+				if(i == 36){
+					dtxt(0,12,"Folder Space Full")
+					dtxt(0,18,"Delete a file to clear space")
+				}
 				task = ["waitUpload"]
 			case "waitUpload":
-				
+				if(s[4] == 0.5){
+					task = ["clearScreen",["folderMenu"]]
+					break
+				}
+				if(isFile){
+					
+				}
             }
         }
 }
