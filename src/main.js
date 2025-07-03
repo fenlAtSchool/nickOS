@@ -350,7 +350,7 @@ function tick(){
 				task = ["clearScreen",["drawFileMenu",zf,f,cpace],0]
 				break
 			case "drawFileMenu":
-				cItems = task[1].slice()
+				cItems = task[1]
 				chestPos = task[2] + 0
 				cpace = task[3] + 0
 				let name = cItems[0].attributes.customDescription + cItems[1].attributes.customDescription
