@@ -1,5 +1,5 @@
 /*
-By fenl_ aka. NickOS_ under the GPL V4 license
+By fenl_ aka. NickOS_ under the GPL V3 license
 Do not delete, this is attribution for original creator
 */
 	
@@ -81,6 +81,7 @@ function OSboot(){
                 }
         }
         task = ["initmenu"]
+		isFile = false
         loadFont()
 		for(let i = 0; i < 32; i++){
                 api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 65, 0, 50], api.blockIdToBlockName(palette[0]))
@@ -327,7 +328,7 @@ function tick(){
 					}
 				}
 				cpace = curr_page + Math.floor((s[3])/6) - 2
-				let f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
+				f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
 
 				if(cpace == 0 && parentFolder.length > 1){
 					parentFolder.pop()
@@ -341,7 +342,7 @@ function tick(){
 					break
 				}
 				f = parseInt(f.attributes.customDescription)
-				let zf = api.getStandardChestItems([f,0,51])
+				zf = api.getStandardChestItems([f,0,51])
 				if(zf[1].attributes.customDescription == ".fol"){
 					directory.push(zf[0].attributes.customDescription)
 					parentFolder.push(f)
@@ -350,12 +351,12 @@ function tick(){
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				task = ["clearScreen",["drawFileMenu",zf,f,cpace],0]
+				api.log(zf)
+				task = ["clearScreen",["drawFileMenu"],0]
 				break
 			case "drawFileMenu":
-				cItems = task[1]
-				chestPos = task[2] + 0
-				cpace = task[3] + 0
+				cItems = zf.slice()
+				chestPos = f + 0
 				let name = cItems[0].attributes.customDescription + cItems[1].attributes.customDescription
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
@@ -446,23 +447,31 @@ function tick(){
 			case "folderMenuClicked":
 				if(inBounds(s[3], 0, 24)){
 					if(inBounds(s[3],0,6)){
-						task = ["clearScreen",["about"]]
+						task = ["clearScreen",["about"],0]
 						break
 					}
 					if(inBounds(s[3],7,12)){
-						task = ["clearScreen",["initmenu"]]
+						task = ["clearScreen",["initmenu"],0]
 						break
 					}
 					if(inBounds(s[3],13,18)){
-						task = ["clearScreen",["upload"]]
+						task = ["clearScreen",["upload"],0]
 						break
+					}
+					if(inBounds(s[3],19,24)){
+						api.setStandardChestItemSlot([parentFolder.at(-2),0,51],itemSlotPath.at(-1),"Air",1,undefined)
+						api.setStandardChestItemSlot([parentFolder.at(-1),0,51],0,"Air",1,undefined)
+						parentFolder.pop()
+						itemSlotPath.pop()
+						directory.pop()
+						task = ["clearScreen",["initmenu"],0]
 					}
 					
 				}
 				task = ["waitTC",["folderMenuClicked"]]
 				break
 			case "about":
-				dtxt(0,0,"NickOS V2.2.0 (c) 2025 fenl_")
+				dtxt(0,0,"NickOS V2.4.1 (c) 2025 fenl_")
 				dtxt(0,6,"GPLV3 github.com/tendergalaxy/nickos")
 				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
 				dtxt(0,30,"Click to exit")
@@ -480,13 +489,16 @@ function tick(){
 				if(p == 36){
 					dtxt(0,12,"Folder Space Full")
 					dtxt(0,18,"Delete a file to clear space")
-					task = ["updateDisplay",["waitTC",["clearScreen",["about"]]]]
+					task = ["updateDisplay",["waitTC",["clearScreen",["about"],0]]]
 				} else {
 					task = ["findChest"]
 				}
 			case "findChest":
 				cpos = 0
 				while(api.getBlock(cpos,0,51).startsWith("Chest")){
+					if(api.getStandardChestItemSlot([cpos,0,51],0) == null){
+						break
+					}
 					cpos++
 				}
 				task = ["waitUpload"]
@@ -502,11 +514,11 @@ function tick(){
 						api.setStandardChestItemSlot([cpos,0,51], i+2, "Net", 1, undefined, {customDescription: contents[i]} )
 					}
 					isFile = false
-					task = ["clearScreen", ["about"]]
+					task = ["clearScreen", ["about"],0]
 					break
 				}
 				if(s[4] == 0.5){
-					task = ["clearScreen",["folderMenu"]]
+					task = ["clearScreen",["folderMenu"],0]
 					break
 				}
             }
