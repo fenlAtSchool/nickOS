@@ -1,4 +1,7 @@
-
+/*
+By fenl_ aka. NickOS_ under the GPL V4 license
+Do not delete, this is attribution for original creator
+*/
 	
 
 user = "doesNotExist"     
