@@ -1,4 +1,4 @@
-/*
+ /*
 By fenl_ aka. NickOS_ under the GPL V3 license
 Do not delete, this is attribution for original creator
 */
@@ -351,7 +351,6 @@ function tick(){
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				api.log(zf)
 				task = ["clearScreen",["drawFileMenu"],0]
 				break
 			case "drawFileMenu":
@@ -424,7 +423,6 @@ function tick(){
 				break
 			case "displayFile":
 				dtxt(0,0,cItems[0].attributes.customDescription + cItems[1].attributes.customDescription)
-				api.log(program)
 				dtxt(0,6,"Back")
 				dtxt(24,6,"Next")
 				dtxt(48,6,"Exit")
@@ -504,8 +502,6 @@ function tick(){
 				task = ["waitUpload"]
 			case "waitUpload": // isFile contents fileName extension
 				if(isFile){
-					api.log(cpos)
-					api.log(p)
 					api.setStandardChestItemSlot([parentFolder.at(-1),0,51], p, "Net", 1, undefined, {customDescription: cpos.toString()  })
 					api.setBlock([cpos,0,51], "Chest")
 					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {customDescription: fileName })
