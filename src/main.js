@@ -72,20 +72,11 @@ function OSboot(){
         active = []
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
-        display = [] //sulfrox code format used
-		palette = [144,86]
-        for(let i = 0; i < 128; i++){
-                display.push([])
-                for(let z = 0; z < 64; z++){
-                        display[display.length - 1].push([palette[0],palette[0]])
-                }
-        }
-        task = ["initmenu"]
-		isFile = false
+        display = array(128).fill(array(64).fill([palette[0],palette[0]]))
+	palette = [144,86]
+        task = ["clearScreen",["initmenu"],0]
+	isFile = false
         loadFont()
-		for(let i = 0; i < 32; i++){
-                api.setBlockRect([4 * i - 64, 64, 50], [4 * (i + 1) - 65, 0, 50], api.blockIdToBlockName(palette[0]))
-        }
 	curr_page = 0
 	parentFolder = [0]
 	directory = ["~"]
@@ -272,6 +263,7 @@ function tick(){
 				for(const i of directory){
 					txt += i + "/"
 				}
+				
         			dtxt(0, 0, txt.slice(0,32))
 				dtxt(0, 6, "Back")
 				dtxt(24,6, "Next")
@@ -281,24 +273,44 @@ function tick(){
 					dtxt(0, 12, `Return to ${directory.at(-2)}`     )
 				}
 				updateDisplay()
-                                task = ["displayFolderSons",0,curr_page,0]
+				chestFiles = Array(36).fill([null,null])
+                                task = ["scanFolderItemSlots",2,0]
                                 break
+			case "scanFolderItemSlots":
+				while(task[1] < 36){
+					let x = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], task[1])
+					if(x != null){
+						x = parseInt(x)
+						chestFiles[task[2]] = api.getStandardChestItemSlot([x,0,51],0).attributes.customDescription + api.getStandardChestItemSlot([x,0,51],1).attributes.customDescription
+						task[2]++
+					}
+					task[1]++
+				}
+				task = ["displayFolderSons",curr_page]
+				break
                         case "displayFolderSons":
-                                task = displayFolderSons(task)
+                                for(let i = 0; i < 6; i++){
+					if(chestFiles[i + task[1][0] ] != null){
+						dtxt(0,6*i+18,"> " + chestFiles[i+task[1]][0])
+					}
+				}
+				task = ["updateDisplay",["waitTC",["mainMenuClicked"]]]
                                 break
                         case "updateDisplay":
-                                task = updateDisplay()
+                                updateDisplay()
+				task = task[1]
                                 break
                         case "waitClick":
                                 task = waitClick(task)
                                 break
-						case "waitTC":
-								if(s[4] == 0.5){
-									task = task[1]
-								}
-								break
+			case "waitTC":
+				if(s[4] == 0.5){
+					task = task[1]
+				}
+				break
 			case "clearScreen":
-				task = clearScreen()
+				clearScreen()
+				task = task[1]
 				break
 			case "shut":
 				osOn = false
@@ -328,6 +340,7 @@ function tick(){
 					}
 				}
 				cpace = curr_page + Math.floor((s[3])/6) - 2
+				cpace = chestFiles[cpace][1]
 				f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
 
 				if(cpace == 0 && parentFolder.length > 1){
