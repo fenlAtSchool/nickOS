@@ -215,14 +215,14 @@ function dtxt(x,y,m){
 function displayFolderSons(obj){ // [task, progress, starting val]
         if(obj[1] < 7 && obj[1] + obj[2] < 36){  
                 let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2)
-				if(m != null){
-					m = parseInt(m.attributes.customDescription)
-					let f = api.getStandardChestItemSlot([m,0,51], 0).attributes.customDescription
-					f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
-                	f = ">" + f
-                	dtxt(0, obj[3]*6 + 18, f)
-					obj[3]++
-				}
+			if(m != null){
+				m = parseInt(m.attributes.customDescription)
+				let f = api.getStandardChestItemSlot([m,0,51], 0).attributes.customDescription
+				f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
+                		f = ">" + f
+                		dtxt(0, obj[3]*6 + 18, f)
+				obj[3]++
+			}
                 obj[1]++
                 return task
         }
