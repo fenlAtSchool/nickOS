@@ -413,8 +413,20 @@ function tick(){
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
-							task = ["clearScreen",["initexecute"],0]
-							memory = []
+							extension = cItems[1].attributes.customDescription
+							if(extension == ".js"){
+								task = ["clearScreen",["initexecute"],0]
+								memory = []
+								break
+							}
+							if(extension == ".txt"){
+								task = ["clearScreen",["displayFile",0,256],0]
+								break
+							}
+							if(extension == ".binimg"){
+								task = ["clearScreen",["binImg"]
+								break
+							}
 							break
 						case 3:
 							task = ["clearScreen",["displayFile",0,256],0]
@@ -537,6 +549,17 @@ function tick(){
 					task = ["clearScreen",["folderMenu"],0]
 					break
 				}
+			case "binImg":
+				dtxt(0,0,"Click to Exit")
+				program = program.slice()
+				idx = 0
+				for(let i = 0; i < program[1]; i++){
+					for(let j = 0; j < program[0]; j++){
+						display[j][6+i] = program[4][idx]=='1' ? program[2] : program[3]
+					}
+				}
+				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"]]]]
+				break
             }
         }
 }
