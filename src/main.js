@@ -3,7 +3,7 @@ By fenl_ aka. NickOS_ under the GPL V3 license
 Do not delete, this is attribution for original creator
 */
 	
-
+	
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -12,7 +12,6 @@ function onPlayerClick(id){
 	if(item != null){
 		if(item.name == "Spawn Block (Gray)" && item.attributes.customDescription == "NickOS Remote"){
 			if(osOn){
-				palette[0] = 86
 				task = ["clearScreen",["shut"],0]
 			} else {
 				OSboot()
@@ -72,8 +71,14 @@ function OSboot(){
         active = []
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
-        display = array(128).fill(array(64).fill([palette[0],palette[0]]))
-	palette = [144,86]
+		palette = [144,86]
+        display = []
+		for(let i = 0; i < 128; i++){
+			display.push([])
+			for(let j = 0; j < 64; j++){
+				display.at(-1).push([palette[0],palette[0]])
+			}
+		}
         task = ["clearScreen",["initmenu"],0]
 	isFile = false
         loadFont()
@@ -280,8 +285,8 @@ function tick(){
 				while(task[1] < 36){
 					let x = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], task[1])
 					if(x != null){
-						x = parseInt(x)
-						chestFiles[task[2]] = api.getStandardChestItemSlot([x,0,51],0).attributes.customDescription + api.getStandardChestItemSlot([x,0,51],1).attributes.customDescription
+						x = parseInt(x.attributes.customDescription)
+						chestFiles[task[2]] = [api.getStandardChestItemSlot([x,0,51],0).attributes.customDescription + api.getStandardChestItemSlot([x,0,51],1).attributes.customDescription, x]
 						task[2]++
 					}
 					task[1]++
@@ -289,8 +294,9 @@ function tick(){
 				task = ["displayFolderSons",curr_page]
 				break
                         case "displayFolderSons":
+		
                                 for(let i = 0; i < 6; i++){
-					if(chestFiles[i + task[1][0] ] != null){
+					if(chestFiles[i + task[1] ][0] != null){
 						dtxt(0,6*i+18,"> " + chestFiles[i+task[1]][0])
 					}
 				}
@@ -339,21 +345,22 @@ function tick(){
 						break
 					}
 				}
-				cpace = curr_page + Math.floor((s[3])/6) - 2
-				cpace = chestFiles[cpace][1]
-				f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace)
-
-				if(cpace == 0 && parentFolder.length > 1){
-					parentFolder.pop()
-					directory.pop()
-					itemSlotPath.pop()
+				cp = Math.floor((s[3])/6) - 2
+				if(cp == 0){
+					if(parentFolder.length > 1){
+						parentFolder.pop()
+						directory.pop()
+						itemSlotPath.pop()
+					}
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				if(f === null || cpace < 1){
+				cpace = chestFiles[curr_page + cp - 1][1]
+				if(cpace == null){
 					task = ["waitTC", ["mainMenuClicked"]]
 					break
 				}
+				f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace + 1)
 				f = parseInt(f.attributes.customDescription)
 				zf = api.getStandardChestItems([f,0,51])
 				if(zf[1].attributes.customDescription == ".fol"){
