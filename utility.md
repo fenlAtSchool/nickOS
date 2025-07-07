@@ -1,6 +1,6 @@
 Utility functions
 
-```cpp
+```js
 // Draw text
 dtxt(x,y,text)
 //Updates screen
@@ -9,7 +9,7 @@ updateDisplay()
 
 Utility arrays
 
-```cpp
+```js
 /**
  * Array:
  * Player X
