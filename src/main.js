@@ -10,9 +10,10 @@ inBounds = (x,y,z) => (x >= y && x <= z)
 function onPlayerClick(id){
 	let item = api.getHeldItem(id)
 	if(item != null){
-		if(item.name == "Spawn Block (Gray)" && item.attributes.customDisplayName == "NickOS Remote"){
+		if(item.name == "Spawn Block (Gray)" && item.attributes.customDescription == "NickOS Remote"){
 			if(osOn){
-				task = ["clearScreen",["shut"],0]
+				palette[0] = palette[1]
+				task = ["clearScreen",["shut"]]
 			} else {
 				OSboot()
 				user = id
@@ -73,12 +74,6 @@ function OSboot(){
         s = [0,0,0,0,0,0,0,0,0]
 		palette = [144,86]
         display = []
-		for(let i = 0; i < 128; i++){
-			display.push([])
-			for(let j = 0; j < 64; j++){
-				display.at(-1).push([palette[0],palette[0]])
-			}
-		}
         task = ["clearScreen",["initmenu"],0]
 	isFile = false
         loadFont()
@@ -244,11 +239,14 @@ function waitClick(obj){
         return obj[1]
 }
 function clearScreen(obj){
+		if(task[2] == 0){
+			display = []
+		}
         for(let i = task[2]; i < 128;i++){
-                display.push([])
-                for(let z = 0; z < 64; z++){
-                        display[i][z] = [palette[0],palette[0]]
-                }
+                display.push(Array(64))
+				for(let z = 0; z < 64; z++){
+					display[i][z] = [palette[0],palette[0]]
+				}
 		api.setBlockRect([i-64,64,50],[i-64,0,50],api.blockIdToBlockName(palette[0]))
 		task[2] = i
         }
@@ -424,7 +422,7 @@ function tick(){
 								break
 							}
 							if(extension == ".binimg"){
-								task = ["clearScreen",["binImg"]
+								task = ["clearScreen",["binImg"],0]
 								break
 							}
 							break
@@ -432,7 +430,7 @@ function tick(){
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
 						case 4:
-							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace, "Air", 1, undefined)
+							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace+1, "Air", 1, undefined)
 							api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
 							task = ["clearScreen",["initmenu"],0]
 							break
@@ -501,7 +499,7 @@ function tick(){
 				task = ["waitTC",["folderMenuClicked"]]
 				break
 			case "about":
-				dtxt(0,0,"NickOS V2.4.1 (c) 2025 fenl_")
+				dtxt(0,0,"NickOS V2.5.2 (c) 2025 fenl_")
 				dtxt(0,6,"GPLV3 github.com/tendergalaxy/nickos")
 				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
 				dtxt(0,30,"Click to exit")
@@ -551,11 +549,13 @@ function tick(){
 				}
 			case "binImg":
 				dtxt(0,0,"Click to Exit")
-				program = program.slice()
+				program = program.split(" ")
+				api.log(program)
 				idx = 0
-				for(let i = 0; i < program[1]; i++){
-					for(let j = 0; j < program[0]; j++){
-						display[j][6+i] = program[4][idx]=='1' ? program[2] : program[3]
+				for(let i = 0; i < parseInt(program[1]); i++){
+					for(let j = 0; j < parseInt(program[0]); j++){
+						display[j][6+i][1] = program[4][idx]=='1' ? parseInt(program[2]) : parseInt(program[3])
+						idx++
 					}
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"]]]]
