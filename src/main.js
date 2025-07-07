@@ -232,12 +232,6 @@ function updateDisplay(){
                 }
         } return task[1]
 }
-function waitClick(obj){
-        if(s[4] == 0.5){
-                return obj[2]
-        }
-        return obj[1]
-}
 function clearScreen(obj){
 		if(task[2] == 0){
 			display = []
@@ -303,9 +297,6 @@ function tick(){
                         case "updateDisplay":
                                 updateDisplay()
 				task = task[1]
-                                break
-                        case "waitClick":
-                                task = waitClick(task)
                                 break
 			case "waitTC":
 				if(s[4] == 0.5){
