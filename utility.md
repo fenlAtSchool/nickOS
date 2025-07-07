@@ -10,7 +10,6 @@ updateDisplay()
 Utility arrays
 
 ```cpp
-jp
 /**
  * Array:
  * Player X
@@ -20,5 +19,7 @@ jp
  * Cursor X Previous Tick
  * Cursor Y Previous Tick
 */
-parentFolder // Get Directory
+jp = [0,0,0,0,0,0,0,0]
+// Get Directory
+parentFolder = []
 ```
