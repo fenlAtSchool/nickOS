@@ -1,7 +1,7 @@
 # NickOS
 <img width="690" alt="Screenshot 2025-06-11 at 12 48 10 PM" src="https://github.com/user-attachments/assets/58595d12-9a70-4463-ad11-5e8745e7e0b1" />
 
-NickOS is the first user-friendly Bloxd Execution Shell, and it's all open source! You can download it right here or go to a demonstration world (nickos). 
+NickOS is the first user-friendly Bloxd Execution Shell, and it's all open source! You can download it right here or go to a demonstration world (nickosdev). 
 
 ## How To Install
 
