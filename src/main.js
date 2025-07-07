@@ -1,9 +1,7 @@
- /*
+/*
 By fenl_ aka. NickOS_ under the GPL V3 license
 Do not delete, this is attribution for original creator
 */
-	
-	
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -34,7 +32,6 @@ function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
         let vec = ctmp["camPos"]
         ctmp = ctmp["dir"]
-        
         ctmp[0] = ctmp[0] * ((50-vec[2]) / ctmp[2]) + vec[0]
         ctmp[1] = ctmp[1] * ((50-vec[2]) / ctmp[2]) + vec[1]
         ctmp[0] = Math.round(ctmp[0] + 64)
@@ -81,13 +78,12 @@ function OSboot(){
 	parentFolder = [0]
 	directory = ["~"]
 	itemSlotPath = []
-	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86]
+	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
 	charset = "ABCDEFGHIJKLMNOPQRSTUVWX"
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
 function loadFont(){
-
 font = {
 "A":"#### ##### ## #",
 "B":"## # ### # ### ",
@@ -169,8 +165,6 @@ font = {
 ",":"__________#_#__",
 "^":"_#_#_##_#______",
 "|":"_#__#__#__#__#_",
-"full":"###############",
-"blank":"_______________",
 "(":"_#_#__#__#___#_",
 ";":"____#_____#_#__",
 ")":"_#___#__#__#_#_",
@@ -182,8 +176,6 @@ font = {
 "}":"##__#__##_#_##_",
 "~":"______#_#_#____"
 }
-
-
 }
 function dtxt(x,y,m){ 
         let r = 0
@@ -227,7 +219,7 @@ function updateDisplay(){
                         let val = display[y][x]
                         if(val[0] != val[1]){
                                 val[0] = val[1]
-                                let tmp = api.blockIdToBlockName(val[1])
+                                let tmp = val[1]
                                 api.setBlock([y - 64,64 - x,50],tmp)
                                 display[y][x] = val
                         }
@@ -415,7 +407,13 @@ function tick(){
 								break
 							}
 							if(extension == ".ngp"){
+								prog = 0
 								task = ["clearScreen",["ngpFormat"],0]
+								break
+							}
+							if(extension == ".rgb"){
+								prog = 0
+								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
 							break
@@ -542,17 +540,32 @@ function tick(){
 				}
 			case "ngpFormat":
 				dtxt(0,0,"Click to Exit")
-				program = program.split(" ")
-				api.log(program)
-				idx = 0
-				for(let i = 0; i < parseInt(program[1]); i++){
-					for(let j = 0; j < parseInt(program[0]); j++){
-						display[j][6+i][1] = colors[charset.indexOf(program[4][idx])]
-						idx++
+				if(typeof(program)=="string"){program = program.split(" ")}
+				yl = parseInt(program[1])
+				xl = parseInt(program[0])
+				for(let i = prog; i < yl; i++){
+					for(let j = 0; j < xl; j++){
+						display[j][6+i][1] = colors[charset.indexOf(program[2][xl*i+j])]
 					}
+					prog = i
 				}
-				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"]]]]
+				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
-            }
-        }
+			case "rgbFormat":
+				dtxt(0,0,"Click to Exit")
+				if(typeof(program)=="string"){program = program.split(" ")}
+				yl = parseInt(program[1])
+				xl = parseInt(program[0])
+				api.log(program.length)
+				for(let i = prog; i < yl; i++){
+					for(let j = 0; j < xl; j++){
+						display[j][6+i][1] = parseInt(program[xl*i+j+2])
+					}
+					prog = i
+				}
+				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
+				break
+			}
+		
+	}
 }
