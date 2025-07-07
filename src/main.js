@@ -10,7 +10,7 @@ inBounds = (x,y,z) => (x >= y && x <= z)
 function onPlayerClick(id){
 	let item = api.getHeldItem(id)
 	if(item != null){
-		if(item.name == "Spawn Block (Gray)" && item.attributes.customDescription == "NickOS Remote"){
+		if(item.name == "Spawn Block (Gray)" && item.attributes.customDisplayName == "NickOS Remote"){
 			if(osOn){
 				task = ["clearScreen",["shut"],0]
 			} else {
