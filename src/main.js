@@ -81,6 +81,8 @@ function OSboot(){
 	parentFolder = [0]
 	directory = ["~"]
 	itemSlotPath = []
+	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86]
+	charset = "ABCDEFGHIJKLMNOPQRSTUVWX"
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
@@ -412,8 +414,8 @@ function tick(){
 								task = ["clearScreen",["displayFile",0,256],0]
 								break
 							}
-							if(extension == ".binimg"){
-								task = ["clearScreen",["binImg"],0]
+							if(extension == ".ngp"){
+								task = ["clearScreen",["ngpFormat"],0]
 								break
 							}
 							break
@@ -538,14 +540,14 @@ function tick(){
 					task = ["clearScreen",["folderMenu"],0]
 					break
 				}
-			case "binImg":
+			case "ngpFormat":
 				dtxt(0,0,"Click to Exit")
 				program = program.split(" ")
 				api.log(program)
 				idx = 0
 				for(let i = 0; i < parseInt(program[1]); i++){
 					for(let j = 0; j < parseInt(program[0]); j++){
-						display[j][6+i][1] = program[4][idx]=='1' ? parseInt(program[2]) : parseInt(program[3])
+						display[j][6+i][1] = colors[charset.indexOf(program[4][idx])]
 						idx++
 					}
 				}
