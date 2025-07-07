@@ -19,7 +19,7 @@ Utility arrays
  * Cursor X Previous Tick
  * Cursor Y Previous Tick
 */
-jp = [0,0,0,0,0,0,0,0]
+s = [0,0,0,0,0,0,0,0]
 // Get Directory
 parentFolder = []
 ```
