@@ -411,7 +411,7 @@ function tick(){
 							if(extension == ".rgb"){
 								program = cItems[2].attributes.customDescription
 								program = program.split(" ")
-								index = 0, data = null, currCItem = 3, xl = parseInt(program[1]), yl = parseInt(program[2]), i = 0, j = 0
+								index = 0, data = "refresh", currCItem = 3, xl = parseInt(program[1]), yl = parseInt(program[2]), i = 0, j = 0
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
@@ -552,25 +552,22 @@ function tick(){
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
-				if(data = null){
+				if(data = "refresh"){
 					data = cItems[currCItem].attributes.customDescription
 					data = data.split(" ")
 					index = 0
 					return
 				}
-				while(i < yl){
-					while(j < xl){
+				for(;i < yl; i++){
+					for(;j < xl; j++){
 						if(index == data.length){
 							currCItem++
-							data = null
+							data = "refresh"
 							return
 						}
 						display[j][6+i][1] = parseInt(data[index])
-						j++
 						index++
 					}
-					j = 0
-					i++
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
