@@ -410,12 +410,6 @@ function tick(){
 							}
 							if(extension == ".rgb"){
 								prog = 0
-								program = program.split(" ")
-								xl = parseInt(program[0])
-								yl = parseInt(program[1])
-								currCItem = 3
-								toProcess = ""
-								program = ""
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
@@ -556,20 +550,13 @@ function tick(){
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
-				if(toProcess == null){
-					toProcess = cItems[currCItem].attributes.customAttributes.split(" ")
-					index = 0
-				}
+				if(typeof(program)=="string"){program = program.split(" ")}
+				yl = parseInt(program[1])
+				xl = parseInt(program[0])
 				for(let i = prog; i < yl; i++){
 					for(let j = 0; j < xl; j++){
-						if(index == toProcess.length){
-							toProcess = null
-							cItems++
-							break
-						}
-						display[j][6+i][1] = parseInt(toProcess[index + j])
+						display[j][6+i][1] = parseInt(program[xl*i+j+2])
 					}
-					index += xl
 					prog = i
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
@@ -577,4 +564,3 @@ function tick(){
 			}
 		}
 	}
-
