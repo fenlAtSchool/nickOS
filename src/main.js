@@ -555,19 +555,21 @@ function tick(){
 				if(data == "refresh"){
 					data = cItems[currCItem].attributes.customDescription
 					data = data.split(" ")
+					data = data.map(v => parseInt(v))
 					index = 0
 					return
 				}
-				for(;i < yl; i++){
-					for(;j < xl; j++){
+				while(i < yl){
+					while(j < xl){
 						if(index == data.length){
 							currCItem++
 							data = "refresh"
 							return
 						}
-						display[j][6+i][1] = parseInt(data[index])
-						index++
+						display[j][6+i][1] = data[index]
+						index++, j++
 					}
+					j = 0; i++
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
