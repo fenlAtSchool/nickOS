@@ -410,8 +410,12 @@ function tick(){
 							}
 							if(extension == ".rgb"){
 								prog = 0
-								currCItem = 2
+								program = program.split(" ")
+								xl = parseInt(program[0])
+								yl = parseInt(program[1])
+								currCItem = 3
 								toProcess = ""
+								program = ""
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
@@ -552,8 +556,6 @@ function tick(){
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
-				yl = parseInt(program[1])
-				xl = parseInt(program[0])
 				if(toProcess == null){
 					toProcess = cItems[currCItem].attributes.customAttributes.split(" ")
 					index = 0
