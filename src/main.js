@@ -552,7 +552,7 @@ function tick(){
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
-				if(data = "refresh"){
+				if(data == "refresh"){
 					data = cItems[currCItem].attributes.customDescription
 					data = data.split(" ")
 					index = 0
