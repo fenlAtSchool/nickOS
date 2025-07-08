@@ -411,7 +411,7 @@ function tick(){
 							if(extension == ".rgb"){
 								program = cItems[2].attributes.customDescription
 								program = program.split(" ")
-								index = 0, data = "refresh", currCItem = 3, xl = parseInt(program[1]), yl = parseInt(program[2]), i = 0, j = 0
+								index = 0, data = "refresh", currCItem = 3, xl = parseInt(program[0]), yl = parseInt(program[1]), i = 0, j = 0
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
