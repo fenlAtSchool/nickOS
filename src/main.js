@@ -1,7 +1,4 @@
-/*
-By fenl_ aka. NickOS_ under the GPL V3 license
-Do not delete, this is attribution for original creator
-*/
+//fenl	
 user = "doesNotExist"     
 s = [0,0,0,0,0]
 inBounds = (x,y,z) => (x >= y && x <= z)
@@ -11,7 +8,7 @@ function onPlayerClick(id){
 		if(item.name == "Spawn Block (Gray)" && item.attributes.customDescription == "NickOS Remote"){
 			if(osOn){
 				palette[0] = palette[1]
-				task = ["clearScreen",["shut"]]
+				task = ["clearScreen",["shut"],0]
 			} else {
 				OSboot()
 				user = id
@@ -556,7 +553,6 @@ function tick(){
 				if(typeof(program)=="string"){program = program.split(" ")}
 				yl = parseInt(program[1])
 				xl = parseInt(program[0])
-				api.log(program.length)
 				for(let i = prog; i < yl; i++){
 					for(let j = 0; j < xl; j++){
 						display[j][6+i][1] = parseInt(program[xl*i+j+2])
@@ -566,6 +562,6 @@ function tick(){
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
 			}
-		
+		}
 	}
-}
+
