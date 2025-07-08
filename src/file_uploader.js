@@ -2,6 +2,9 @@ contents = "NickOS File Uploader Shell"
 fileName = "demo"
 extension = ".txt"
 
+if(contents == ""){
+	contents = []
+}
 if(typeof(contents) == "string"){
 	contents = contents.match(/.{1,470}/g)
 }
