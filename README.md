@@ -1,5 +1,5 @@
 # NickOS
-<img width="690" alt="Screenshot 2025-06-11 at 12 48 10 PM" src="https://github.com/user-attachments/assets/58595d12-9a70-4463-ad11-5e8745e7e0b1" />
+<img width="674" alt="Screenshot 2025-07-08 at 5 33 36 PM" src="https://github.com/user-attachments/assets/378262ec-4598-4ab7-a1e9-ecf69270b8d1" />
 
 NickOS is the first user-friendly Bloxd Execution Shell, and it's all open source! You can download it right here or go to a demonstration world (nickosdev). 
 
@@ -17,6 +17,27 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 3: Click options, and then upload
 4: When NickOS is waiting, press the code block
 5: Once it displays credits, you can safely navigate back to your home screen
+
+## Features
+[b] NickOS supports: [\b]
+- .npg : Bloxd Image Codec
+- .rgb : Bloxd Color Image Codec
+- .js  : Javascript files
+- .txt : Plaintext files
+- .fol : Folder directories
+
+[b] NickOS is able to: [\b]
+- Upload files
+- Delete files
+- View files
+- Execute files
+
+[b] It can act as a: [\b]
+- Central control hub
+- Executor
+- Gaming console
+- Photo album
+
 
 
 ## Credits
