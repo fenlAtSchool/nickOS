@@ -76,7 +76,7 @@ function OSboot(){
 	directory = ["~"]
 	itemSlotPath = []
 	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
-	charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_'=+`~?.,;:"
+	charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
