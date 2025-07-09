@@ -1,4 +1,3 @@
-
 from PIL import Image
 import numpy as np
 import json
@@ -30,16 +29,21 @@ for i in range(len(rgb_tuples)):
   rgb_tuples[i] = findMatchingBlock(rgb_tuples[i])
 charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
 items = [str(size[0]) + " " + str(size[1])]
+length = 0
+item = rgb_tuples[0]
+print(rgb_tuples)
 txt = ""
-total_len = 0
 for i in rgb_tuples:
-  real_item = charset[i]
-  txt += real_item
-  if len(txt) > 465:
-    total_len += len(txt)
-    items.append(txt)
-    txt = ""
-items.append(txt)
-total_len += len(txt)
+  '''
+  if i == item and length < 80:
+    length += 1
+  else:
+    txt += charset[length - 1] + charset[i]
+    item = i
+    length = 1
+  '''
+  txt += charset[i]
+items += [txt[i:i+460] for i in range(0,len(txt),460)]
 print(items)
-print(total_len)
+print(len(txt))
+print(len(rgb_tuples))
