@@ -19,20 +19,20 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 5: Once it displays credits, you can safely navigate back to your home screen
 
 ## Features
-[b] NickOS supports: [\b]
+**NickOS supports:**
 - .npg : Bloxd Image Codec
 - .rgb : Bloxd Color Image Codec
 - .js  : Javascript files
 - .txt : Plaintext files
 - .fol : Folder directories
 
-[b] NickOS is able to: [\b]
+**NickOS is able to:**
 - Upload files
 - Delete files
 - View files
 - Execute files
 
-[b] It can act as a: [\b]
+**It can act as a:**
 - Central control hub
 - Executor
 - Gaming console
