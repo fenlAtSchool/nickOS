@@ -242,7 +242,7 @@ function clearScreen(obj){
 osOn = false
 function tick(ms){
         if(osOn){
-		api.setClientOption(user,"RightInfoText",['NickOS Statistics', ms, user, parentFolder, task])
+		api.setClientOption(user,"RightInfoText",'NickOS Statistics \n' + ms + '\n' + user + '\n' + parentFolder + '\n' + task)
                 jp()
 		try{drawCursor()}catch{}
                 switch(task[0]){
