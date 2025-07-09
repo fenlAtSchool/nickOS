@@ -554,8 +554,6 @@ function tick(){
 				dtxt(0,0,"Click to Exit")
 				if(data == "refresh"){
 					data = cItems[currCItem].attributes.customDescription
-					data = data.split(" ")
-					data = data.map(v => parseInt(v))
 					index = 0
 					return
 				}
