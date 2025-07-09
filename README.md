@@ -4,9 +4,9 @@
 NickOS is the first user-friendly Bloxd Execution Shell, and it's all open source! You can download it right here or go to a demonstration world (nickosdev). 
 
 ## How To Install
-1: Paste cpm.js into World Code
-2: Paste osBoot.js into a code block and get the NickOS Remote
-3: Paste initInstall.js into a code block and run
+- 1: Paste cpm.js into World Code
+- 2: Paste osBoot.js into a code block and get the NickOS Remote
+- 3: Paste initInstall.js into a code block and run
 
 ## Turn On/Off
 1: Click while holding the NickOS Remote
