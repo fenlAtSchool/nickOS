@@ -478,6 +478,7 @@ function tick(ms){
 					if(inBounds(s[3],19,24)){
 						api.setStandardChestItemSlot([parentFolder.at(-2),0,51],itemSlotPath.at(-1),"Air",1,undefined)
 						api.setStandardChestItemSlot([parentFolder.at(-1),0,51],0,"Air",1,undefined)
+						api.setBlock([parentFolder.at(-1),0,51], "Air")
 						parentFolder.pop()
 						itemSlotPath.pop()
 						directory.pop()
@@ -525,9 +526,11 @@ function tick(ms){
 					api.setBlock([cpos,0,51], "Chest")
 					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {customDescription: fileName })
 					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {customDescription: extension} )
-					api.setStandardChestItemSlot([cpos,0,51], 2, "Net", 1, undefined, {customDescription: (contents.length / 36).toString() )
-					for(let i = 0; i < 36; i++){
-						api.setStandardChestItemSlot([cpos,0,52], i, "Net", 1, undefined, {customDescription: contents[i]} )
+					api.setStandardChestItemSlot([cpos,0,51], 2, "Net", 1, undefined, {customDescription: (contents.length / 36).toString() })
+					for(let y = 0; y < contents.length/36; y++){
+						for(let i = 0; i < 36; i++){
+							api.setStandardChestItemSlot([cpos,0,52+y], i, "Net", 1, undefined, {customDescription: contents[36*y+i]} )
+						}
 					}
 					isFile = false
 					task = ["clearScreen", ["about"],0]
