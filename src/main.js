@@ -414,6 +414,19 @@ function tick(ms){
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
+							if(extension == '.nvf'){
+								program = program.split(" ")
+								xl = parseInt(program[0])
+								yl = parseInt(program[1])
+								frameCount = parseInt(program[2])
+								idx = 0
+								lastFrame = []
+								for(let i = 0; i < xl*yl; i++){
+									lastFrame.push(0)
+								}
+								task = ["clearScreen",["playVideoFrame"],0]
+								break
+							}
 							break
 						case 3:
 							task = ["clearScreen",["displayFile",0,256],0]
@@ -568,6 +581,30 @@ function tick(ms){
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
+			case "playVideoFrame":
+				if(idx == frameCount){
+					task = ["waitTC",["clearScreen",["drawFileMenu"],0]]
+					break
+				}
+				pos = [0,0]
+				for(let i of program[idx+3]){
+					item = String.codePointAt(i)
+					item = [Math.floor(item/100), item % 100]
+					for(j = 0; j < item[0]; j++){
+						pos[0]++
+						if(item != 78){
+							display[pos[0]][pos[1]+6] = cColors[item]
+						}
+						if(pos[0] == 128){
+							pos[0] = 0
+							pos[1]++
+						}
+					}
+				}
+				idx++
+				task = ["updateDisplay", ["playVideoFrame"]]
+				break
+				
 			}
 		}
 }
