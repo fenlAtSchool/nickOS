@@ -421,6 +421,7 @@ function tick(ms){
 						case 4:
 							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace+1, "Air", 1, undefined)
 							api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
+							api.setBlock([chestPos,0,51],"Air")
 							task = ["clearScreen",["initmenu"],0]
 							break
 						case 5:
