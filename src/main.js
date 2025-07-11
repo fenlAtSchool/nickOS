@@ -410,9 +410,7 @@ function tick(ms){
 								break
 							}
 							if(extension == ".rgb"){
-								program = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
-								program = program.split(" ")
-								index = 0, data = "refresh", currCItem = 0, xl = parseInt(program[0]), yl = parseInt(program[1]), i = 0, j = 0
+								prog = 0
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
@@ -553,24 +551,14 @@ function tick(ms){
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
-				if(data == "refresh"){
-					data = api.getStandardChestItemSlot([chestPos,0,52],currCItem).attributes.customDescription
-					data = data.split(" ")
-					data = data.map(v => parseInt(v))
-					index = 0
-					return
-				}
-				while(i < yl){
-					while(j < xl){
-						if(index == data.length){
-							currCItem++
-							data = "refresh"
-							return
-						}
-						display[j][6+i][1] = cColors[charset.indexOf(data[index])]
-						index++, j++
+				if(typeof(program)=="string"){program = program.split(" ")}
+				yl = parseInt(program[1])
+				xl = parseInt(program[0])
+				for(let i = prog; i < yl; i++){
+					for(let j = 0; j < xl; j++){
+						display[j][6+i][1] = cColors[charset.indexOf(program[2][xl*i+j])]
 					}
-					j = 0; i++
+					prog = i
 				}
 				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
 				break
