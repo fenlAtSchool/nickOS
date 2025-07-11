@@ -8,7 +8,7 @@ if(contents == ""){
 if(typeof(contents) == "string"){
 	contents = contents.match(/.{1,470}/g)
 }
-while(contents.length < 34){
+while(contents.length % 36 != 0){
 	contents.push("")
 }
 
