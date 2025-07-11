@@ -352,9 +352,9 @@ function tick(ms){
 				task = ["clearScreen",["drawFileMenu"],0]
 				break
 			case "drawFileMenu":
-				cItems = zf.slice()
+				cLength = parseInt(zf[2].attributes.customDescription)
 				chestPos = f + 0
-				let name = cItems[0].attributes.customDescription + cItems[1].attributes.customDescription
+				let name = zf[0].attributes.customDescription + zf[1].attributes.customDescription
 				dtxt(0,0,`File: ${name}`)
 				dtxt(0,6,"Execute file")
 				dtxt(0,12,"View file")
@@ -385,13 +385,16 @@ function tick(ms){
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
 				program = ""
-				for(let i = 2; i < 36; i++){
-					program += cItems[i]?.attributes?.customDescription ?? "";
+				for(let y = 0; y < cLength; y++){
+					let list = api.getStandardChestItems([chestPos,0,52+y])
+					for(let i = 0; i < 36; i++){
+						program += list[i].attributes.customDescription
+					}
 				}
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
-							extension = cItems[1].attributes.customDescription
+							extension = zf[1].attributes.customDescription
 							if(extension == ".js"){
 								task = ["clearScreen",["initexecute"],0]
 								memory = []
@@ -407,9 +410,9 @@ function tick(ms){
 								break
 							}
 							if(extension == ".rgb"){
-								program = cItems[2].attributes.customDescription
+								program = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
 								program = program.split(" ")
-								index = 0, data = "refresh", currCItem = 3, xl = parseInt(program[0]), yl = parseInt(program[1]), i = 0, j = 0
+								index = 0, data = "refresh", currCItem = 0, xl = parseInt(program[0]), yl = parseInt(program[1]), i = 0, j = 0
 								task = ["clearScreen",["rgbFormat"],0]
 								break
 							}
@@ -440,7 +443,7 @@ function tick(ms){
 				updateDisplay()
 				break
 			case "displayFile":
-				dtxt(0,0,cItems[0].attributes.customDescription + cItems[1].attributes.customDescription)
+				dtxt(0,0,zf[0].attributes.customDescription + zf[1].attributes.customDescription)
 				dtxt(0,6,"Back")
 				dtxt(24,6,"Next")
 				dtxt(48,6,"Exit")
@@ -524,8 +527,8 @@ function tick(ms){
 					api.setBlock([cpos,0,51], "Chest")
 					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {customDescription: fileName })
 					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {customDescription: extension} )
-					for(let i = 0; i < 34; i++){
-						api.setStandardChestItemSlot([cpos,0,51], i+2, "Net", 1, undefined, {customDescription: contents[i]} )
+					for(let i = 0; i < 36; i++){
+						api.setStandardChestItemSlot([cpos,0,52], i, "Net", 1, undefined, {customDescription: contents[i]} )
 					}
 					isFile = false
 					task = ["clearScreen", ["about"],0]
@@ -551,7 +554,9 @@ function tick(ms){
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
 				if(data == "refresh"){
-					data = cItems[currCItem].attributes.customDescription
+					data = api.getStandardChestItemSlot([chestPos,0,52],currCItem).attributes.customDescription
+					data = data.split(" ")
+					data = data.map(v => parseInt(v))
 					index = 0
 					return
 				}
