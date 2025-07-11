@@ -525,6 +525,7 @@ function tick(ms){
 					api.setBlock([cpos,0,51], "Chest")
 					api.setStandardChestItemSlot([cpos,0,51], 0, "Net", 1, undefined, {customDescription: fileName })
 					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {customDescription: extension} )
+					api.setStandardChestItemSlot([cpos,0,51], 2, "Net", 1, undefined, {customDescription: (contents.length / 36).toString() )
 					for(let i = 0; i < 36; i++){
 						api.setStandardChestItemSlot([cpos,0,52], i, "Net", 1, undefined, {customDescription: contents[i]} )
 					}
