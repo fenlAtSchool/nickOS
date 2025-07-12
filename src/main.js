@@ -20,6 +20,16 @@ function onPlayerClick(id){
 		s[4] = 1
 	}
 }
+function getProgram(){
+	program = ""
+	for(let y = 0; y < cLength; y++){
+		let list = api.getStandardChestItems([chestPos,0,52+y])
+		for(let i = 0; i < 36; i++){
+			program += list[i].attributes.customDescription
+		}
+	}
+	return program
+}
 function onPlayerAttemptAltAction(id){
 	if(user == id && osOn){
 		s[5] == 1
@@ -384,15 +394,6 @@ function tick(ms){
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
-				function getProgram(){
-					program = ""
-					for(let y = 0; y < cLength; y++){
-						let list = api.getStandardChestItems([chestPos,0,52+y])
-						for(let i = 0; i < 36; i++){
-							program += list[i].attributes.customDescription
-						}
-					}
-				}
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
 						case 2:
