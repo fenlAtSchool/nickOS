@@ -384,11 +384,13 @@ function tick(ms){
 				break
 			case "menuOptionClicked":
 				cp2 = Math.floor((s[3])/6) + 1
-				program = ""
-				for(let y = 0; y < cLength; y++){
-					let list = api.getStandardChestItems([chestPos,0,52+y])
-					for(let i = 0; i < 36; i++){
-						program += list[i].attributes.customDescription
+				function getProgram(){
+					program = ""
+					for(let y = 0; y < cLength; y++){
+						let list = api.getStandardChestItems([chestPos,0,52+y])
+						for(let i = 0; i < 36; i++){
+							program += list[i].attributes.customDescription
+						}
 					}
 				}
 				if(inBounds(cp2,2,5)){
@@ -396,20 +398,24 @@ function tick(ms){
 						case 2:
 							extension = zf[1].attributes.customDescription
 							if(extension == ".js"){
+								getProgram()
 								task = ["clearScreen",["initexecute"],0]
 								memory = []
 								break
 							}
 							if(extension == ".txt"){
+								getProgram()
 								task = ["clearScreen",["displayFile",0,256],0]
 								break
 							}
 							if(extension == ".ngp"){
+								getProgram()
 								prog = 0
 								task = ["clearScreen",["ngpFormat"],0]
 								break
 							}
 							if(extension == ".rgb"){
+								getProgram()
 								prog = 0
 								task = ["clearScreen",["rgbFormat"],0]
 								break
@@ -428,6 +434,7 @@ function tick(ms){
 							}
 							break
 						case 3:
+							getProgram()
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
 						case 4:
