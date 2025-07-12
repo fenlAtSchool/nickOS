@@ -421,6 +421,7 @@ function tick(ms){
 								break
 							}
 							if(extension == '.nvf'){
+								program = api.getStandardChestItemSlot([0,0,52],0).attributes.customDescription
 								program = program.split(" ")
 								xl = parseInt(program[0])
 								yl = parseInt(program[1])
@@ -428,6 +429,7 @@ function tick(ms){
 								i = 0
 								currCPos = 0
 								currCItem = 0
+								idx = 0
 								data = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
 								task = ["clearScreen",["playVideoFrame"],0]
 								break
