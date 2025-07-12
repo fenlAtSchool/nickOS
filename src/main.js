@@ -419,11 +419,10 @@ function tick(ms){
 								xl = parseInt(program[0])
 								yl = parseInt(program[1])
 								frameCount = parseInt(program[2])
-								idx = 0
-								lastFrame = []
-								for(let i = 0; i < xl*yl; i++){
-									lastFrame.push(0)
-								}
+								i = 0
+								currCPos = 0
+								currCItem = 0
+								data = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
 								task = ["clearScreen",["playVideoFrame"],0]
 								break
 							}
@@ -587,8 +586,8 @@ function tick(ms){
 					break
 				}
 				pos = [0,0]
-				for(let i of program[idx+3]){
-					item = String.codePointAt(i)
+				while(pos[1] < yl){
+					item = String.codePointAt(data[i])
 					item = [Math.floor(item/100), item % 100]
 					for(j = 0; j < item[0]; j++){
 						pos[0]++
@@ -599,6 +598,16 @@ function tick(ms){
 							pos[0] = 0
 							pos[1]++
 						}
+					}
+					i++
+					if(i == data.length){
+						i = 0
+						currCItem++
+						if(currCItem == 36){
+							currCItem = 0
+							currCPos++
+						}
+						data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
 					}
 				}
 				idx++
