@@ -421,7 +421,7 @@ function tick(ms){
 								break
 							}
 							if(extension == '.nvf'){
-								program = api.getStandardChestItemSlot([0,0,52],0).attributes.customDescription
+								program = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
 								program = program.split(" ")
 								xl = parseInt(program[0])
 								yl = parseInt(program[1])
@@ -430,7 +430,7 @@ function tick(ms){
 								currCPos = 0
 								currCItem = 0
 								idx = 0
-								data = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
+								data = program[3]
 								task = ["clearScreen",["playVideoFrame"],0]
 								break
 							}
@@ -551,6 +551,7 @@ function tick(ms){
 					api.setStandardChestItemSlot([cpos,0,51], 1, "Net", 1, undefined, {customDescription: extension} )
 					api.setStandardChestItemSlot([cpos,0,51], 2, "Net", 1, undefined, {customDescription: (contents.length / 36).toString() })
 					for(; y < contents.length/36; y++){
+						api.setBlock([cpos,0,52+y],"Chest")
 						for(let i = 0; i < 36; i++){
 							api.setStandardChestItemSlot([cpos,0,52+y], i, "Net", 1, undefined, {customDescription: contents[36*y+i]} )
 						}
