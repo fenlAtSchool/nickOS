@@ -598,7 +598,7 @@ function tick(ms){
 				}
 				pos = [0,0]
 				while(pos[1] < yl){
-					item = String.codePointAt(data[i])
+					item = data[i].codePointAt(0)
 					item = [Math.floor(item/100), item % 100]
 					for(j = 0; j < item[0]; j++){
 						pos[0]++
