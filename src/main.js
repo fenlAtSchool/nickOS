@@ -613,7 +613,7 @@ function tick(ms){
 					for(j = 0; j < item[0]; j++){
 						pos[0]++
 						if(item != 78){
-							display[pos[0]][pos[1]+6] = cColors[item]
+							display[pos[0]][pos[1]+6][1] = cColors[item]
 						}
 						if(pos[0] == 128){
 							pos[0] = 0
