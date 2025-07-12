@@ -613,14 +613,14 @@ function tick(ms){
 					for(j = 0; j < item[0]; j++){
 						pos[0]++
 						if(item != 78){
-							display[pos[0]][pos[1]+6][1] = cColors[item]
+							display[pos[0]][pos[1]+6][1] = cColors[item[1]]
 						}
 						if(pos[0] == 128){
 							pos[0] = 0
 							pos[1]++
 						}
 					}
-					api.log(pos)
+					api.log(cColors[item[1]], item)
 					i++
 					if(i == data.length){
 						data = ""
