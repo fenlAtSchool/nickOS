@@ -431,6 +431,7 @@ function tick(ms){
 								currCPos = 0
 								currCItem = 0
 								idx = 0
+								pos = [0,0]
 								data = program[3]
 								task = ["clearScreen",["playVideoFrame"],0]
 								break
@@ -596,7 +597,16 @@ function tick(ms){
 					task = ["waitTC",["clearScreen",["drawFileMenu"],0]]
 					break
 				}
-				pos = [0,0]
+				if(data == ""){
+					data = ""
+					i = 0
+					currCItem++
+					if(currCItem == 36){
+						currCItem = 0
+						currCPos++
+					}
+					data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
+				}
 				while(pos[1] < yl){
 					item = data[i].codePointAt(0)
 					item = [Math.floor(item/100), item % 100]
@@ -612,16 +622,12 @@ function tick(ms){
 					}
 					i++
 					if(i == data.length){
-						i = 0
-						currCItem++
-						if(currCItem == 36){
-							currCItem = 0
-							currCPos++
-						}
-						data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
+						data = ""
+						break
 					}
 				}
 				idx++
+				pos = [0,0]
 				task = ["updateDisplay", ["playVideoFrame"]]
 				break
 				
