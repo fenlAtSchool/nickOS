@@ -620,6 +620,7 @@ function tick(ms){
 							pos[1]++
 						}
 					}
+					api.log(pos)
 					i++
 					if(i == data.length){
 						data = ""
