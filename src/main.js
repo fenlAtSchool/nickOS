@@ -227,8 +227,7 @@ function updateDisplay(){
                         let val = display[y][x]
                         if(val[0] != val[1]){
                                 val[0] = val[1]
-                                let tmp = val[1]
-                                api.setBlock([y - 64,64 - x,50],tmp)
+                                api.setBlock([y - 64,64 - x,50],val[1])
                                 display[y][x] = val
                         }
                 }
