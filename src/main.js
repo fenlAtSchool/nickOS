@@ -427,7 +427,7 @@ function tick(ms){
 								xl = parseInt(program[0])
 								yl = parseInt(program[1])
 								frameCount = parseInt(program[2])
-								i = 0
+								data_idx = 0
 								currCPos = 0
 								currCItem = 0
 								idx = 0, j = 0
@@ -597,22 +597,23 @@ function tick(ms){
 					task = ["waitTC",["clearScreen",["drawFileMenu"],0]]
 					break
 				}
-				if(data == ""){
-					i = 0
+				if(data == "REFRESH"){
+					data_idx = 0
 					currCItem++
 					if(currCItem == 36){
 						currCItem = 0
 						currCPos++
 					}
 					data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
+					return
 				}
 				while(pos[1] < yl){
-					item = data[i].codePointAt(0)
+					item = data[data_idx].codePointAt(0)
 					length = Math.floor(item/100)
 					item = item % 100
 					for(;j < length; j++){
 						if(item != 79){
-							display[pos[0]][pos[1]+6][1] = cColors[item]
+							display[pos[0]][pos[1]+5][1] = cColors[item]
 						}
 						pos[0]++
 						if(pos[0] >= 128){
@@ -622,10 +623,10 @@ function tick(ms){
 					}
 					j = 0
 					api.log(pos, item, length)
-					i++
-					if(i == data.length){
-						data = ""
-						break
+					data_idx++
+					if(data_idx == data.length){
+						data = "REFRESH"
+						return
 					}
 				}
 				idx++
