@@ -87,7 +87,7 @@ function OSboot(){
 	itemSlotPath = []
 	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
 	charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
-	cColors = [2, 1694, 5, 650, 6, 8, 139, 28, 29, 31, 474, 40, 41, 42, 45, 465, 652, 959, 958, 976, 1630, 1621, 1629, 946, 947, 948, 949, 950, 951, 482, 484, 486, 471, 140, 961, 962, 147, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 97, 93, 92, 90, 99, 91, 94, 84, 85, 89, 95, 87, 88, 98, 96, 86, 1722, 1271, 212, 1510, 1576, 1607, 1608, 1609]
+	cColors = [2,1694,5,650,6,8,139,28,29,31,474,40,41,42,45,465,652,959,958,976,106,1630,1621,1629,946,947,948,949,950,951,482,484,486,471,140,961,962,147,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,97,93,92,90,99,91,94,84,85,89,95,87,88,98,96,86,1722,1056,1271,212,1510,1576,1605,1607,1608,1609]
         api.log("osSuccesfullyBooted")
 	osOn = true
 }
@@ -430,7 +430,7 @@ function tick(ms){
 								i = 0
 								currCPos = 0
 								currCItem = 0
-								idx = 0
+								idx = 0, j = 0
 								pos = [0,0]
 								data = program[3]
 								task = ["clearScreen",["playVideoFrame"],0]
@@ -598,7 +598,6 @@ function tick(ms){
 					break
 				}
 				if(data == ""){
-					data = ""
 					i = 0
 					currCItem++
 					if(currCItem == 36){
@@ -609,18 +608,20 @@ function tick(ms){
 				}
 				while(pos[1] < yl){
 					item = data[i].codePointAt(0)
-					item = [Math.floor(item/100), item % 100]
-					for(j = 0; j < item[0]; j++){
-						pos[0]++
-						if(item != 78){
-							display[pos[0]][pos[1]+6][1] = cColors[item[1]]
+					length = Math.floor(item/100)
+					item = item % 100
+					for(;j < length; j++){
+						if(item != 79){
+							display[pos[0]][pos[1]+6][1] = cColors[item]
 						}
-						if(pos[0] == 128){
+						pos[0]++
+						if(pos[0] >= 128){
 							pos[0] = 0
 							pos[1]++
 						}
 					}
-					api.log(cColors[item[1]], item)
+					j = 0
+					api.log(pos, item, length)
 					i++
 					if(i == data.length){
 						data = ""
