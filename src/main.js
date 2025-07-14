@@ -610,20 +610,21 @@ function tick(ms){
 					item = data[data_idx].codePointAt(0)
 					length = Math.floor(item/100)
 					item = item % 100
-					for(;j < length; j++){
+					while(j < length){
 						if(item != 79){
 							display[pos[0]][pos[1]+5][1] = cColors[item]
 						}
 						pos[0]++
 						if(pos[0] >= 128){
-							pos[0] = 0
+							pos[0] %=  128
 							pos[1]++
 						}
+						j++
 					}
 					j = 0
 					api.log(pos, item, length)
 					data_idx++
-					if(data_idx == data.length){
+					if(data_idx >= data.length){
 						data = "REFRESH"
 						return
 					}
