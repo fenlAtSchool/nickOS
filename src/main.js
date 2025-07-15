@@ -512,7 +512,7 @@ function tick(ms){
 				task = ["waitTC",["folderMenuClicked"]]
 				break
 			case "about":
-				dtxt(0,0,"NickOS V2.6.3 (c) 2025 fenl_")
+				dtxt(0,0,"NickOS V2.6.8 (c) 2025 fenl_")
 				dtxt(0,6,"GPLV3 github.com/tendergalaxy/nickos")
 				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
 				dtxt(0,30,"Click to exit")
