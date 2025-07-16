@@ -430,7 +430,7 @@ function tick(ms){
 								currCPos = 0
 								currCItem = 0
 								idx = 0, j = 0
-								pos = [0,0]
+								pos = 0
 								data = program[3]
 								task = ["clearScreen",["playVideoFrame"],0]
 								break
@@ -606,20 +606,19 @@ function tick(ms){
 					data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
 					return
 				}
-				while(pos[1] < yl){
+				while(pos != "EOF"){
 					item = data[data_idx].codePointAt(0)
+					if(item == 32){
+						pos = "EOF"
+						continue
+					}
 					length = Math.floor(item/100)
 					item = item % 100
 					while(j < length){
 						if(item != 79){
-							display[pos[0]][pos[1]+5][1] = cColors[item]
+							display[pos % xl][Math.floor(pos/xl) + 5][1] = cColors[item]
 						}
-						pos[0]++
-						if(pos[0] >= 128){
-							pos[0] %=  128
-							pos[1]++
-						}
-						j++
+						pos++, j++
 					}
 					j = 0
 					api.log(pos, item, length)
@@ -628,9 +627,14 @@ function tick(ms){
 						data = "REFRESH"
 						return
 					}
+						
 				}
 				idx++
-				pos = [0,0]
+				pos = 0
+				data_idx++
+				if(data_idx >= data.length){
+						data = "REFRESH"
+				}
 				task = ["updateDisplay", ["playVideoFrame"]]
 				break
 				
