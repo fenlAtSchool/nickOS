@@ -606,7 +606,7 @@ function tick(ms){
 					data = api.getStandardChestItemSlot([chestPos,0,52+currCPos], currCItem).attributes.customDescription
 					return
 				}
-				while(pos != "EOF"){
+				while(pos != "EOF" && pos < xl*yl){
 					item = data[data_idx].codePointAt(0)
 					if(item == 32){
 						pos = "EOF"
