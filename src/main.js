@@ -616,7 +616,7 @@ function tick(ms){
 					item = item % 100
 					while(j < length){
 						if(item != 79){
-							display[pos % xl][Math.floor(pos/xl) + 5][1] = cColors[item]
+							display[pos % xl][Math.floor(pos/xl)][1] = cColors[item]
 						}
 						pos++, j++
 					}
