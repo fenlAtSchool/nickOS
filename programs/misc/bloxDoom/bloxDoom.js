@@ -49,3 +49,5 @@ function scan(pos,starting){
   }
   return field
 }
+
+
