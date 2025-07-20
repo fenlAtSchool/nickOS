@@ -1,9 +1,9 @@
 from PIL import Image
 import numpy as np
 
-img = Image.open(input("File Name?")).convert("L")
-arr = input("Dimensions?").split()
-arr = np.array(img.resize((int(arr[0]),int(arr[1]))))
+img = Image.open(input("File?")).convert("L")
+img = img.resize((128, 58))
+arr = np.array(img)
 levels = 24
 step = 256 // levels
 quantized = np.minimum(arr // step, 23)
