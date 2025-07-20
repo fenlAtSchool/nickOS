@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 import json
+from google.colab import files
 image = Image.open(input("File?")).convert("RGB")
 size = (58,58)
 image = image.resize(size)
