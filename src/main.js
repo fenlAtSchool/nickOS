@@ -30,6 +30,17 @@ function getProgram(){
 	}
 	return program
 }
+function drawBoxOutline(c1,c2){
+	for(let i = c1[1]; i <= c2[1]; i++){
+		display[c1[0]][i] = palette[1]
+		display[c2[0]][i] = palette[1]
+	}
+	for(let i = c1[0]; i <= c2[0]; i++){
+		display[c1[1]][i] = palette[1]
+		display[c2[1]][i] = palette[1]
+	}
+	return 1
+}
 function onPlayerAttemptAltAction(id){
 	if(user == id && osOn){
 		s[5] == 1
@@ -322,7 +333,7 @@ function tick(ms){
 						break
 					}
 					if(inBounds(s[2],108,128)){
-						task = ["clearScreen",["folderMenu"],0]
+						task =  ["folderMenu"]
 						break
 					}
 					if(inBounds(s[2],88,124)){
@@ -479,27 +490,28 @@ function tick(ms){
 				task = ["execute"]
 				break
 			case "folderMenu":
-				dtxt(0,0,"About")
-				dtxt(0,6,"Exit")
-				dtxt(0,12,"Upload")
-				dtxt(0,18,"Delete")
+				dtxt(89,12, " About X ")
+				dtxt(89,18, " Upload  ")
+				dtxt(89,24, " Delete  ")
+				drawBoxOutline([91,6], [127,31])
 				task = ["updateDisplay",["waitTC",["folderMenuClicked"]]]
 				break
 			case "folderMenuClicked":
-				if(inBounds(s[3], 0, 24)){
-					if(inBounds(s[3],0,6)){
-						task = ["clearScreen",["about"],0]
-						break
-					}
-					if(inBounds(s[3],7,12)){
-						task = ["clearScreen",["initmenu"],0]
-						break
-					}
-					if(inBounds(s[3],13,18)){
-						task = ["clearScreen",["upload"],0]
+				if(inBounds(s[3], 12, 30) && inBounds(s[2],91,127)){
+					if(inBounds(s[3],12,18)){
+						if(inBounds(s[2],91,123)){
+							task = ["clearScreen",["about"],0]
+						}
+						if(inBounds(s[2],124,128)){
+							task = ["clearScreen"
+						}
 						break
 					}
 					if(inBounds(s[3],19,24)){
+						task = ["clearScreen",["upload"],0]
+						break
+					}
+					if(inBounds(s[3],25,30)){
 						api.setStandardChestItemSlot([parentFolder.at(-2),0,51],itemSlotPath.at(-1),"Air",1,undefined)
 						api.setStandardChestItemSlot([parentFolder.at(-1),0,51],0,"Air",1,undefined)
 						api.setBlock([parentFolder.at(-1),0,51], "Air")
