@@ -53,8 +53,8 @@ function jp(){
         s[2] = tmp[0]
         s[3] = tmp[1]
         tmp = api.getPosition(user)
-        s[0] = tmp[0]
-        s[1] = tmp[2]
+        s[0] = Math.ceil(tmp[0])
+        s[1] = Math.ceil(tmp[2])
 	api.setPosition(user,[0,0,0])
         s[4] = Math.abs(s[4]-0.25)-0.25
         s[5] = Math.abs(s[4]-0.25)-0.25
