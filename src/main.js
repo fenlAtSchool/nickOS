@@ -48,8 +48,8 @@ function onPlayerAttemptAltAction(id){
 }
 function ctrack(){
         let ctmp = api.getPlayerFacingInfo(user)
-        let vec = ctmp["camPos"]
-        ctmp = ctmp["dir"]
+        let vec = ctmp.camPos
+        ctmp = ctmp.dir
         ctmp[0] = ctmp[0] * ((50-vec[2]) / ctmp[2]) + vec[0]
         ctmp[1] = ctmp[1] * ((50-vec[2]) / ctmp[2]) + vec[1]
         ctmp[0] = Math.round(ctmp[0] + 64)
