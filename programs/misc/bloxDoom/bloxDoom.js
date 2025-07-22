@@ -84,4 +84,3 @@ function tick(){
 
 try{isInit}catch{init()}
 tick()
-return 1
