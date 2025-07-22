@@ -47,7 +47,7 @@ function init(){
   max_dist = 64
   toRad = Math.PI/180
   facing = 0
-  strated = true
+  isInit = true
 }
 function scan(pos,starting){
   let field = []
@@ -66,7 +66,6 @@ function tryMove(dx,dy){
   return 1
 }
 function tick(){
-  isInit ??= (init(); true)
   let field = scan(pos,facing)
   for(let i = 0; i < 128; i++){
     display[i].forEach(v => inBounds(v-64, -field[i], field[i]) )
@@ -83,6 +82,6 @@ function tick(){
   return 1
 }
 
-try{started}catch{init()}
+try{isInit}catch{init()}
 tick()
-
+return 1
