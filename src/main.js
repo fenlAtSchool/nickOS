@@ -262,12 +262,12 @@ function tick(ms){
 					txt += i + "/"
 				}
         			dtxt(0, 0, txt.slice(0,32))
-				dtxt(0, 6, "Back")
-				dtxt(24,6, "Next")
-				dtxt(44,6, "Option")
-				dtxt(88,6, "Dark Mode")
+				dtxt(92, 0, "<")
+				dtxt(100,0, ">")
+				dtxt(108,0, "Opt")
+
 				if(txt != "~/"){
-					dtxt(0, 12, `Return to ${directory.at(-2)}`     )
+					dtxt(0, 6, `Return to ${directory.at(-2)}`     )
 				}
 				updateDisplay()
 				chestFiles = Array(36).fill([null,null])
@@ -288,7 +288,7 @@ function tick(ms){
                         case "displayFolderSons":
                                 for(let i = 0; i < 6; i++){
 					if(chestFiles[i + task[1] ][0] != null){
-						dtxt(0,6*i+18,"> " + chestFiles[i+task[1]][0])
+						dtxt(0,6*i+12,"> " + chestFiles[i+task[1]][0])
 					}
 				}
 				task = ["updateDisplay",["waitTC",["mainMenuClicked"]]]
@@ -310,18 +310,18 @@ function tick(ms){
 				osOn = false
 				break
 			case "mainMenuClicked":
-				if(inBounds(s[3],6,12)){
-					if(inBounds(s[2],0,16)){
+				if(inBounds(s[3],0,6)){
+					if(inBounds(s[2],92,100)){
 						curr_page -= 6
 						task = ["clearScreen",["initmenu"],0]
 						break
 					}
-					if(inBounds(s[2],24,40)){
+					if(inBounds(s[2],100,108)){
 						curr_page += 6
 						task = ["clearScreen",["initmenu"],0]
 						break
 					}
-					if(inBounds(s[2],44,68)){
+					if(inBounds(s[2],108,128)){
 						task = ["clearScreen",["folderMenu"],0]
 						break
 					}
