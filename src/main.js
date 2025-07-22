@@ -503,7 +503,7 @@ function tick(ms){
 							task = ["clearScreen",["about"],0]
 						}
 						if(inBounds(s[2],124,128)){
-							task = ["clearScreen"
+							task = ["clearScreen", ["initmenu"], 0]
 						}
 						break
 					}
