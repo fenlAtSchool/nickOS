@@ -25,6 +25,7 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 - .js  : Javascript files
 - .txt : Plaintext files
 - .fol : Folder directories
+- .nvf : Bloxd Video Codec
 <img width="674" alt="Screenshot 2025-07-08 at 5 39 07 PM" src="https://github.com/user-attachments/assets/d6dee8b3-1caa-4a0c-8d8c-4c4286eb3b3b" />
 
 **NickOS is able to:**
@@ -38,6 +39,7 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 - Executor
 - Gaming console
 - Photo album
+- Video player
 
 
 
@@ -51,4 +53,4 @@ Credits to @the_cccc for font
 
 Credits to @TenderGalaxy (fenl) for main programming
 
-Licensed under GPL V3, please don't break the license and steal NickOS' code :)
+Licensed under GPL V3, non-creditors will be persecuted
