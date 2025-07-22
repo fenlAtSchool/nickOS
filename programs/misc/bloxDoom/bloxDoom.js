@@ -1,3 +1,8 @@
+/*
+bloxDoom Raycaster
+Dependent on NickOS
+*/
+
 map = [
   [1,1,1,1,1,1,1,1],
   [1,0,0,0,0,1,0,1],
@@ -38,16 +43,25 @@ function castFromPos(pos,degrees){
 }
 
 function init(){
-  fov = 160
+  fov = 128
   max_dist = 64
   toRad = Math.PI/180
+  facing = 0
 }
 function scan(pos,starting){
-  field = []
+  let field = []
   for(let i = 0; i < fov; i++){
     field.push(castFromPos(pos,i+starting-(fov/2)  ))
   }
   return field
 }
 
+function tick(){
+  isInit ??= (init(); true)
+  field = scan(pos,facing)
+  for(let i = 0; i < 128; i++){
+    display[i].forEach(v => 0)
+    
+  }
+}
 
