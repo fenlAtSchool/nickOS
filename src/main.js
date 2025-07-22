@@ -30,16 +30,16 @@ function getProgram(){
 	}
 	return program
 }
-function drawBoxOutline(c1,c2){
-	for(let i = c1[1]; i <= c2[1]; i++){
-		display[c1[0]][i] = palette[1]
-		display[c2[0]][i] = palette[1]
+function drawBoxOutline(tl,br){
+	api.log(tl, br)
+	for(let y = tl[1]; y <= br[1]; y++){
+		display[tl[0]][y] = palette[1]
+		display[br[0]][y] = palette[1]
 	}
-	for(let i = c1[0]; i <= c2[0]; i++){
-		display[c1[1]][i] = palette[1]
-		display[c2[1]][i] = palette[1]
+	for(let x = tl[0]; x <= br[0]; x++){
+		display[x][tl[1]] = palette[1]
+		display[x][br[1]] = palette[1]
 	}
-	return 1
 }
 function onPlayerAttemptAltAction(id){
 	if(user == id && osOn){
