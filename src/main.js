@@ -530,7 +530,7 @@ function tick(ms){
 				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
 				dtxt(0,30,"Click to exit")
 				updateDisplay()
-				task = ["waitTC", ["clearScreen",["folderMenu"],0]]
+				task = ["waitTC", ["clearScreen",["initmenu"],0]]
 				break
 			case "upload":
 				dtxt(0,0,"Waiting for user input")
@@ -543,7 +543,7 @@ function tick(ms){
 				if(p == 36){
 					dtxt(0,12,"Folder Space Full")
 					dtxt(0,18,"Delete a file to clear space")
-					task = ["updateDisplay",["waitTC",["clearScreen",["about"],0]]]
+					task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				} else {
 					task = ["findChest"]
 				}
@@ -575,7 +575,7 @@ function tick(ms){
 					break
 				}
 				if(s[4] == 0.5){
-					task = ["clearScreen",["folderMenu"],0]
+					task = ["clearScreen",["initmenu"],0]
 					break
 				}
 			case "ngpFormat":
