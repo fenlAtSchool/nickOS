@@ -47,6 +47,7 @@ function init(){
   max_dist = 64
   toRad = Math.PI/180
   facing = 0
+  strated = true
 }
 function scan(pos,starting){
   let field = []
@@ -55,13 +56,33 @@ function scan(pos,starting){
   }
   return field
 }
-
+function tryMove(dx,dy){
+  let opos = [...pos]
+  pos += dx
+  pos += dy
+  if(getBlockIn(pos)){
+    pos = opos
+  }
+  return 1
+}
 function tick(){
   isInit ??= (init(); true)
-  field = scan(pos,facing)
+  let field = scan(pos,facing)
   for(let i = 0; i < 128; i++){
-    display[i].forEach(v => 0)
-    
+    display[i].forEach(v => inBounds(v-64, -field[i], field[i]) )
   }
+  facing += 0.3 * (s[2] > 96 - s[2] < 32)
+  if(s[0] && s[1]){
+    s[0] /= Math.sqrt(2)
+    s[1] /= Math.sqrt(2)
+  }
+  let opos = [...pos]
+  tryMove(Math.sin(facing) * s[0], 0)
+  tryMove(0, Math.cos(facing) * s[1])
+  task = ["updateDisplay", ["execute"]]
+  return 1
 }
+
+try{started}catch{init()}
+tick()
 
