@@ -514,8 +514,8 @@ function tick(ms){
 						break
 					}
 					if(inBounds(s[3],14,19)){
-						fillBox([4,4],[94,18],palette[0])
-						drawBoxOutline([3,3],[95,19])
+						fillBox([4,4],[94,21],palette[0])
+						drawBoxOutline([3,3],[95,22])
 						task = ["upload"]
 						break
 					}
@@ -540,16 +540,16 @@ function tick(ms){
 				updateDisplay()
 				task = ["waitTC", ["clearScreen",["initmenu"],0]]
 				break
-			case "upload"
+			case "upload":
 				dtxt(5,5,"Waiting for user input")
-				dtxt(5,9,"Click to exit")
+				dtxt(5,10,"Click to exit")
 				updateDisplay()
 				p = 0
 				while(p < 36 && api.getStandardChestItemSlot([parentFolder.at(-1),0,51],p) != null ){
 					p++
 				}
 				if(p == 36){
-					dtxt(5,13,"Folder Space Full")
+					dtxt(5,15,"Folder Space Full")
 					task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				} else {
 					task = ["findChest"]
