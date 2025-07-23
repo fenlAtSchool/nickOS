@@ -43,7 +43,7 @@ function drawBoxOutline(tl,br){
 function fillBox(tl, br, color){
 	for(let x = tl[0]; x <= br[0]; x++){
 		for(let y = tl[1]; y <= br[1]; y++){
-			display[x][y] = color
+			display[x][y][1] = color
 		}
 	}
 }
