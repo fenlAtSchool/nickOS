@@ -381,11 +381,11 @@ function tick(ms){
 				cLength = parseInt(zf[2].attributes.customDescription)
 				chestPos = f + 0
 				let name = zf[0].attributes.customDescription + zf[1].attributes.customDescription
-				dtxt(0,0,`File: ${name}`)
-				dtxt(0,6,"Execute file")
-				dtxt(0,12,"View file")
-				dtxt(0,18,"Delete file")
-				dtxt(0,24,"Back")
+				drawBoxOutline([100,41],[120,63])
+				fillBox([101,42],[119,62],palette[0])
+				dtxt(102,43,"Exec X")
+				dtxt(102,49,"Raw")
+				dtxt(102,55,"Del")
 				updateDisplay()
 				task = ["waitTC",["menuOptionClicked"]]
 				break
@@ -412,7 +412,12 @@ function tick(ms){
 				cp2 = Math.floor((s[3])/6) + 1
 				if(inBounds(cp2,2,5)){
 					switch(cp2){
-						case 2:
+						case 8:
+							if(inBounds(s[2],116,120)){
+								curr_page = 0
+								task = ["clearScreen",["initmenu"],0]
+								break
+							}
 							extension = zf[1].attributes.customDescription
 							if(extension == ".js"){
 								getProgram()
@@ -453,18 +458,14 @@ function tick(ms){
 								break
 							}
 							break
-						case 3:
+						case 9:
 							getProgram()
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
-						case 4:
+						case 10:
 							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace+1, "Air", 1, undefined)
 							api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
 							api.setBlock([chestPos,0,51],"Air")
-							task = ["clearScreen",["initmenu"],0]
-							break
-						case 5:
-							curr_page = 0
 							task = ["clearScreen",["initmenu"],0]
 							break
 					}
@@ -514,8 +515,8 @@ function tick(ms){
 						break
 					}
 					if(inBounds(s[3],14,19)){
-						fillBox([4,4],[94,21],palette[0])
-						drawBoxOutline([3,3],[95,22])
+						fillBox([4,4],[94,23],palette[0])
+						drawBoxOutline([3,3],[95,24])
 						task = ["upload"]
 						break
 					}
@@ -544,14 +545,14 @@ function tick(ms){
 				break
 			case "upload":
 				dtxt(5,5,"Waiting for user input")
-				dtxt(5,10,"Click to exit")
+				dtxt(5,11,"Click to exit")
 				updateDisplay()
 				p = 0
 				while(p < 36 && api.getStandardChestItemSlot([parentFolder.at(-1),0,51],p) != null ){
 					p++
 				}
 				if(p == 36){
-					dtxt(5,15,"Folder Space Full")
+					dtxt(5,17,"Folder Space Full")
 					task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				} else {
 					task = ["findChest"]
