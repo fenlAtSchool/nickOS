@@ -506,7 +506,7 @@ function tick(ms){
 				if(inBounds(s[3], 8, 26) && inBounds(s[2],97,127)){
 					if(inBounds(s[3],8,13)){
 						if(inBounds(s[2],97,119)){
-							task = ["clearScreen",["about"],0]
+							task = ["about"]
 						}
 						if(inBounds(s[2],120,124)){
 							task = ["clearScreen", ["initmenu"], 0]
@@ -514,7 +514,9 @@ function tick(ms){
 						break
 					}
 					if(inBounds(s[3],14,19)){
-						task = ["clearScreen",["upload"],0]
+						fillBox([4,4],[94,18],palette[0])
+						drawBoxOutline([3,3],[95,19])
+						task = ["upload"]
 						break
 					}
 					if(inBounds(s[3],20,26)){
@@ -531,24 +533,23 @@ function tick(ms){
 				task = ["waitTC",["folderMenuClicked"]]
 				break
 			case "about":
-				dtxt(0,0,"NickOS V2.8.4 (c) 2025 fenl_")
-				dtxt(0,6,"GPLV3 github.com/tendergalaxy/nickos")
-				dtxt(0,18,"Credits to the_ccccc, sulfrox, delfineon, and nickname")
-				dtxt(0,30,"Click to exit")
+				dtxt(7,7,"NickOS V2.8.4 by fenl_")
+				dtxt(7,13,"Credits to the_ccccc, sulf")
+				dtxt(7,19,"rox, delfineon, & nickname")
+				dtxt(7,25,"Click to exit")
 				updateDisplay()
 				task = ["waitTC", ["clearScreen",["initmenu"],0]]
 				break
-			case "upload":
-				dtxt(0,0,"Waiting for user input")
-				dtxt(0,6,"Click to exit")
+			case "upload"
+				dtxt(5,5,"Waiting for user input")
+				dtxt(5,9,"Click to exit")
 				updateDisplay()
 				p = 0
 				while(p < 36 && api.getStandardChestItemSlot([parentFolder.at(-1),0,51],p) != null ){
 					p++
 				}
 				if(p == 36){
-					dtxt(0,12,"Folder Space Full")
-					dtxt(0,18,"Delete a file to clear space")
+					dtxt(5,13,"Folder Space Full")
 					task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				} else {
 					task = ["findChest"]
