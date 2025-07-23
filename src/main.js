@@ -31,14 +31,20 @@ function getProgram(){
 	return program
 }
 function drawBoxOutline(tl,br){
-	api.log(tl, br)
 	for(let y = tl[1]; y <= br[1]; y++){
-		display[tl[0]][y] = palette[1]
-		display[br[0]][y] = palette[1]
+		display[tl[0]][y][1] = palette[1]
+		display[br[0]][y][1] = palette[1]
 	}
 	for(let x = tl[0]; x <= br[0]; x++){
-		display[x][tl[1]] = palette[1]
-		display[x][br[1]] = palette[1]
+		display[x][tl[1]][1] = palette[1]
+		display[x][br[1]][1] = palette[1]
+	}
+}
+function fillBox(tl, br, color){
+	for(let x = tl[0]; x <= br[0]; x++){
+		for(let y = tl[1]; y <= br[1]; y++){
+			display[x][y] = color
+		}
 	}
 }
 function onPlayerAttemptAltAction(id){
@@ -489,28 +495,29 @@ function tick(ms){
 				task = ["execute"]
 				break
 			case "folderMenu":
-				dtxt(89,12, " About X ")
-				dtxt(89,18, " Upload  ")
-				dtxt(89,24, " Delete  ")
-				drawBoxOutline([91,6], [127,31])
+				drawBoxOutline([97,6], [127,28])
+				fillBox([98,7], [126,27])
+				dtxt(95,8, "About X")
+				dtxt(95,14, "Upload")
+				dtxt(95,20, "Delete")
 				task = ["updateDisplay",["waitTC",["folderMenuClicked"]]]
 				break
 			case "folderMenuClicked":
-				if(inBounds(s[3], 12, 30) && inBounds(s[2],91,127)){
-					if(inBounds(s[3],12,18)){
-						if(inBounds(s[2],91,123)){
+				if(inBounds(s[3], 8, 26) && inBounds(s[2],97,127)){
+					if(inBounds(s[3],8,13)){
+						if(inBounds(s[2],97,119)){
 							task = ["clearScreen",["about"],0]
 						}
-						if(inBounds(s[2],124,128)){
+						if(inBounds(s[2],120,124)){
 							task = ["clearScreen", ["initmenu"], 0]
 						}
 						break
 					}
-					if(inBounds(s[3],19,24)){
+					if(inBounds(s[3],14,19)){
 						task = ["clearScreen",["upload"],0]
 						break
 					}
-					if(inBounds(s[3],25,30)){
+					if(inBounds(s[3],20,26)){
 						api.setStandardChestItemSlot([parentFolder.at(-2),0,51],itemSlotPath.at(-1),"Air",1,undefined)
 						api.setStandardChestItemSlot([parentFolder.at(-1),0,51],0,"Air",1,undefined)
 						api.setBlock([parentFolder.at(-1),0,51], "Air")
@@ -570,7 +577,7 @@ function tick(ms){
 						}
 					}
 					isFile = false
-					task = ["clearScreen", ["about"],0]
+					task = ["clearScreen", ["initmenu"],0]
 					break
 				}
 				if(s[4] == 0.5){
