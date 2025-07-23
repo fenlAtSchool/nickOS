@@ -495,8 +495,8 @@ function tick(ms){
 				task = ["execute"]
 				break
 			case "folderMenu":
-				drawBoxOutline([97,6], [127,28])
-				fillBox([98,7], [126,27])
+				drawBoxOutline([93,6], [127,28])
+				fillBox([94,7], [126,27], palette[0])
 				dtxt(95,8, "About X")
 				dtxt(95,14, "Upload")
 				dtxt(95,20, "Delete")
