@@ -533,6 +533,8 @@ function tick(ms){
 				task = ["waitTC",["folderMenuClicked"]]
 				break
 			case "about":
+				fillBox([6,6],[112,30],palette[0])
+				drawBoxOutline([5,5],[113,31])				
 				dtxt(7,7,"NickOS V2.8.4 by fenl_")
 				dtxt(7,13,"Credits to the_ccccc, sulf")
 				dtxt(7,19,"rox, delfineon, & nickname")
