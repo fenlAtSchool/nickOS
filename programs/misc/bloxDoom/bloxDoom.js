@@ -51,8 +51,13 @@ function init(){
 }
 function scan(pos,starting){
   let field = []
+  let height = 0
+  let dir = 0
   for(let i = 0; i < fov; i++){
-    field.push(castFromPos(pos,i+starting-(fov/2)  ))
+    dir = i+starting-(fov/2)
+    height = castFromPos(pos,dir)
+    height = Math.cos(toRad * (dir - starting))
+    field.push(height)
   }
   return field
 }
@@ -63,15 +68,24 @@ function tryMove(dx,dy){
   if(getBlockIn(pos)){
     pos = opos
   }
+  lp = [s[0],s[1]]
   return 1
 }
 function tick(){
   let field = scan(pos,facing)
+  let delt = [s[0]-lp[0],s[1]-lp[1]]
+  delt[0] = Math.ceil(delt[0])
+  delt[1] = Math.ceil(delt[1])
+  
   for(let i = 0; i < 128; i++){
-    display[i].forEach(v => inBounds(v-64, -field[i], field[i]) )
+    display[i].forEach(v => palette[0])
+    for(let j = 0; j < field[i]; j++){
+      display[i][32 + j] = palette[1]
+      display[i][32 - j] = palette[1]
+    }
   }
   facing += 0.3 * (s[2] > 96 - s[2] < 32)
-  if(s[0] && s[1]){
+  if(delt[0] && delt[1]){
     s[0] /= Math.sqrt(2)
     s[1] /= Math.sqrt(2)
   }
