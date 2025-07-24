@@ -372,7 +372,7 @@ function tick(ms){
 					parentFolder.push(f)
 					itemSlotPath.push(cpace)
 					curr_page = 0
-					task = ["clearScreen",["initmenu"],0]
+					task = ["drawFileMenu"]
 					break
 				}
 				task = ["clearScreen",["initmenu"],0]
@@ -411,7 +411,7 @@ function tick(ms){
 			case "menuOptionClicked":
 				if(inBounds(s[3],43,61)){
 					if(inBounds(s[3],43,48)){
-						if(inBounds(s[2],102,120)){
+						if(inBounds(s[2],120,128)){
 							curr_page = 0
 							task = ["clearScreen",["initmenu"],0]
 							break
