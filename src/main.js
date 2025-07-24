@@ -375,14 +375,14 @@ function tick(ms){
 					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				task = ["clearScreen",["drawFileMenu"],0]
+				task = ["clearScreen",["initmenu"],0]
 				break
 			case "drawFileMenu":
 				cLength = parseInt(zf[2].attributes.customDescription)
 				chestPos = f + 0
 				let name = zf[0].attributes.customDescription + zf[1].attributes.customDescription
-				drawBoxOutline([100,41],[120,63])
-				fillBox([101,42],[119,62],palette[0])
+				drawBoxOutline([100,41],[127,63])
+				fillBox([101,42],[126,62],palette[0])
 				dtxt(102,43,"Exec X")
 				dtxt(102,49,"Raw")
 				dtxt(102,55,"Del")
@@ -404,70 +404,70 @@ function tick(ms){
 						task = ["clearScreen",task,0]
 					}
 					if(inBounds(s[2],48,64)){
-						task = ["clearScreen",["drawFileMenu"],0]
+						task = ["clearScreen",["initmenu"],0]
 					}
 				}
 				break
 			case "menuOptionClicked":
-				cp2 = Math.floor((s[3])/6) + 1
-				if(inBounds(cp2,2,5)){
-					switch(cp2){
-						case 8:
-							if(inBounds(s[2],116,120)){
-								curr_page = 0
-								task = ["clearScreen",["initmenu"],0]
-								break
-							}
-							extension = zf[1].attributes.customDescription
-							if(extension == ".js"){
-								getProgram()
-								task = ["clearScreen",["initexecute"],0]
-								memory = []
-								break
-							}
-							if(extension == ".txt"){
-								getProgram()
-								task = ["clearScreen",["displayFile",0,256],0]
-								break
-							}
-							if(extension == ".ngp"){
-								getProgram()
-								prog = 0
-								task = ["clearScreen",["ngpFormat"],0]
-								break
-							}
-							if(extension == ".rgb"){
-								getProgram()
-								prog = 0
-								task = ["clearScreen",["rgbFormat"],0]
-								break
-							}
-							if(extension == '.nvf'){
-								program = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
-								program = program.split(" ")
-								xl = parseInt(program[0])
-								yl = parseInt(program[1])
-								frameCount = parseInt(program[2])
-								data_idx = 0
-								currCPos = 0
-								currCItem = 0
-								idx = 0, j = 0
-								pos = 0
-								data = program[3]
-								task = ["clearScreen",["playVideoFrame"],0]
-								break
-							}
+				if(inBounds(s[3],43,61)){
+					if(inBounds(s[3],43,48)){
+						if(inBounds(s[2],102,120)){
+							curr_page = 0
+							task = ["clearScreen",["initmenu"],0]
 							break
-						case 9:
+						}
+						extension = zf[1].attributes.customDescription
+						if(extension == ".js"){
+							getProgram()
+							task = ["clearScreen",["initexecute"],0]
+							memory = []
+							break
+						}
+						if(extension == ".txt"){
 							getProgram()
 							task = ["clearScreen",["displayFile",0,256],0]
 							break
-						case 10:
-							api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace+1, "Air", 1, undefined)
-							api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
-							api.setBlock([chestPos,0,51],"Air")
-							task = ["clearScreen",["initmenu"],0]
+						}
+						if(extension == ".ngp"){
+							getProgram()
+							prog = 0
+							task = ["clearScreen",["ngpFormat"],0]
 							break
+						}
+						if(extension == ".rgb"){
+							getProgram()
+							prog = 0
+							task = ["clearScreen",["rgbFormat"],0]
+							break
+						}
+						if(extension == '.nvf'){
+							program = api.getStandardChestItemSlot([chestPos,0,52],0).attributes.customDescription
+							program = program.split(" ")
+							xl = parseInt(program[0])
+							yl = parseInt(program[1])
+							frameCount = parseInt(program[2])
+							data_idx = 0
+							currCPos = 0
+							currCItem = 0
+							idx = 0, j = 0
+							pos = 0
+							data = program[3]
+							task = ["clearScreen",["playVideoFrame"],0]
+							break
+						}
+						break
+					}
+					if (inBounds(s[3],49,55)){
+						getProgram()
+						task = ["clearScreen",["displayFile",0,256],0]
+						break
+					}	
+					if(inBounds(s[3],55,61)){
+						api.setStandardChestItemSlot([parentFolder.at(-1),0,51], cpace+1, "Air", 1, undefined)
+						api.setStandardChestItemSlot([chestPos, 0, 51], 0, "Air", 1, undefined)
+						api.setBlock([chestPos,0,51],"Air")
+						task = ["clearScreen",["initmenu"],0]
+						break
 					}
 				} else {
 					task = ["waitTC",["menuOptionClicked"]]
@@ -475,7 +475,7 @@ function tick(ms){
 				break
 			case "execute":
 				if(s[3]<6 && s[4] == 0.5){
-					task = ["clearScreen",["drawFileMenu"],0]
+					task = ["clearScreen",["initmenu"],0]
 				}
 				eval(program)
 				dtxt(0,0,"Exit")
@@ -599,7 +599,7 @@ function tick(ms){
 					}
 					prog = i
 				}
-				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
+				task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				break
 			case "rgbFormat":
 				dtxt(0,0,"Click to Exit")
@@ -612,11 +612,11 @@ function tick(ms){
 					}
 					prog = i
 				}
-				task = ["updateDisplay",["waitTC",["clearScreen",["drawFileMenu"],0]]]
+				task = ["updateDisplay",["waitTC",["clearScreen",["initmenu"],0]]]
 				break
 			case "playVideoFrame":
 				if(idx == frameCount){
-					task = ["waitTC",["clearScreen",["drawFileMenu"],0]]
+					task = ["waitTC",["clearScreen",["initmenu"],0]]
 					break
 				}
 				if(data == "REFRESH"){
