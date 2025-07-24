@@ -349,7 +349,7 @@ function tick(ms){
 						break
 					}
 				}
-				cp = Math.floor((s[3])/6) - 2
+				cp = Math.floor((s[3])/6) - 1
 				if(cp == 0){
 					if(parentFolder.length > 1){
 						parentFolder.pop()
@@ -372,10 +372,10 @@ function tick(ms){
 					parentFolder.push(f)
 					itemSlotPath.push(cpace)
 					curr_page = 0
-					task = ["drawFileMenu"]
+					task = ["clearScreen",["initmenu"],0]
 					break
 				}
-				task = ["clearScreen",["initmenu"],0]
+				task = ["drawFileMenu"]
 				break
 			case "drawFileMenu":
 				cLength = parseInt(zf[2].attributes.customDescription)
