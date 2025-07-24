@@ -105,7 +105,7 @@ function OSboot(){
 	colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
 	charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
 	cColors = [2,1694,5,650,6,8,139,28,29,31,474,40,41,42,45,465,652,959,958,976,106,1630,1621,1629,946,947,948,949,950,951,482,484,486,471,140,961,962,147,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,97,93,92,90,99,91,94,84,85,89,95,87,88,98,96,86,1722,1056,1271,212,1510,1576,1605,1607,1608,1609]
-        api.log("osSuccesfullyBooted")
+        api.log("Welcome to NickOS! - fenl")
 	osOn = true
 }
 function loadFont(){
@@ -536,7 +536,7 @@ function tick(ms){
 			case "about":
 				fillBox([6,6],[112,30],palette[0])
 				drawBoxOutline([5,5],[113,31])				
-				dtxt(7,7,"NickOS V2.8.4 by fenl_")
+				dtxt(7,7,"NickOS V2.9.0 by fenl_")
 				dtxt(7,13,"Credits to the_ccccc, sulf")
 				dtxt(7,19,"rox, delfineon, & nickname")
 				dtxt(7,25,"Click to exit")
