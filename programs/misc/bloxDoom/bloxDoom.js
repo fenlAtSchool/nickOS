@@ -90,8 +90,8 @@ function tick(){
     s[1] /= Math.sqrt(2)
   }
   let opos = [...pos]
-  tryMove(Math.sin(facing) * s[0], 0)
-  tryMove(0, Math.cos(facing) * s[1])
+  tryMove(Math.sin(facing) * delt[0], 0)
+  tryMove(0, Math.cos(facing) * delt[1])
   task = ["updateDisplay", ["execute"]]
   return 1
 }
