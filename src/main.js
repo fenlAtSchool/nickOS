@@ -644,7 +644,6 @@ function tick(ms){
 						pos++, j++
 					}
 					j = 0
-					api.log(pos, item, length)
 					data_idx++
 					if(data_idx >= data.length){
 						data = "REFRESH"
