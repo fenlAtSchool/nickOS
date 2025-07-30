@@ -101,6 +101,6 @@ function boot(){
   elements = []
   display = {width: 112, height: 63, pos: [-56, 1, 50]}
   cursor = [0,0]
-  folder = {name: '~', }
+  folder = {name: '~', path: [0], currentItemSlot: 0}
 }
 
