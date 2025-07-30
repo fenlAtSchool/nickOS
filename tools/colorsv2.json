@@ -1,0 +1,642 @@
+[
+  [
+    "Dirt",
+    [
+      133,
+      92,
+      73
+    ]
+  ],
+  [
+    "Pine Grass Block",
+    [
+      91,
+      152,
+      106
+    ]
+  ],
+  [
+    "Sand",
+    [
+      223,
+      211,
+      167
+    ]
+  ],
+  [
+    "Red Sand",
+    [
+      197,
+      101,
+      33
+    ]
+  ],
+  [
+    "Clay",
+    [
+      164,
+      174,
+      183
+    ]
+  ],
+  [
+    "Snow",
+    [
+      230,
+      235,
+      235
+    ]
+  ],
+  [
+    "Ice",
+    [
+      139,
+      209,
+      253
+    ]
+  ],
+  [
+    "Stone",
+    [
+      150,
+      146,
+      146
+    ]
+  ],
+  [
+    "Messy Stone",
+    [
+      133,
+      129,
+      129
+    ]
+  ],
+  [
+    "Smooth Stone",
+    [
+      147,
+      144,
+      144
+    ]
+  ],
+  [
+    "Red Sandstone",
+    [
+      194,
+      97,
+      31
+    ]
+  ],
+  [
+    "Coal Ore",
+    [
+      115,
+      112,
+      112
+    ]
+  ],
+  [
+    "Iron Ore",
+    [
+      159,
+      151,
+      144
+    ]
+  ],
+  [
+    "Gold Ore",
+    [
+      165,
+      151,
+      110
+    ]
+  ],
+  [
+    "Diamond Ore",
+    [
+      119,
+      160,
+      150
+    ]
+  ],
+  [
+    "Moonstone Ore",
+    [
+      159,
+      156,
+      164
+    ]
+  ],
+  [
+    "Rocky Dirt",
+    [
+      131,
+      94,
+      78
+    ]
+  ],
+  [
+    "Red Mushroom Block",
+    [
+      227,
+      82,
+      67
+    ]
+  ],
+  [
+    "Brown Mushroom Block",
+    [
+      193,
+      151,
+      119
+    ]
+  ],
+  [
+    "Carved Pumpkin",
+    [
+      157,
+      79,
+      11
+    ]
+  ],
+  [
+    "Glass",
+    [
+      86,
+      104,
+      103
+    ]
+  ],
+  [
+    "Carved Messy Stone",
+    [
+      120,
+      116,
+      116
+    ]
+  ],
+  [
+    "Snowy Messy Stone",
+    [
+      160,
+      165,
+      167
+    ]
+  ],
+  [
+    "Packed Snow",
+    [
+      186,
+      218,
+      218
+    ]
+  ],
+  [
+    "Compressed Messy Stone",
+    [
+      100,
+      100,
+      100
+    ]
+  ],
+  [
+    "Extra Compressed Messy Stone",
+    [
+      93,
+      93,
+      93
+    ]
+  ],
+  [
+    "Super Compressed Messy Stone",
+    [
+      70,
+      70,
+      70
+    ]
+  ],
+  [
+    "Hyper Compressed Messy Stone",
+    [
+      65,
+      65,
+      65
+    ]
+  ],
+  [
+    "Ultra Compressed Messy Stone",
+    [
+      56,
+      56,
+      56
+    ]
+  ],
+  [
+    "Mega Compressed Messy Stone",
+    [
+      49,
+      49,
+      49
+    ]
+  ],
+  [
+    "Engraved Diorite",
+    [
+      232,
+      230,
+      225
+    ]
+  ],
+  [
+    "Engraved Andesite",
+    [
+      112,
+      116,
+      121
+    ]
+  ],
+  [
+    "Engraved Granite",
+    [
+      145,
+      95,
+      77
+    ]
+  ],
+  [
+    "Magma",
+    [
+      151,
+      67,
+      32
+    ]
+  ],
+  [
+    "Obsidian",
+    [
+      28,
+      17,
+      44
+    ]
+  ],
+  [
+    "Fireball Block",
+    [
+      245,
+      103,
+      27
+    ]
+  ],
+  [
+    "Iceball Block",
+    [
+      27,
+      162,
+      244
+    ]
+  ],
+  [
+    "Bedrock",
+    [
+      33,
+      33,
+      34
+    ]
+  ],
+  [
+    "White Planks",
+    [
+      246,
+      237,
+      223
+    ]
+  ],
+  [
+    "Orange Planks",
+    [
+      205,
+      121,
+      63
+    ]
+  ],
+  [
+    "Magenta Planks",
+    [
+      152,
+      76,
+      122
+    ]
+  ],
+  [
+    "Light Blue Planks",
+    [
+      81,
+      149,
+      165
+    ]
+  ],
+  [
+    "Yellow Planks",
+    [
+      214,
+      178,
+      78
+    ]
+  ],
+  [
+    "Lime Planks",
+    [
+      150,
+      168,
+      82
+    ]
+  ],
+  [
+    "Pink Planks",
+    [
+      192,
+      119,
+      145
+    ]
+  ],
+  [
+    "Gray Planks",
+    [
+      78,
+      74,
+      69
+    ]
+  ],
+  [
+    "Light Gray Planks",
+    [
+      148,
+      142,
+      133
+    ]
+  ],
+  [
+    "Cyan Planks",
+    [
+      100,
+      167,
+      167
+    ]
+  ],
+  [
+    "Purple Planks",
+    [
+      144,
+      108,
+      167
+    ]
+  ],
+  [
+    "Blue Planks",
+    [
+      82,
+      89,
+      168
+    ]
+  ],
+  [
+    "Brown Planks",
+    [
+      126,
+      90,
+      63
+    ]
+  ],
+  [
+    "Green Planks",
+    [
+      98,
+      113,
+      56
+    ]
+  ],
+  [
+    "Red Planks",
+    [
+      167,
+      69,
+      66
+    ]
+  ],
+  [
+    "Black Planks",
+    [
+      35,
+      33,
+      28
+    ]
+  ],
+  [
+    "White Concrete",
+    [
+      208,
+      214,
+      215
+    ]
+  ],
+  [
+    "Orange Concrete",
+    [
+      225,
+      97,
+      0
+    ]
+  ],
+  [
+    "Magenta Concrete",
+    [
+      169,
+      48,
+      159
+    ]
+  ],
+  [
+    "Light Blue Concrete",
+    [
+      37,
+      138,
+      200
+    ]
+  ],
+  [
+    "Yellow Concrete",
+    [
+      242,
+      176,
+      21
+    ]
+  ],
+  [
+    "Lime Concrete",
+    [
+      95,
+      170,
+      25
+    ]
+  ],
+  [
+    "Pink Concrete",
+    [
+      214,
+      101,
+      143
+    ]
+  ],
+  [
+    "Gray Concrete",
+    [
+      55,
+      58,
+      62
+    ]
+  ],
+  [
+    "Light Gray Concrete",
+    [
+      125,
+      125,
+      115
+    ]
+  ],
+  [
+    "Cyan Concrete",
+    [
+      21,
+      119,
+      135
+    ]
+  ],
+  [
+    "Purple Concrete",
+    [
+      101,
+      32,
+      157
+    ]
+  ],
+  [
+    "Blue Concrete",
+    [
+      45,
+      47,
+      144
+    ]
+  ],
+  [
+    "Brown Concrete",
+    [
+      97,
+      60,
+      32
+    ]
+  ],
+  [
+    "Green Concrete",
+    [
+      73,
+      91,
+      36
+    ]
+  ],
+  [
+    "Red Concrete",
+    [
+      143,
+      33,
+      33
+    ]
+  ],
+  [
+    "Black Concrete",
+    [
+      9,
+      11,
+      16
+    ]
+  ],
+  [
+    "Chalk",
+    [
+      247,
+      249,
+      249
+    ]
+  ],
+  [
+    "Bookshelf",
+    [
+      125,
+      118,
+      82
+    ]
+  ],
+  [
+    "Bouncy Bomb Block",
+    [
+      196,
+      58,
+      196
+    ]
+  ],
+  [
+    "Protector",
+    [
+      128,
+      135,
+      133
+    ]
+  ],
+  [
+    "Code Block",
+    [
+      167,
+      118,
+      93
+    ]
+  ],
+  [
+    "Checkpoint Block",
+    [
+      98,
+      234,
+      69
+    ]
+  ],
+  [
+    "Finish Block",
+    [
+      127,
+      127,
+      127
+    ]
+  ],
+  [
+    "Obby Death Block",
+    [
+      148,
+      39,
+      39
+    ]
+  ],
+  [
+    "Obby Absorb Block",
+    [
+      37,
+      37,
+      37
+    ]
+  ],
+  [
+    "Obby Absorb Death Block",
+    [
+      64,
+      40,
+      148
+    ]
+  ]
+]
