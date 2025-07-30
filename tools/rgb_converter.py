@@ -29,7 +29,7 @@ data = data[:20] + data[21:71] + data[72:76] + data[77:]
 for i in range(len(rgb_tuples)):
   rgb_tuples[i] = findMatchingBlock(rgb_tuples[i])
 charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
-items = [str(size[0]) + " " + str(size[1])]
+items = [str(size[0]) + " " + str(size[1]) + " "]
 length = 0
 item = rgb_tuples[0]
 print(rgb_tuples)
