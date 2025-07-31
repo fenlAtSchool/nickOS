@@ -313,8 +313,10 @@ function tick(ms){
 				break
                         case "displayFolderSons":
                                 for(let i = 0; i < 6; i++){
-					if(chestFiles[i + task[1] ][0] != null){
-						dtxt(0,6*i+12,"> " + chestFiles[i+task[1]][0])
+					let item = chestFiles[i + task[1] ][0]
+					if(item != null){
+						prefix = ">"
+						dtxt(0,6*i+12,prefix + " " + item)
 					}
 				}
 				task = ["updateDisplay",["waitTC",["mainMenuClicked"]]]
