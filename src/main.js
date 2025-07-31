@@ -315,8 +315,9 @@ function tick(ms){
                                 for(let i = 0; i < 6; i++){
 					let item = chestFiles[i + task[1] ][0]
 					if(item != null){
-						prefix = ">"
-						dtxt(0,6*i+12,prefix + " " + item)
+						prefix = [3,5,translate(">")]
+						drawImage(1,6*i+12,prefix[0],prefix[1],prefix[2])
+						dtxt(prefix[0]+2,6*i+12, item)
 					}
 				}
 				task = ["updateDisplay",["waitTC",["mainMenuClicked"]]]
