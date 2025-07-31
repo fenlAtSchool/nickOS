@@ -204,23 +204,27 @@ function loadFont(){
 }
 function translate(x){
 	let n = []
-	for(let i of x){
-		n.push(i=="#"?palette[1]:palette[0])
+	for(let i = 0; i < x.length; i++){
+		if(x[i] == "#"){
+			n.push(palette[1])
+		} else {
+			n.push(palette[0])
+		}
 	}
+	return n
 }
 function drawImage(sx,sy,dx,dy,x){
 	let idx = 0
-	for(let i = 0; i < dx; i++){
-		for(let j = 0; j < dy; j++){
+	for(let j = 0; j < dy; j++){
+		for(let i = 0; i < dx; i++){
 			display[sx+i][sy+j][1] = x[idx]
 			idx++
 		}
 	}
 }
 function dtxt(x,y,m){ 
-        let r = 0
-        for(let i = 0; i < m.length; i++){
-		drawImage(x,y,3,5,translate(font[m[i]]))
+        for(let r = 0; r < m.length; r++){
+		drawImage(x,y,3,5,translate(font[m[r]]))
                 x += 4
 		if(x > 124){
 			x = 0
