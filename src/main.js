@@ -299,12 +299,20 @@ function tick(ms){
                                 for(let i = 0; i < 6; i++){
 					let item = chestFiles[i + task[1] ][0]
 					if(item != null){
-						prefix = [3,5,translate(">")]
+						prefix = [3,5,translate(font[">"])]
+						if(api.getStandardChestItemSlot([chestFiles[i+task[1]][1], 0,51],3) && !item.endsWith(".fol")){
+							prefix = JSON.parse(api.getStandardChestItemSlot([chestFiles[i+task[1]][1], 0,51],3))
+							prefix = [prefix[0],prefix[1],prefix.shift(2)]
+						} else {
 						if(item.endsWith(".fol")){
 							prefix = [3,5,[0,0,0,0,0,0,99,0,0,99,99,99,99,99,99]]
 						}
 						if(item.endsWith(".rgb") || item.endsWith(".ngp") ){
-							prefix = [5,5,[86,86,86,86,86,86,97,97,144,86,86,97,97,97,86,86,97,97,97,86,86,86,86,86,86]]
+							prefix = [5,5,[86,86,86,86,86,86,99,99,144,86,86,99,99,99,86,86,99,99,99,86,86,86,86,86,86]]
+						}
+						if(item.endsWith(".js")){
+							prefix = [5,5,[86,86,86,86,86,86,91,91,86,86,86,86,86,86,86,86,91,91,91,86,86,86,86,86,86,86]]
+						}
 						}
 						drawImage(1,6*i+12,prefix[0],prefix[1],prefix[2])
 						dtxt(prefix[0]+2,6*i+12, item)
