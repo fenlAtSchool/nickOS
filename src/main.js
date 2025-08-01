@@ -232,22 +232,6 @@ function dtxt(x,y,m){
 		}
         }
 }
-function displayFolderSons(obj){ // [task, progress, starting val]
-        if(obj[1] < 7 && obj[1] + obj[2] < 36){  
-                let m = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], obj[1]+obj[2]+2)
-		if(m != null){
-			m = parseInt(m.attributes.customDescription)
-			let f = api.getStandardChestItemSlot([m,0,51], 0).attributes.customDescription
-			f += api.getStandardChestItemSlot([m,0,51], 1).attributes.customDescription
-                	f = ">" + f
-                	dtxt(0, obj[3]*6 + 18, f)
-			obj[3]++
-		}
-                obj[1]++
-                return task
-        }
-        return ["updateDisplay",["waitTC",["mainMenuClicked"]]]
-}
 function updateDisplay(){
         for(let y = 0; y < 128; y++){
                 for(let x = 0; x < 64; x++){
@@ -316,6 +300,12 @@ function tick(ms){
 					let item = chestFiles[i + task[1] ][0]
 					if(item != null){
 						prefix = [3,5,translate(">")]
+						if(item.endsWith(".fol")){
+							prefix = [3,5,[0,0,0,0,0,0,99,0,0,99,99,99,99,99,99]]
+						}
+						if(item.endsWith(".rgb") || item.endsWith(".ngp") ){
+							prefix = [5,5,[86,86,86,86,86,86,97,97,144,86,86,97,97,97,86,86,97,97,97,86,86,86,86,86,86]]
+						}
 						drawImage(1,6*i+12,prefix[0],prefix[1],prefix[2])
 						dtxt(prefix[0]+2,6*i+12, item)
 					}
