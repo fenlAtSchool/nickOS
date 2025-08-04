@@ -1,5 +1,5 @@
 # NickOS
-<img width="674" alt="Screenshot 2025-07-08 at 5 33 36 PM" src="https://github.com/user-attachments/assets/378262ec-4598-4ab7-a1e9-ecf69270b8d1" />
+<img width="951" height="486" alt="cleanNickOSpicture" src="https://github.com/user-attachments/assets/fe90d647-2c7f-489e-b120-4ee115239561" />
 
 NickOS is the first user-friendly Bloxd Execution Shell, and it's all open source! You can download it right here or go to a demonstration world (nickosdev). 
 
