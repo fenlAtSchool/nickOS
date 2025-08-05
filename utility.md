@@ -16,6 +16,8 @@ Utility arrays
  * Player Y
  * Cursor X
  * Cursor Y
+ * Is Clicking
+ * Is Alternate Action
  * Cursor X Previous Tick
  * Cursor Y Previous Tick
 */
