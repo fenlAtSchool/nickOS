@@ -37,6 +37,7 @@ drawBoxOutline(tl,br)
  * Translates string into image by turning '#' into black
  * @param {string} String to translate
  * @returns {number[]}
+*/
 translate(string)
 
 /**
