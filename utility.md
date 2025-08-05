@@ -26,7 +26,7 @@ updateDisplay()
 fillBox(tl,br,color)
 
 /**
- * Draws Outline with {palette[1]}
+ * Draws Outline with `palette[1]}`
  * @param {number[]} Coordinates of top left
  * @param {number[]} Coordinates of top right
  * @returns {void}
