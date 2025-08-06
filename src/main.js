@@ -360,7 +360,7 @@ function tick(ms){
 						break
 					}
 				}
-				cp = Math.floor((s[3])/6) - 1
+				cp = Math.floor((s[3])/6)
 				if(cp == 0){
 					if(parentFolder.length > 1){
 						parentFolder.pop()
