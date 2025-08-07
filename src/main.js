@@ -489,8 +489,7 @@ function tick(ms){
 					task = ["clearScreen",["initmenu"],0]
 				}
 				eval(program)
-				dtxt(0,0,"Exit")
-				updateDisplay()
+				dtxt(0,0,"x")
 				break
 			case "displayFile":
 				dtxt(0,0,zf[0].attributes.customDescription + zf[1].attributes.customDescription)
