@@ -5,8 +5,9 @@ switch(state){
 case 'init':
   dtxt(56,7,"PONG")
   dtxt(20,19,"Click to Start")
-  updateDisplay()
   state = "initrun"
+  updateDisplay()
+  s[4] = 0
   task = ["waitTC",["clearScreen",["execute"], 0]]
 
 case 'initrun':
