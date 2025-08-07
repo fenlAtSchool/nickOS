@@ -48,6 +48,7 @@ function init(){
   toRad = Math.PI/180
   facing = 0
   isInit = true
+  pos = [8,8]
 }
 function scan(pos,starting){
   let field = []
