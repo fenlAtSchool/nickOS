@@ -2,7 +2,9 @@
 bloxDoom Raycaster
 Dependent on NickOS
 */
-
+function inBounds(x,y,z){
+    return x >= y && x <= z
+}
 function getBlockIn(pos){
   if(inBounds(pos[0],0,map.length*8) && inBounds(pos[1],0,map.length*8)){
     return map[Math.floor(pos[1]/8)][Math.floor(pos[0]/8)]
@@ -41,8 +43,8 @@ function init(){
   toRad = Math.PI/180
   facing = 0
   isInit = true
-  lp = api.getPosition(user)
   pos = [9,9]
+  todo = ["scan"]
   map = [
   [1,1,1,1,1,1,1,1],
   [1,0,0,0,0,1,0,1],
@@ -61,8 +63,9 @@ function scan(pos,starting){
   for(let i = 0; i < fov; i++){
     dir = i+starting-(fov/2)
     height = castFromPos(pos,dir)
-    height = Math.cos(toRad * (dir - starting))
-    field.push(height)
+    height *= Math.cos(toRad * (dir - starting))
+    height = 22/height
+    field.push(height > 63 ? 63: height)
   }
   return field
 }
@@ -73,28 +76,38 @@ function tryMove(dx,dy){
   if(getBlockIn(pos)){
     pos = opos
   }
-  lp = [s[0],s[1]]
   return 1
 }
 function tick(){
-  let field = scan(pos,facing)
-  let delt = [s[0]-lp[0],s[1]-lp[1]]
-  delt[0] = Math.ceil(delt[0])
-  delt[1] = Math.ceil(delt[1])
-  api.log(field)
-  for(let i = 0; i < 128; i++){
-    display[i].map( (v,idx) => inBounds(idx,32-field[i],32+field[i]) ? palette[0] : palette[1])
+  switch(todo[0]){
+    case "scan":
+      field = scan(pos,facing)
+      i = 0
+      todo = ["render"]
+    case "render":
+      while(i < 128){
+        display[i] = display[i].map(v => [v[0],palette[0]])
+        let j = Math.round(field[i]/2)
+        drawImage(i,32-j,1,2*j,Array(2*j).fill(palette[1]))
+        i++
+      }
+      task = ["updateDisplay", ["execute"]]
+      todo = ["movement"]
+      break
+    case "movement":
+      if(s[2] > 96){
+        facing += 10
+      }
+      if(s[2] < 32){
+        facing -= 10
+      }
+      facing %= 360
+      let opos = [...pos]
+      tryMove(Math.sin(facing * toRad), 0)
+      tryMove(0, Math.cos(facing * toRad))
+      todo = ["scan"]
+      break
   }
-  facing += 0.3 * (s[2] > 96 - s[2] < 32)
-  if(delt[0] && delt[1]){
-    s[0] /= Math.sqrt(2)
-    s[1] /= Math.sqrt(2)
-  }
-  /*
-  let opos = [...pos]
-  tryMove(Math.sin(facing) * delt[0], 0)
-  tryMove(0, Math.cos(facing) * delt[1])*/
-  task = ["updateDisplay", ["execute"]]
 }
 
 try{isInit}catch{init()}
