@@ -3,19 +3,12 @@ bloxDoom Raycaster
 Dependent on NickOS
 */
 
-map = [
-  [1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,1,0,1],
-  [1,0,0,1,1,1,0,1],
-  [1,0,0,1,0,0,0,1],
-  [1,1,0,0,0,1,0,1],
-  [1,0,0,1,1,1,0,1],
-  [1,0,0,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1]
-]
-
 function getBlockIn(pos){
-  return map[Math.floor(pos[1]/8)][Math.floor(pos[0]/8)]
+  if(inBounds(pos[0],0,map.length*8) && inBounds(pos[1],0,map.length*8)){
+    return map[Math.floor(pos[1]/8)][Math.floor(pos[0]/8)]
+  } else {
+    return 1
+  }
 }
 
 function castFromPos(pos,degrees){
@@ -48,7 +41,18 @@ function init(){
   toRad = Math.PI/180
   facing = 0
   isInit = true
-  pos = [8,8]
+  lp = api.getPosition(user)
+  pos = [9,9]
+  map = [
+  [1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,1,0,1],
+  [1,0,0,1,1,1,0,1],
+  [1,0,0,1,0,0,0,1],
+  [1,1,0,0,0,1,0,1],
+  [1,0,0,1,1,1,0,1],
+  [1,0,0,0,0,0,0,1],
+  [1,1,1,1,1,1,1,1]
+  ]
 }
 function scan(pos,starting){
   let field = []
@@ -77,24 +81,20 @@ function tick(){
   let delt = [s[0]-lp[0],s[1]-lp[1]]
   delt[0] = Math.ceil(delt[0])
   delt[1] = Math.ceil(delt[1])
-  
+  api.log(field)
   for(let i = 0; i < 128; i++){
-    display[i].forEach(v => palette[0])
-    for(let j = 0; j < field[i]; j++){
-      display[i][32 + j] = palette[1]
-      display[i][32 - j] = palette[1]
-    }
+    display[i].map( (v,idx) => inBounds(idx,32-field[i],32+field[i]) ? palette[0] : palette[1])
   }
   facing += 0.3 * (s[2] > 96 - s[2] < 32)
   if(delt[0] && delt[1]){
     s[0] /= Math.sqrt(2)
     s[1] /= Math.sqrt(2)
   }
+  /*
   let opos = [...pos]
   tryMove(Math.sin(facing) * delt[0], 0)
-  tryMove(0, Math.cos(facing) * delt[1])
+  tryMove(0, Math.cos(facing) * delt[1])*/
   task = ["updateDisplay", ["execute"]]
-  return 1
 }
 
 try{isInit}catch{init()}
