@@ -1,4 +1,6 @@
-
+/* MINIFIED CODE:
+try{state}catch{state="init"}switch(state){case"init":dtxt(56,7,"PONG"),dtxt(20,19,"Click to Start"),state="initrun",s[4]=0,task=["updateDisplay",["waitTC",["clearScreen",["execute"],0]]];break;case"initrun":ball=[64,32],vel=[1,1],paddle=32,score=0,state="run";break;case"run":drawImage(ball[0],ball[1],1,1,[palette[0]]),drawImage(4,paddle,1,4,[,,,,].fill(palette[0])),drawImage(124,ball[1],1,4,[,,,,].fill(palette[0])),paddle>7&&s[3]<paddle&&(paddle-=1),paddle<124&&s[3]>paddle&&(paddle+=1),ball[0]+=vel[0],ball[1]+=vel[1],(ball[1]<7||ball[1]>62)&&(vel[1]*=-1),123==ball[0]&&(vel[0]=-1),5==ball[0]&&(inBounds(ball[1],paddle,paddle+3)?(vel[0]=1,score++):(state="over",task=["clearScreen",["execute"],0])),drawImage(ball[0],ball[1],1,1,[palette[1]]),drawImage(4,paddle,1,4,[,,,,].fill(palette[1])),drawImage(124,ball[1],1,4,[,,,,].fill(palette[1])),dtxt(60,6,score.toString()),updateDisplay();break;case"over":dtxt(0,6,"GAME OVER!"),dtxt(0,12,`Your score: ${score}`),state="ended"}
+*/
 try{state}catch{state="init"}
 
 switch(state){
@@ -6,37 +8,39 @@ case 'init':
   dtxt(56,7,"PONG")
   dtxt(20,19,"Click to Start")
   state = "initrun"
-  updateDisplay()
   s[4] = 0
-  task = ["waitTC",["clearScreen",["execute"], 0]]
+  task = ["updateDisplay",["waitTC",["clearScreen",["execute"], 0]]]
+  break
 
 case 'initrun':
   ball = [64,32]
   vel = [1,1]
-  paddle = 0
+  paddle = 32
   score = 0
   state = "run"
-
+  break
+    
 case 'run':
-  drawImage(1,1,ball[0],ball[1],[palette[0]])
-  drawImage(1,4,4,paddle,Array(4).fill(palette[0]))
-  drawImage(1,4,124,ball[1],Array(4).fill(palette[0]))
+  drawImage(ball[0],ball[1],1,1,[palette[0]])
+  drawImage(4,paddle,1,4,Array(4).fill(palette[0]))
+  drawImage(124,ball[1],1,4,Array(4).fill(palette[0]))
 
-  if(paddle > 7 && s[2] < paddle){
+  if(paddle > 7 && s[3] < paddle){
     paddle -= 1
   }
-  if(paddle < 124 && s[2] > paddle){
+  if(paddle < 124 && s[3] > paddle){
     paddle += 1
   }
   
-  ball.map((v,idx) => v + vel[idx])
-  if(ball[1] == 6 || ball[1] == 63){
-    vel[0] *= -1
+  ball[0] += vel[0]
+  ball[1] += vel[1]
+  if(ball[1] < 7 || ball[1] > 62){
+    vel[1] *= -1
   }
   if(ball[0] == 123){
     vel[0] = -1
   }
-  if(ball[0] == 7){
+  if(ball[0] == 5){
     if(inBounds(ball[1],paddle,paddle+3)){
       vel[0] = 1, score++
     } else {
@@ -44,15 +48,16 @@ case 'run':
       task = ["clearScreen",["execute"],0]
     }
   }
-  drawImage(1,1,ball[0],ball[1],[palette[0]])
-  drawImage(1,6,4,paddle,Array(4).fill(palette[0]))
-  drawImage(1,6,124,ball[1],Array(4).fill(palette[0]))
+  drawImage(ball[0],ball[1],1,1,[palette[1]])
+  drawImage(4,paddle,1,4,Array(4).fill(palette[1]))
+  drawImage(124,ball[1],1,4,Array(4).fill(palette[1]))
   dtxt(60,6,score.toString())
   updateDisplay()
+  break
 
 case 'over':
   dtxt(0,6,"GAME OVER!")
   dtxt(0,12,`Your score: ${score}`)
   state = "ended"
-
+  break
 }
