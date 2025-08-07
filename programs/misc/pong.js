@@ -1,21 +1,22 @@
 
 try{state}catch{state="init"}
 
-if(state == "init"){
+switch(state){
+case 'init':
   dtxt(56,7,"PONG")
   dtxt(20,19,"Click to Start")
   updateDisplay()
   state = "initrun"
   task = ["waitTC",["clearScreen",["execute"], 0]]
-}
-if(state == "initrun"){
+
+case 'initrun':
   ball = [64,32]
   vel = [1,1]
   paddle = 0
   score = 0
   state = "run"
-}
-if(state == "run"){
+
+case 'run':
   drawImage(1,1,ball[0],ball[1],[palette[0]])
   drawImage(1,4,4,paddle,Array(4).fill(palette[0]))
   drawImage(1,4,124,ball[1],Array(4).fill(palette[0]))
@@ -43,13 +44,14 @@ if(state == "run"){
     }
   }
   drawImage(1,1,ball[0],ball[1],[palette[0]])
-  drawImage(1,6,4,paddle,Array(5).fill(palette[0]))
-  drawImage(1,6,124,ball[1],Array(5).fill(palette[0]))
+  drawImage(1,6,4,paddle,Array(4).fill(palette[0]))
+  drawImage(1,6,124,ball[1],Array(4).fill(palette[0]))
   dtxt(60,6,score.toString())
   updateDisplay()
-}
-if(state == "over"){
+
+case 'over':
   dtxt(0,6,"GAME OVER!")
   dtxt(0,12,`Your score: ${score}`)
   state = "ended"
+
 }
