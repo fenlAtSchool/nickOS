@@ -94,10 +94,21 @@ All items would be stored as customDescriptions of Nets, and all 'number' type i
 # Files
 
 Files work as:
-```
+```js
 files.chestItems = [
 [name,extension,length_in_chests_from_now_on],
 [...],
 [...],
 ]
 ```
+
+# Picture/Video
+The main arrays used for this section are:
+```js
+colors = [144,1724,8,47,483,32,97,59,6,31,28,29,136,85,946,947,948,84,949,950,951,147,66,86].reverse()
+charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789|[]{}/-_>=+`~?.,;:"
+cColors =[2,1694,5,650,6,8,139,28,29,31,474,40,41,42,45,465,652,959,958,976,1630,1621,1629,946,947,948,949,950,951,482,484,486,471,140,961,962,147,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,97,93,92,90,99,91,94,84,85,89,95,87,88,98,96,86,1722,1271,212,1510,1576,1607,1608,1609]
+```
+Both .ngp (grayscale) and .rgb (color) are encoded as strings of items in `charset`. However, .ngp uses `colors` and .rgb uses `cColors`. The first few characters are always `${x_resolution} ${y_resolution} `
+
+.nvf (video) works via run-length-encoding (RLE) and each character is `UTF16(length * 100 + item)`. Frame finishes are denoted with a ' '. (UTF16[32]). The first few characters are always `${x_resolution} ${y_resolution} ${framecount} `
