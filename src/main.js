@@ -8,8 +8,10 @@ function onPlayerClick(id){
 		if(item.name == "Spawn Block (Gray)" && item.attributes.customDescription == "NickOS Remote"){
 			if(osOn){
 				palette[0] = palette[1]
+				api.setClientOption(user,"speedMultiplier",1)
 				task = ["clearScreen",["shut"],0]
 			} else {
+				api.setClientOption(user,"speedMultiplier",0)
 				OSboot()
 				user = id
 			}
