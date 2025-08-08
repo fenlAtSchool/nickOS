@@ -96,7 +96,7 @@ function OSboot(){
         ram = []
         s = [0,0,0,0,0,0,0,0,0]
 	palette = [144,86]
-        display = new uint16array()
+        display = new Uint16array()
         task = ["clearScreen",["initmenu"],0]
 	isFile = false
         loadFont()
