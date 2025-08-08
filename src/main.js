@@ -11,9 +11,9 @@ function onPlayerClick(id){
 				api.setClientOption(user,"speedMultiplier",1)
 				task = ["clearScreen",["shut"],0]
 			} else {
-				api.setClientOption(user,"speedMultiplier",0)
 				OSboot()
 				user = id
+				api.setClientOption(user,"speedMultiplier",0)
 			}
 			return
 		} 
