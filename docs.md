@@ -1,4 +1,6 @@
-Utility functions
+# Programming and Development
+
+## Functions
 
 ```js
 /**
@@ -51,8 +53,7 @@ translate(string)
 */
 drawImage(sx,sy,dx,dy,x)
 ```
-
-Utility arrays
+## Arrays
 
 ```js
 /**
@@ -71,4 +72,32 @@ s = [0,0,0,0,0,0,0,0]
 palette = [144,86]
 // Get Directory
 parentFolder = []
+```
+
+# Screens
+
+128x64 resolution, centered around [0,32,51]
+
+# Filesystem
+
+All files are stored in the line [x,0,51] in +x and most protrude outwards in the +z direction. The root directory (~) is located at x=0.
+
+# Folders
+
+Folders (.fol files) contain pointers towards other files.
+An exapmle folder:
+```js
+folder.chestItems = [name,'.fol',1,3,2,9,6...]
+```
+All items would be stored as customDescriptions of Nets, and all 'number' type items were locations for other files.
+
+# Files
+
+Files work as:
+```
+files.chestItems = [
+[name,extension,length_in_chests_from_now_on],
+[...],
+[...],
+]
 ```
