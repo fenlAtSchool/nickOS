@@ -24,15 +24,10 @@ function castFromPos(pos,degrees){
     p[0] += ac * dx
     p[1] += ac * dy
   }
-  
-  if(dist >= max_dist){
-    return -1
-  }
-  
   while(getBlockIn(p) == 1){
-    dist -= 0.5
-    p[0] -= 0.5*dx
-    p[1] -= 0.5*dy
+    dist -= 0.1
+    p[0] -= 0.1*dx
+    p[1] -= 0.1*dy
   }
   return dist
 }
@@ -73,7 +68,7 @@ function tryMove(dx,dy){
   let opos = [...pos]
   pos += dx
   pos += dy
-  if(getBlockIn(pos)){
+  if(getBlockIn(pos) == 1){
     pos = opos
   }
   return 1
@@ -103,8 +98,8 @@ function tick(){
       }
       facing %= 360
       let opos = [...pos]
-      tryMove(Math.sin(facing * toRad), 0)
-      tryMove(0, Math.cos(facing * toRad))
+      tryMove(1*Math.cos(facing * toRad), 0)
+      tryMove(0, 1*Math.sin(facing * toRad))
       todo = ["scan"]
       break
   }
