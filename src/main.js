@@ -390,7 +390,7 @@ function tick(ms){
 				break
 			case "drawFileMenu":
 				cLength = parseInt(zf[2].attributes.customDescription)
-				chestPos = f + 0
+				chestPos = cpace + 0
 				let name = zf[0].attributes.customDescription + zf[1].attributes.customDescription
 				drawBoxOutline([100,41],[127,63])
 				fillBox([101,42],[126,62],palette[0])
