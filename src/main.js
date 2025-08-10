@@ -377,9 +377,7 @@ function tick(ms){
 					task = ["waitTC", ["mainMenuClicked"]]
 					break
 				}
-				f = api.getStandardChestItemSlot([parentFolder.at(-1),0,51], cpace + 1)
-				f = parseInt(f.attributes.customDescription)
-				zf = api.getStandardChestItems([f,0,51])
+				zf = api.getStandardChestItems([cpace,0,51])
 				if(zf[1].attributes.customDescription == ".fol"){
 					directory.push(zf[0].attributes.customDescription)
 					parentFolder.push(f)
