@@ -380,8 +380,8 @@ function tick(ms){
 				zf = api.getStandardChestItems([cpace,0,51])
 				if(zf[1].attributes.customDescription == ".fol"){
 					directory.push(zf[0].attributes.customDescription)
-					parentFolder.push(f)
-					itemSlotPath.push(cpace)
+					parentFolder.push(cpace)
+					itemSlotPath.push(curr_page + cp + 1)
 					curr_page = 0
 					task = ["clearScreen",["initmenu"],0]
 					break
