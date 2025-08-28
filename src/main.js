@@ -262,10 +262,7 @@ function clearScreen(obj){
 }
 
 osOn = false
-function onBlockStand(id, b){
-	if(id != user){
-		return
-	}
+function tick(delta){
 	if(osOn){
 		api.setClientOption(user,"RightInfoText",'NickOS Statistics \n'  + user + '\n' + parentFolder + '\n' + task)
                 jp()
