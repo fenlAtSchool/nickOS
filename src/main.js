@@ -546,7 +546,7 @@ function tick(delta){
 			case "about":
 				fillBox([6,6],[112,30],palette[0])
 				drawBoxOutline([5,5],[113,31])				
-				dtxt(7,7, "NickOS V2.11.1 by fenl_")
+				dtxt(7,7, "NickOS V2.11.2 by fenl_")
 				dtxt(7,13,"Credits to the_ccccc, sulf")
 				dtxt(7,19,"rox, delfineon, & nickname")
 				dtxt(7,25,"Click to exit")
