@@ -7,7 +7,7 @@ NickOS is the first user-friendly Bloxd Execution Shell, and it's all open sourc
 - Paste /main/cpm.js into World Code
 - Paste /main/osBoot.js into a code block and get the NickOS Remote
 - Paste /main/initInstall.js into a code block and run
-- [Video Tutorial Here](https://drive.google.com/file/d/15dk5BqaMq3qKRvLXapU9YWnlrRgrFaEs/view?usp=sharing) (This wasn't uploaded with anybody's main email, don't even try spamming it)
+- [Video Tutorial Here](https://drive.google.com/file/d/1WuTIEIT3pOU2rJBGOO4sHhwPEAUDoPRQ/view?usp=sharing) (This wasn't uploaded with anybody's main email, don't even try spamming it)
 
 
 ## Turn On/Off
