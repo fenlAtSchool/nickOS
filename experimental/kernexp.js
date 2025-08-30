@@ -6,17 +6,14 @@ function getFile(x){
   }
   return getFile(followPath(x))
 }
-
 function setFile(x,z){
   api.setBlockData(1e5,followPath(x),0,z)
 }
-
 function setFileAttribute(x,a,z){
   let m = getFile(x)
   m[a] = z
   setFile(x,m)
 }
-
 function followPath(x, f=0){
   if(typeof(x) == "number"){
     return x
@@ -34,7 +31,6 @@ function followPath(x, f=0){
   }
   return f
 }
-
 function deleteFile(z,x){
   z = followPath(z)
   x = followPath(x)
@@ -53,7 +49,17 @@ display = {x: 256, y: 128}
 display.d = Array.from({length: display.y}, () => Array(display.x).fill([255,255,255]));
 function drawDisplay(id){
   let f = []
-  display.d.flat().forEach(v => f.push({txt: \u2588, style: {color:v, fontSize:"12px"}})
+  display.d.flat().forEach(v => f.push({txt: \u2588, style: {color:v, fontSize:"11px"}})
   api.setFlyingMiddleMessage(id,f,0)
 }
 
+// PROCESSOR
+
+processor = {tasks: [], output: []}
+function onBlockStand(id,b){
+  if(toRun == ""){
+    toRun = processor.tasks.shift()
+  }
+  processor.output.push(eval(v))
+  toRun = ""
+}
