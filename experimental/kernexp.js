@@ -47,3 +47,13 @@ function deleteFile(z,x){
   f.contents.splice(f.indexOf(x), 1)
   setFile(z, f)
 }
+
+// DISPLAY
+display = {x: 256, y: 128}
+display.d = Array.from({length: display.y}, () => Array(display.x).fill([255,255,255]));
+function drawDisplay(id){
+  let f = []
+  display.d.flat().forEach(v => f.push({txt: \u2588, style: {color:v, fontSize:"12px"}})
+  api.setFlyingMiddleMessage(id,f,0)
+}
+
