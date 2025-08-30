@@ -60,6 +60,6 @@ function onBlockStand(id,b){
   if(toRun == ""){
     toRun = processor.tasks.shift()
   }
-  processor.output.push(eval(v))
+  processor.output.push(eval(toRun))
   toRun = ""
 }
