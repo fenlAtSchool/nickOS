@@ -2,10 +2,12 @@
 // -1: SYSTEM DATA
 
 function getFile(x){
-  if(typeof(x) == "number"){
-    return api.getBlockData(1e5,x,0).persisted.shared
+  try{
+    return getBlockData(1e5,followPath(x),0).persisted.shared
+  } catch {
+    throw new Error("FileNotFoundError: ", x)
+    return false
   }
-  return getFile(followPath(x))
 }
 function setFile(x,z){
   api.setBlockData(1e5,followPath(x),0,z)
@@ -26,7 +28,8 @@ function followPath(x, f=0){
     f = (getFile(f).contents).map(m => getFile(m))
     f = f.map(m => m.name + m.extension).indexOf(i)
     if(f === -1){
-      throw new Error("File Path Invalid: ", x)
+      throw new Error("InvalidFilePathError: ", x)
+      return false
     }
   }
   return f
@@ -59,7 +62,15 @@ function newFile(z,x){
 display = {x: 256, y: 128}
 display.d = Array.from({length: display.y}, () => Array(display.x).fill([255,255,255]));
 function drawDisplay(id){
-  let f = []
+  f = []
+  for(let i of windows){
+    for(let j of i.win){
+      for(let z of j){
+        f[display.x * (i.sy + j) + i.sx + z] = // TO BE CONTINUED
+      }
+    }
+    
+  }
   display.d.forEach(v => (v.forEach(f[f.length] j => {txt: '\u2588', style: {color: j, fontSize: '11px'}}); f[f.length] = {txt: '\n'} ))
   api.setFlyingMiddleMessage(id,f,0)
 }
@@ -79,7 +90,10 @@ function onBlockStand(id,b){
 //INITIALIZER
 
 function init(){
-  font = getFile("System/Font.json").contents
+  let m = followPath("System")
+  font = getFile("Font.json", m).contents
+  config = getFile("Config.json", m).contents
+  windows = []
 }
 
 //UTILITY FUNCTIONS
@@ -91,10 +105,23 @@ function dtxt(x,y,f, xlim=127, ylim=63){
       y += 4
       continue
     }
-    font[f[i]].forEach((j,fy) => fy.forEach((m,fx) => display[y+fy][x+fx]=Array(3).fill(255*(m=="#")) ))
+    font[f[i]].forEach((j,fy) => fy.forEach((m,fx) => display[y+fy][x+fx]=Array(3).fill(255*(m!="#")) ))
     x += 4
     if(x > xlim - 4){
       x = dx
     }
   }
 }
+
+function drawBoxOutline(x1,x2,y1,y2){
+  let m = [0,0,0]
+  for(let i = y1; i < y2; i++){
+    display[i][x1] = m
+    display[i][x2] = m
+  }
+  for(let i = x1; i < x2; i++){
+    display[y1][i] = m
+    display[y2][i] = m
+  }
+}
+
