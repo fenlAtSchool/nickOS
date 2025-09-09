@@ -1,5 +1,5 @@
 function drawDisplay(id){
-  let f = Array(config.displayx * confix.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
+  let f = Array(config.displayx * config.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y){
