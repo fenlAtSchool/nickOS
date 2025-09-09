@@ -12,14 +12,19 @@ function drawDisplay(id){
 function boot(){
   functions = {toRun: [], results: {}}
   requestExecFunction('init()', bootupCode)
+  log("minos-core", "Initial bootup finished")
 }
-
+function log(module, x){
+  api.broadcastMessage(`module-${module}.js: ${x}`)
+  return x
+}
 function init(){
   let m = followPath("System")
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
-  return 'POSITIVE INIT'
+  log("minos-core", "Setup finished")
+  return 1
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
@@ -53,7 +58,7 @@ function requestExecFunction(func, resultOutputName){
   functions.toRun[functions.toRun.length] = [func, resultOutputName]
 }
 function executeFunction(){
-  let func = functions.toRun.shift()
+  let func = log('minos-core', `Executing function ${functions.toRun.shift()}` )
   functions.results[func[1]] = eval(func[0])
 }
 
