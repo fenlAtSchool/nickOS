@@ -15,11 +15,16 @@ function boot(){
 }
 
 function init(){
-  let m = followPath("System")
+  let m = followPath("System/Library")
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
   return 'POSITIVE INIT'
+}
+
+function executeCFF(extension, data){
+  tr = getFile(extension, followPath("System/Library"))
+  return eval(`let data = ${data}; ${tr}`)
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
