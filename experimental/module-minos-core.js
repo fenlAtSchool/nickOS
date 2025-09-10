@@ -23,7 +23,7 @@ function init(){
 }
 
 function executeCFF(extension, data){
-  tr = getFile(`System/Library/${extension}.js`)
+  tr = getFile(`System/Library/${extension}.cff/main.js`)
   return eval(`let data = ${data}; ${tr}`)
 }
 
