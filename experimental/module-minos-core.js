@@ -24,8 +24,12 @@ function init(){
 }
 
 function executeCFF(extension, data){
-   tr = `System/Library/${extension}.cff/main.js`
-  return eval(`let data = ${data}; let path = ${tr}; ${getFile(tr)}`)
+  let tr = `System/Library/${extension}.cff/main.js`
+  tr = eval(`let data = ${data}; let path = ${tr}; ${getFile(tr)}`)
+  if(tr != "HALT"){
+    requestExecFunction(`executeCFF(extension, data)`)
+    return tr
+  }
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
