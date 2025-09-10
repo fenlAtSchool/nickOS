@@ -1,5 +1,8 @@
 try{
   let j = eval(data)
 } catch {
-  log("cff-app",j)
+  log("app.cff",j)
+  if(j != "EXIT"){
+    requestExecFunction(`executeCFF('app', ${data})`)
+  }
 }
