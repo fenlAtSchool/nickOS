@@ -23,8 +23,8 @@ function init(){
 }
 
 function executeCFF(extension, data){
-  tr = getFile(`System/Library/${extension}.cff/main.js`)
-  return eval(`let data = ${data}; ${tr}`)
+  tr = `System/Library/${extension}.cff/main.js`
+  return eval(`let data = ${data}; let path = ${tr}; ${getFile(tr)}`)
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
