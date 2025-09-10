@@ -1,5 +1,5 @@
 function drawDisplay(id){
-  let f = Array(config.displayx * confix.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
+  let f = Array(config.displayx * config.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y){
@@ -15,11 +15,16 @@ function boot(){
 }
 
 function init(){
-  let m = followPath("System")
+  let m = followPath("System/Library")
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
   return 'POSITIVE INIT'
+}
+
+function executeCFF(extension, data){
+  tr = getFile(`System/Library/${extension}.js`)
+  return eval(`let data = ${data}; ${tr}`)
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){

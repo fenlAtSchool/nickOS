@@ -53,5 +53,6 @@ function newFile(z,x){
   setFile(z, f)
   setFile(r, x)
   setFile(-1, r)
+  log("minfs", `Succesful File Created: ${x}`)
   return r.fileCount
 }
