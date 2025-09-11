@@ -65,6 +65,7 @@ function newFile(z,x){
 function boot(){
   functions = {toRun: [], results: {}}
   requestExecFunction('init()', bootupCode)
+  requestExecFunction('executeCFF("pack", "")'
 }
 
 function init(){
@@ -73,6 +74,7 @@ function init(){
   config = getFile("Config.json", m).contents
   windows = []
   requestExecFunction('initTerminal()', bootupTerminalSuccess)
+
   return 'POSITIVE INIT'
 }
 
