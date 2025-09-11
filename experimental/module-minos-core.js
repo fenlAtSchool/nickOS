@@ -65,7 +65,6 @@ function newFile(z,x){
 function boot(){
   functions = {toRun: [], results: {}}
   requestExecFunction('init()', bootupCode)
-  requestExecFunction('executeCFF("pack", "")'
 }
 
 function init(){
@@ -73,8 +72,11 @@ function init(){
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
-  requestExecFunction('initTerminal()', bootupTerminalSuccess)
-
+  requestExecFunction('initTerminal()', bootupSuccess)
+  let a = JSON.parse(getFile("requirements.json", m).contents)
+  for(let i of a){
+    requestExecFunction(`executeCFF('pack',${i})`, packLoaded)
+  }
   return 'POSITIVE INIT'
 }
 
