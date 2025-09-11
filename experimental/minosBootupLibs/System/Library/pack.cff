@@ -1,6 +1,6 @@
 try{
-let j = eval(data)
+let j = eval(getFile(data))
 catch{
-log("pckg.cff", j)
+log("pack.cff", j)
 return "HALT"
 }
