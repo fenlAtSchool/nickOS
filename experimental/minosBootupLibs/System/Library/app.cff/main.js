@@ -1,5 +1,6 @@
 try{
   let j = eval(data)
 } catch {
-  log("cff-app",j)
+  log("app.cff",j)
+  return j
 }

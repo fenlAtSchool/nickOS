@@ -19,12 +19,17 @@ function init(){
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
+  requestExecFunction('initTerminal()', bootupTerminalSuccess)
   return 'POSITIVE INIT'
 }
 
 function executeCFF(extension, data){
-  tr = getFile(`System/Library/${extension}.cff/main.js`)
-  return eval(`let data = ${data}; ${tr}`)
+  let tr = `System/Library/${extension}.cff/main.js`
+  tr = eval(`let data = ${data}; let path = ${tr}; ${getFile(tr)}`)
+  if(tr != "HALT"){
+    requestExecFunction(`executeCFF(extension, data)`)
+    return tr
+  }
 }
 
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){

@@ -1,0 +1,29 @@
+
+
+function parseCommand(x){
+  x = x.split(' ')
+  if(x.length == 1){
+    return JSON.parse(x)
+  }
+  let f = x.shift()
+  return eval(`${f}(...[x.map(v => JSON.parse(v))])`)
+}
+
+function cd(x){
+  terminalPath = followPath(x)
+  return terminalpath
+}
+function echo(x){
+  return log("terminal", parseCommand(X))
+}
+function ls(){
+  x = getFile(x, terminalPath)
+  return log("terminal", x.contents.map(v => getFile(v)).map(v => v.name + v.extension))
+}
+function touch(x){
+  return 
+}
+function initTerminal(){
+  terminalPath = followPath("User")
+  return 1
+}
