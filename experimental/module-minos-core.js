@@ -1,4 +1,6 @@
-
+function log(x, y){
+  api.broadcastMessage(`module-minos-${x}: ${y}`)
+}
 function getFile(x){
   try{
     return getBlockData(1e5,followPath(x),0).persisted.shared
