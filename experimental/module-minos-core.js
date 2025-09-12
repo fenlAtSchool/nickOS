@@ -2,15 +2,19 @@ function log(x, y){
   api.broadcastMessage(`module-minos-${x}: ${y}`)
 }
 function getFile(x){
-  try{
-    return getBlockData(1e5,followPath(x),0).persisted.shared
-  } catch {
-    throw new Error("FileNotFoundError: ", x)
+  let m = followPath(x)
+  api.setBlock(1e5,m,0, "Air")
+  let a = api.getBlockData(1e5,m,0)?.persisted?.shared
+  if(a == undefined){
+	throw new Error(`FileNotFoundError: ${x}`)
     return false
   }
+  return a
 }
 function setFile(x,z){
-  api.setBlockData(1e5,followPath(x),0,z)
+  let m = followPath(x)
+  api.setBlock(1e5,m,0, "Air")
+  api.setBlockData(1e5,m,0,{persisted: {shared: z}})
 }
 function setFileAttribute(x,a,z){
   let m = getFile(x)
@@ -23,14 +27,18 @@ function followPath(x, f=0){
   }
   if(typeof(x) == "string"){
     x = x.split("/")
+	x.shift()
   }
+  let j = []
   for(let i of x){
-    f = (getFile(f).contents).map(m => getFile(m))
-    f = f.map(m => m.name + m.extension).indexOf(i)
-    if(f === -1){
-      throw new Error("InvalidFilePathError: ", x)
+    f = (getFile(f).contents)
+	j = f.map(m => getFile(m))
+    j = j.map(m => m.name + '.' + m.extension)
+    if(!j.includes(i)){
+      throw new Error(`InvalidFilePathError: ${x}`)
       return false
     }
+	f = f[j.indexOf(i)]
   }
   return f
 }
@@ -66,7 +74,7 @@ function newFile(z,x){
 
 function boot(){
   functions = {toRun: [], results: {}}
-  requestExecFunction('init()', bootupCode)
+  requestExecFunction('init()', 'bootupCode')
 }
 
 function init(){
@@ -74,11 +82,11 @@ function init(){
   font = getFile("Font.json", m).contents
   config = getFile("Config.json", m).contents
   windows = []
-  requestExecFunction('initTerminal()', bootupSuccess)
   let a = JSON.parse(getFile("requirements.json", m).contents)
   for(let i of a){
     requestExecFunction(`executeCFF('pack',${i})`, packLoaded)
   }
+  requestExecFunction('initTerminal()', 'bootupSuccess')
   return 'POSITIVE INIT'
 }
 
@@ -95,11 +103,12 @@ function requestExecFunction(func, resultOutputName){
   functions.toRun[functions.toRun.length] = [func, resultOutputName]
 }
 function executeFunction(){
-  let func = functions.toRun.shift()
-  functions.results[func[1]] = eval(func[0])
+  if(functions.toRun.length > 0){
+	let func = functions.toRun.shift()
+	functions.results[func[1]] = eval(func[0])
+  }
 }
-
+boot()
 function tick(){
   executeFunction()
 }
-
