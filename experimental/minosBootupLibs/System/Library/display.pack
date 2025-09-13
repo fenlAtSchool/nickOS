@@ -2,7 +2,7 @@ function drawDisplay(id){
   let f = Array(config.displayx * config.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
-      for(let z = 0; z < i.y){
+      for(let z = 0; z < i.y; z++){
         f[display.x * (i.startX + j) + i.startY + z].style.color = win[i.y][i.x]
       }
     }
