@@ -11,7 +11,7 @@ function drawDisplay(id){
 }
 function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
   dx = x
-  for(let i = 0; i < f.length && y < ylim; i++)[
+  for(let i = 0; i < f.length && y < ylim; i++){
     if(f[i] === '\n'){
       y += 4
       continue
