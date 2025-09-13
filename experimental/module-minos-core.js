@@ -1,8 +1,9 @@
+
 function log(x, y){
   api.broadcastMessage(`module-minos-${x}: ${y}`)
 }
-function getFile(x){
-  let m = followPath(x)
+function getFile(x, r = 0){
+  let m = followPath(x, r)
   api.setBlock(1e5,m,0, "Air")
   let a = api.getBlockData(1e5,m,0)?.persisted?.shared
   if(a == undefined){
@@ -21,19 +22,18 @@ function setFileAttribute(x,a,z){
   m[a] = z
   setFile(x,m)
 }
-function followPath(x, f=0){
+function followPath(x, f = 0){
   if(typeof(x) == "number"){
     return x
   }
   if(typeof(x) == "string"){
     x = x.split("/")
-	x.shift()
   }
   let j = []
   for(let i of x){
     f = (getFile(f).contents)
 	j = f.map(m => getFile(m))
-    j = j.map(m => m.name + '.' + m.extension)
+    j = j.map(m => m.name + m.extension)
     if(!j.includes(i)){
       throw new Error(`InvalidFilePathError: ${x}`)
       return false
@@ -79,20 +79,21 @@ function boot(){
 
 function init(){
   let m = followPath("System/Library")
-  font = getFile("Font.json", m).contents
-  config = getFile("Config.json", m).contents
+  font = getFile("font.json", m).contents
+  config = getFile("config.json", m).contents
   windows = []
-  let a = JSON.parse(getFile("requirements.json", m).contents)
-  for(let i of a){
-    requestExecFunction(`executeCFF('pack',${i})`, packLoaded)
+  let a = getFile("requirements.json", m)
+  for(let i of a.contents){
+    requestExecFunction(`executeCFF('.pack','${i}')`, 'packLoaded')
   }
-  requestExecFunction('initTerminal()', 'bootupSuccess')
+  log("minfs", "SUCCESFUL INIT")
   return 'POSITIVE INIT'
 }
 
 function executeCFF(extension, data){
-  let tr = `System/Library/${extension}.cff/main.js`
-  tr = eval(`let data = ${data}; let path = ${tr}; ${getFile(tr)}`)
+  let tr = `System/Library/${extension}.cff`
+  tr = getFile(tr)
+  tr = eval(`let data = ${data}; let path = ${tr}; ${tr}`)
   if(tr != "HALT"){
     requestExecFunction(`executeCFF(extension, data)`)
     return tr
