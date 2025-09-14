@@ -1,6 +1,6 @@
 try{
   let j = eval(data)
 } catch {
-  log("app.cff",j)
+  log("app.cff",`Unable to run file ${data}`)
   return j
 }
