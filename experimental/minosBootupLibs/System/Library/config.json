@@ -1,4 +1,6 @@
 {
   displayx: 256,
-  displayy: 128
+  displayy: 128,
+  DARK: [0,0,0],
+  LIGHT: [255,255,255]
 }
