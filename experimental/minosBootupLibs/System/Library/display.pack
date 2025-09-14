@@ -3,7 +3,7 @@ function drawDisplay(id){
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        f[display.x * (i.startX + j) + i.startY + z].style.color = win[i.y][i.x]
+        f[display.x * (i.startX + j) + i.startY + z].style.color = i.win[z][j]
       }
     }
   }
@@ -16,14 +16,13 @@ function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
       y += 4
       continue
     }
-    font[f[i]].forEach((j,fy) => fy.forEach((m,fx) => win[y+fy][x+fx]=Array(3).fill(255*(m!="#")) ))
+    font[f[i]].forEach((j,fy) => fy.forEach((m,fx) => win[y+fy][x+fx]=Array(3).fill( m=="#" ? config.DARK : config.LIGHT ))
     x += 4
     if(x > xlim - 4){
       x = dx
     }
   }
 }
-
 function drawBoxOutline(x1,x2,y1,y2){
   let m = [0,0,0]
   for(let i = y1; i < y2; i++){
@@ -35,3 +34,7 @@ function drawBoxOutline(x1,x2,y1,y2){
     display[y2][i] = m
   }
 }
+function createNewWindow(startX, startY, x, y){
+  windows[windows.length] = {startX: startX, startY: startY, x: x, y: y, win: Array(y).fill(Array(x).fill(config.DARK))}
+}
+windows = []
