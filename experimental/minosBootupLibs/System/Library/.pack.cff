@@ -1,5 +1,5 @@
 try{
-let j = eval(getFile(data))
+let j = eval(getFile(data).contents)
 }
 catch{
 log("pack.cff", j)
