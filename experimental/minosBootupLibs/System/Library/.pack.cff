@@ -3,5 +3,5 @@ let j = eval(getFile(data))
 }
 catch{
 log("pack.cff", j)
-return "HALT"
 }
+"HALT"
