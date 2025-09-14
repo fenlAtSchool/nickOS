@@ -13,6 +13,10 @@ function cd(x){
   terminalPath = followPath(x)
   return terminalpath
 }
+function return(){
+  terminalPath = ""
+  return
+}
 function echo(x){
   return log("terminal", parseCommand(X))
 }
