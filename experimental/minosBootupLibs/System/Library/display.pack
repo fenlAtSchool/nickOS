@@ -44,7 +44,13 @@ class Window{
       }
     }
   }
-  
+
+  setPixel(x,y, z){
+    this.win[x][y] = z
+  }
+  getPixel(x,y){
+    return this.win[x][y]
+  }
 }
 
 windows = []
