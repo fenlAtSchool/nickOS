@@ -3,7 +3,7 @@ function drawDisplay(id){
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        f[display.x * (i.startX + j) + i.startY + z].style.color = i.win[z][j]
+        f[display.x * (i.startx + j) + i.starty + z].style.color = i.win[z][j]
       }
     }
   }
@@ -12,8 +12,8 @@ function drawDisplay(id){
 
 class Window{
   constructor(sx, sy, x, y){
-    this.sx = sx
-    this.sy = sy
+    this.sx = startx
+    this.sy = starty
     this.x = x
     this.y = y
     this.win = Array(y).fill(Array(x).fill(config.DARK))
