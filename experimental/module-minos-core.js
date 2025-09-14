@@ -74,6 +74,7 @@ function newFile(z,x){
 
 function boot(){
   functions = {toRun: [], results: {}}
+	user = myId
   requestExecFunction('init()', 'bootupCode')
 }
 
@@ -81,13 +82,12 @@ function init(){
   let m = followPath("System/Library")
   font = getFile("font.json", m).contents
   config = getFile("config.json", m).contents
-  windows = []
   let a = getFile("requirements.json", m)
   for(let i of a.contents){
     requestExecFunction(`executeCFF('.pack','${i}')`, 'packLoaded')
   }
-  log("minfs", "SUCCESFUL INIT")
-  return 'POSITIVE INIT'
+  log("minfs", "Basic Initialization Succesful")
+  return 1
 }
 
 function executeCFF(extension, data){
