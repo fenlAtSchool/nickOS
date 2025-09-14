@@ -11,7 +11,7 @@ function parseCommand(x){
 
 function cd(x){
   terminalPath = followPath(x)
-  return terminalpath
+  return terminalPath
 }
 function home(){
   terminalPath = ""
