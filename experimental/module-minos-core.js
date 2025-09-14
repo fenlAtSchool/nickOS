@@ -1,4 +1,8 @@
-
+function onPlayerClick(id){
+	if(id == user){
+		registerClick = true
+	}
+}
 function log(x, y){
   api.broadcastMessage(`module-minos-${x}: ${y}`)
 }
@@ -83,6 +87,7 @@ function init(){
   font = getFile("font.json", m).contents
   config = getFile("config.json", m).contents
   let a = getFile("requirements.json", m)
+  registerClick = false
   for(let i of a.contents){
     requestExecFunction(`executeCFF('.pack','${i}')`, 'packLoaded')
   }
@@ -109,7 +114,12 @@ function executeFunction(){
 	functions.results[func[1]] = eval(func[0])
   }
 }
-boot()
+function decreaseClick(){
+	isClicking = registerClick
+	registerClick = false
+	requestExecFunction('decreaseClick()', 'tempOutput')
+}
+
 function tick(){
   executeFunction()
 }
