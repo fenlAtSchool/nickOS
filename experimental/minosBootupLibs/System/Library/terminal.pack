@@ -3,7 +3,7 @@
 globalThis.parseCommand = function(x){
   x = x.split(' ')
   let f = x.shift()
-  return eval(`${f}(...[x.map(v => JSON.parse(v))])`)
+  return eval(`${f}(...[x])`)
 }
 
 globalThis.cd = function(x){
