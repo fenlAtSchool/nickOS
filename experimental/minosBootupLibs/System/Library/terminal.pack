@@ -2,9 +2,6 @@
 
 globalThis.parseCommand = function(x){
   x = x.split(' ')
-  if(x.length == 1){
-    return JSON.parse(x)
-  }
   let f = x.shift()
   return eval(`${f}(...[x.map(v => JSON.parse(v))])`)
 }
