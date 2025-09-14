@@ -20,8 +20,8 @@ function ls(){
   x = getFile(x, terminalPath)
   return log("terminal", x.contents.map(v => getFile(v)).map(v => v.name + v.extension))
 }
-function touch(x){
-  return 
+function touch(x, y){
+  return log("terminal", newFile(x, y))
 }
 function initTerminal(){
   terminalPath = followPath("User")
