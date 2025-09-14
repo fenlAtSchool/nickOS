@@ -23,18 +23,18 @@ function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
     }
   }
 }
-function drawBoxOutline(x1,x2,y1,y2){
-  let m = [0,0,0]
+function drawBoxOutline(z, x1,x2,y1,y2){
   for(let i = y1; i < y2; i++){
-    display[i][x1] = m
-    display[i][x2] = m
+    windows[z][i][x1] = config.DARK
+    windwos[z][i][x2] = config.DARK
   }
   for(let i = x1; i < x2; i++){
-    display[y1][i] = m
-    display[y2][i] = m
+    windows[z][y1][i] = config.DARK
+    windows[z][y2][i] = config.DARK
   }
 }
 function createNewWindow(startX, startY, x, y){
   windows[windows.length] = {startX: startX, startY: startY, x: x, y: y, win: Array(y).fill(Array(x).fill(config.DARK))}
+  return windows.length - 1
 }
 windows = []
