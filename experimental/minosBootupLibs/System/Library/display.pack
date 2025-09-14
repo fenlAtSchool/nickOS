@@ -18,12 +18,12 @@ class Window{
     this.y = y
     this.win = Array(y).fill(Array(x).fill(config.DARK))
   }
-  fillInOutline(){
-    this.win[0].fill(config.DARK)
-    this.win[x - 1].fill(config.DARK)
-    for(let i = 0; i < x; i++){
-      this.win[i][0] = config.DARK
-      this.win[i][y - 1] = config.DARK
+  fillInOutline(x1, x2, y1, y2){
+    this.win[x1].fill(config.DARK)
+    this.win[x2].fill(config.DARK)
+    for(let i = 1; i < x2 - x1; i++){
+      this.win[i][y1] = config.DARK
+      this.win[i][y2] = config.DARK
     }
   }
   dtxt(x,y, f, xlim = this.x, ylim = this.y){
