@@ -1,6 +1,6 @@
 
 
-function parseCommand(x){
+globalThis.parseCommand = function(x){
   x = x.split(' ')
   if(x.length == 1){
     return JSON.parse(x)
@@ -9,25 +9,22 @@ function parseCommand(x){
   return eval(`${f}(...[x.map(v => JSON.parse(v))])`)
 }
 
-function cd(x){
+globalThis.cd = function(x){
   terminalPath = followPath(x)
   return terminalPath
 }
-function home(){
+globalThis.home = function(){
   terminalPath = ""
   return
 }
-function echo(x){
+globalThis.echo = function(x){
   return log("terminal", parseCommand(X))
 }
-function ls(){
+globalThis.ls = function(){
   x = getFile(x, terminalPath)
   return log("terminal", x.contents.map(v => getFile(v)).map(v => v.name + v.extension))
 }
-function touch(x, y){
+globalThis.touch = function(x, y){
   return log("terminal", newFile(x, y))
 }
-function initTerminal(){
-  terminalPath = followPath("User")
-  return 1
-}
+terminalPath = followPath("User")
