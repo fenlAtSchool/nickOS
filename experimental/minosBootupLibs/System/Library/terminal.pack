@@ -7,7 +7,7 @@ globalThis.parseCommand = function(x){
 }
 
 globalThis.cd = function(x){
-  terminalPath = followPath(x)
+  terminalPath = x
   return terminalPath
 }
 globalThis.home = function(){
@@ -18,7 +18,7 @@ globalThis.echo = function(x){
   return log("terminal", parseCommand(X))
 }
 globalThis.ls = function(){
-  x = getFile(terminalPath)
+  let x = getFile(terminalPath)
   return log("terminal", x.contents.map(v => getFile(v)).map(v => v.name + v.extension))
 }
 globalThis.touch = function(x, y){
