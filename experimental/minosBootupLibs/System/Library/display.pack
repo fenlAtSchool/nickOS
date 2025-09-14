@@ -9,32 +9,42 @@ function drawDisplay(id){
   }
   api.setFlyingMiddleMessage(id,f,0)
 }
-function dtxt(win, x,y,f, xlim=win.length, ylim=win[0].length){
-  dx = x
-  for(let i = 0; i < f.length && y < ylim; i++){
-    if(f[i] === '\n'){
-      y += 4
-      continue
+
+class Window{
+  constructor(sx, sy, x, y){
+    this.sx = sx
+    this.sy = sy
+    this.x = x
+    this.y = y
+    this.win = Array(y).fill(Array(x).fill(config.DARK))
+  }
+  fillInOutline(){
+    this.win[0].fill(config.DARK)
+    this.win[x - 1].fill(config.DARK)
+    for(let i = 0; i < x; i++){
+      this.win[i][0] = config.DARK
+      this.win[i][y - 1] = config.DARK
     }
-    font[f[i]].forEach((j,fy) => fy.forEach((m,fx) => win[y+fy][x+fx]=Array(3).fill( m=="#" ? config.DARK : config.LIGHT ))
-    x += 4
-    if(x > xlim - 4){
-      x = dx
+  }
+  dtxt(x,y, f, xlim = this.x, ylim = this.y){
+    let dx = x
+    for(let i= 0; i < f.length && y < ylim; i++){
+      if(f[i] === '\n'){
+        y += 4
+        continue
+      }
+      for(let j = 0; j < 5; j++){
+        for(let z = 0; z < 3; z++){
+          this.win[y + j][x + z] = font[f[i]][j][z]
+        }
+      }
+      x += 4
+      if(x > xlim){
+        x = dx
+      }
     }
   }
+  
 }
-function drawBoxOutline(z, x1,x2,y1,y2){
-  for(let i = y1; i < y2; i++){
-    windows[z][i][x1] = config.DARK
-    windwos[z][i][x2] = config.DARK
-  }
-  for(let i = x1; i < x2; i++){
-    windows[z][y1][i] = config.DARK
-    windows[z][y2][i] = config.DARK
-  }
-}
-function createNewWindow(startX, startY, x, y){
-  windows[windows.length] = {startX: startX, startY: startY, x: x, y: y, win: Array(y).fill(Array(x).fill(config.DARK))}
-  return windows.length - 1
-}
+
 windows = []
