@@ -19,7 +19,7 @@ globalThis.echo = function(x){
 }
 globalThis.ls = function(){
   let x = getFile(terminalPath).contents
-  x = x.map(v => getFile(v).map(v => v.name + v.extension)
+  x = x.map(v => getFile(v)).map(v => v.name + v.extension)
   return log("terminal", x)
 }
 globalThis.touch = function(x, y){
