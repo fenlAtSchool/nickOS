@@ -88,8 +88,9 @@ function init(){
   config = getFile("config.json", m).contents
   let a = getFile("requirements.json", m)
   registerClick = false
+	requestExecFunction('executeCFF(".pack","~/System/Library/require.pack")')
   for(let i of a.contents){
-    requestExecFunction(`executeCFF('.pack','${i}')`, 'packLoaded')
+    requestExecFunction(`require(${i})`, 'packLoaded')
   }
   log("minfs", "Basic Initialization Succesful")
   return 1
