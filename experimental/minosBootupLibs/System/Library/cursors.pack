@@ -8,10 +8,16 @@ function decreaseClick(){
 	}
 	requestExecFunction('decreaseClick()', 'tempOutput')
 }
+function getPlayerLook(){
+	let z = api.getPlayerFacingInfo(id).dir
+	if(inBounds(z[0], -0.5, 0.5) && inBounds(z[1],-0,5,0,5)){
+		return [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
+	}
+}
 function onPlayerClick(id){
   if(id == user){
     registerClick = true
   }
 }
-decreaesClick()
+decreaseClick()
 clickFunctions = []
