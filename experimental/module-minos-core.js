@@ -79,7 +79,7 @@ function newFile(z,x){
 function boot(){
   functions = {toRun: [], results: {}}
 	user = myId
-  requestExecFunction('init()', 'bootupCode')
+  requestExecFunction(init, 'bootupCode')
 }
 
 function init(){
@@ -88,9 +88,9 @@ function init(){
   config = getFile("config.json", m).contents
   let a = getFile("requirements.json", m)
   registerClick = false
-	requestExecFunction('executeCFF(".pack","~/System/Library/require.pack")')
+	requestExecFunction(() => executeCFF(".pack","~/System/Library/require.pack"), '')
   for(let i of a.contents){
-    requestExecFunction(`require(${i})`, 'packLoaded')
+    requestExecFunction(() => require(${i}), 'packLoaded')
   }
   log("minfs", "Basic Initialization Succesful")
   return 1
@@ -101,7 +101,7 @@ function executeCFF(extension, data){
   tr = getFile(tr)
   tr = eval(`let data = ${data}; let path = ${tr}; ${tr}`)
   if(tr != "HALT"){
-    requestExecFunction(`executeCFF(extension, data)`)
+    requestExecFunction(() => executeCFF(extension, data))
     return tr
   }
 }
@@ -112,7 +112,7 @@ function requestExecFunction(func, resultOutputName){
 function executeFunction(){
   if(functions.toRun.length > 0){
 	let func = functions.toRun.shift()
-	functions.results[func[1]] = eval(func[0])
+	functions.results[func[1]] = func[0]()
   }
 }
 
