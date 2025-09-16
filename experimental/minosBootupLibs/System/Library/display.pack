@@ -14,8 +14,8 @@ class Window{
   constructor(sx, sy, x, y){
     this.sx = startx
     this.sy = starty
-    this.x = x
-    this.y = y
+    this.x = x + 2
+    this.y = y + 2
     this.win = Array(y).fill(Array(x).fill(config.DARK))
   }
   fillInOutline(x1, x2, y1, y2){
