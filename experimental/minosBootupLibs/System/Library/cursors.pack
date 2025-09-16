@@ -11,9 +11,11 @@ function decreaseClick(){
 function getPlayerLook(){
 	let z = api.getPlayerFacingInfo(id).dir
 	if(inBounds(z[0], -0.5, 0.5) && inBounds(z[1],-0,5,0,5)){
-		return [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
+		cursorPos = [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
+	} else {
+		cursorPos =  [0,0]
 	}
-	return [0,0]
+	requestExecFunction('getPlayerLook()','')
 }
 function onPlayerClick(id){
   if(id == user){
@@ -21,4 +23,5 @@ function onPlayerClick(id){
   }
 }
 decreaseClick()
+getPlayerLook()
 clickFunctions = []
