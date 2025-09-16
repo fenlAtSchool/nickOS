@@ -1,4 +1,4 @@
-function decreaseClick(){
+globalThis.decreaseClick = function(){
 	isClicking = registerClick
 	registerClick = false
 	if(isClicking){
@@ -8,7 +8,7 @@ function decreaseClick(){
 	}
 	requestExecFunction('decreaseClick()', 'tempOutput')
 }
-function getPlayerLook(){
+globalThis.getPlayerLook = function(){
 	let z = api.getPlayerFacingInfo(id).dir
 	if(inBounds(z[0], -0.5, 0.5) && inBounds(z[1],-0,5,0,5)){
 		cursorPos = [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
@@ -17,7 +17,7 @@ function getPlayerLook(){
 	}
 	requestExecFunction('getPlayerLook()','')
 }
-function onPlayerClick(id){
+globalThis.onPlayerClick = function(id){
   if(id == user){
     registerClick = true
   }
