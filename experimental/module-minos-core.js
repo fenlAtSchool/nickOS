@@ -90,7 +90,7 @@ function init(){
   registerClick = false
 	requestExecFunction(() => executeCFF(".pack","~/System/Library/require.pack"), '')
   for(let i of a.contents){
-    requestExecFunction(() => require(${i}), 'packLoaded')
+    requestExecFunction(() => require(i), 'packLoaded')
   }
   log("minfs", "Basic Initialization Succesful")
   return 1
