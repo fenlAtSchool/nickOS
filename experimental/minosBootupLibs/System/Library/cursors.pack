@@ -3,7 +3,7 @@ globalThis.decreaseClick = function(){
 	registerClick = false
 	if(isClicking){
 		let m = ''
-		while(clickFunctions.length > 0{
+		while(clickFunctions.length > 0){
 			m = clickFunctions.shift()
 			m()
 		}
