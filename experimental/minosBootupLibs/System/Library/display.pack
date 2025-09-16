@@ -10,7 +10,7 @@ globalThis.drawDisplay = function(id){
   api.setFlyingMiddleMessage(id,f,0)
 }
 
-class Window{
+globalThis.Window = class{
   constructor(sx, sy, x, y){
     this.sx = startx
     this.sy = starty
