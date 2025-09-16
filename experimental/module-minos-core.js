@@ -115,16 +115,6 @@ function executeFunction(){
 	functions.results[func[1]] = eval(func[0])
   }
 }
-function decreaseClick(){
-	isClicking = registerClick
-	registerClick = false
-	if(isClicking){
-		while(clickFunctions.length > 0{
-			requestExecFunction(clickFunctions.shift(), '')
-		}
-	}
-	requestExecFunction('decreaseClick()', 'tempOutput')
-}
 
 function tick(){
   executeFunction()
