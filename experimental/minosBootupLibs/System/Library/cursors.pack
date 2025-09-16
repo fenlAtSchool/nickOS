@@ -8,7 +8,7 @@ globalThis.decreaseClick = function(){
 			m()
 		}
 	}
-	requestExecFunction('decreaseClick()', 'tempOutput')
+	requestExecFunction(decreaseClick, 'tempOutput')
 }
 globalThis.getPlayerLook = function(){
 	let z = api.getPlayerFacingInfo(id).dir
@@ -17,7 +17,7 @@ globalThis.getPlayerLook = function(){
 	} else {
 		cursorPos =  [0,0]
 	}
-	requestExecFunction('getPlayerLook()','')
+	requestExecFunction(getPlayerLook,'')
 }
 globalThis.onPlayerClick = function(id){
   if(id == user){
