@@ -8,6 +8,6 @@ class Button extends Window(){
     clickFunctions.push(() => this.exec())
   }
   exec(){
-    requestExecFunction(this.toExec, "")
+    requestExecFunction(() => this.toExec, "")
   }
 }
