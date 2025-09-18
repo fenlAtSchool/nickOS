@@ -19,9 +19,11 @@ globalThis.Window = class{
     this.win = Array(y).fill(Array(x).fill(config.DARK))
   }
   fillInOutline(x1, x2, y1, y2){
-    this.win[x1].fill(config.DARK)
-    this.win[x2].fill(config.DARK)
-    for(let i = 1; i < x2 - x1; i++){
+    for(let i = y1; i < y2 + 1; i++){
+      this.win[x1][i] = config.DARK
+      this.win[x2][i] = config.DARK
+    }
+    for(let i = x1; i < x2 + 1; i++){
       this.win[i][y1] = config.DARK
       this.win[i][y2] = config.DARK
     }
