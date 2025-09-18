@@ -1,4 +1,5 @@
 require("display.pack")
+require("utils.pack")
 globalThis.decreaseClick = function(){
 	isClicking = registerClick
 	registerClick = false
@@ -12,7 +13,7 @@ globalThis.decreaseClick = function(){
 	requestExecFunction(decreaseClick, 'tempOutput')
 }
 globalThis.getPlayerLook = function(){
-	let z = api.getPlayerFacingInfo(id).dir
+	let z = api.getPlayerFacingInfo(user).dir
 	if(inBounds(z[0], -0.5, 0.5) && inBounds(z[1],-0,5,0,5)){
 		cursorPos = [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
 	} else {
