@@ -1,7 +1,0 @@
-try{
-  JSON.parse(data)
-  log("json", `Succesfully parsed file ${data}`)
-} catch {
-  log("json", `Unable to parse file ${data}`)
-}
-"HALT"
