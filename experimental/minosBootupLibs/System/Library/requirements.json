@@ -1,5 +1,5 @@
 [
-  'System/Library/terminal.pack',
-  'System/Library/display.pack',
-  'System/Library/cursors.pack'
+  'terminal.pack',
+  'display.pack',
+  'cursors.pack'
 ]
