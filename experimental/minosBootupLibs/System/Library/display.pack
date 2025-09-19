@@ -11,7 +11,7 @@ globalThis.drawDisplay = function(id){
 }
 
 globalThis.Window = class{
-  constructor(sx, sy, x, y){
+  constructor(startx, starty, x, y){
     this.startx = startx
     this.starty = starty
     this.x = x + 2
