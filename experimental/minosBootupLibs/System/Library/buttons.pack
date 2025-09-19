@@ -5,6 +5,7 @@ class Button extends Window(){
   constructor(x,y,txt, func){
     super(x, y, 5, txt.length * 4)
     this.toExec = func
+    this.dtxt(1, 1, txt)
     clickFunctions.push(() => this.exec())
   }
   exec(){
