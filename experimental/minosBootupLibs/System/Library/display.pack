@@ -1,13 +1,13 @@
-globalThis.drawDisplay = function(id){
+globalThis.drawDisplay = function(id = user){
   let f = Array(config.displayx * config.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        f[display.x * (i.startx + j) + i.starty + z].style.color = i.win[z][j]
+        f[config.displayx * (i.startx + j) + config.displayy + z].style.color = i.win[z][j]
       }
     }
   }
-  api.setFlyingMiddleMessage(id,f,0)
+  api.setClientOption(id,"middleTextUpper",f)
 }
 
 globalThis.Window = class{
@@ -31,7 +31,7 @@ globalThis.Window = class{
   dtxt(x,y, f, xlim = this.x, ylim = this.y){
     let dx = x
     for(let i= 0; i < f.length && y < ylim; i++){
-      if(f[i] === '\n'){
+      if(f[i] === '\\n'){
         y += 4
         continue
       }
