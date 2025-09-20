@@ -1,13 +1,12 @@
 globalThis.drawDisplay = function(id = user){
-  let f = Array(config.displayx * config.displayy).fill({str: '\u2588', style: {color: [255,255,255]}})
+  let f = Array(displayy).map(v => Array(displayx).fill(config.DARK))
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        f[config.displayx * (i.startx + j) + config.displayy + z].style.color = i.win[z][j]
+        f[i.startx + j][i.starty + z].style.color = i.win[z][j]
       }
     }
   }
-  api.setClientOption(id,"middleTextUpper",f)
 }
 
 globalThis.Window = class{
@@ -16,7 +15,7 @@ globalThis.Window = class{
     this.starty = starty
     this.x = x + 2
     this.y = y + 2
-    this.win = Array(y).fill(Array(x).fill(config.DARK))
+    this.win = Array(y).fill(Array(x).fill(config.LIGHT))
   }
   fillInOutline(x1, x2, y1, y2){
     for(let i = y1; i < y2 + 1; i++){
