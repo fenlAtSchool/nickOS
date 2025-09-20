@@ -7,6 +7,9 @@ globalThis.drawDisplay = function(id = user){
       }
     }
   }
+  for(let i = 0; i < displayx/4; i++){
+    requestExecFunction(() => dis(4*i))
+  }
 }
 
 globalThis.Window = class{
