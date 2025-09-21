@@ -13,12 +13,19 @@ globalThis.decreaseClick = function(){
 	requestExecFunction(decreaseClick, 'tempOutput')
 }
 globalThis.getPlayerLook = function(){
-	let z = api.getPlayerFacingInfo(user).dir
-	if(inBounds(z[0], -0.5, 0.5) && inBounds(z[1],-0,5,0,5)){
-		cursorPos = [(z[0]*2 + 1) * config.displayx, (z[1]*2 + 1) * config.displayy]
-	} else {
-		cursorPos =  [0,0]
+	let z = api.getPlayerFacingInfO(user)
+	let look = z.camPos
+	z = z.dir
+	z[0] *= (50-look[2])/z[2]
+	z[1] *= (50-look[2])/z[2]
+	z[0] += look[0]
+	z[1] += look[1]
+	z[0] = Math.round(z[0] + displayx/2)
+	z[1] = Math.round(displayy - z[1])
+	if(inBounds(z, 0, displayx - 3) && inBounds(z[1], 0, displayy - 3)){
+		return z
 	}
+	return [0,0]
 	requestExecFunction(getPlayerLook,'')
 }
 globalThis.onPlayerClick = function(id){
