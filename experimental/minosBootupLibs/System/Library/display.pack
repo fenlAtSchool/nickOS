@@ -1,14 +1,30 @@
 globalThis.drawDisplay = function(id = user){
-  let f = Array(displayy).map(v => Array(displayx).fill(config.DARK))
+  screen = Array(displayy).map(v => Array(displayx).fill(config.DARK))
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        f[i.startx + j][i.starty + z].style.color = i.win[z][j]
+        screen[i.startx + j][i.starty + z].style.color = i.win[z][j]
       }
     }
   }
-  for(let i = 0; i < displayx/4; i++){
-    requestExecFunction(() => dis(4*i))
+  disx = 0
+  disy = 0
+  requestExecFunction(dis, '')
+}
+globalThis.dis = function(pos){
+  if(disy < displayy){
+    requestExecFunction(dis, '')
+  }
+  while(1){
+    api.setBlock([disx - displayx/2,displayy - disy,50], screen[disy][disx])
+    disx++
+    if(disx == displayx){
+      disy++
+      disx = 0
+    }
+    if(disy == displayy){
+      return ''
+    }
   }
 }
 
