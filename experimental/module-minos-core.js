@@ -8,13 +8,16 @@ function log(x, y){
 }
 function getFile(x, r = 0){
   let m = followPath(x, r)
-  api.setBlock(1e5,m,0, "Air")
   let a = api.getBlockData(1e5,m,0)?.persisted?.shared
   if(a == undefined){
 	throw new Error(`FileNotFoundError: ${x}`)
     return false
   }
   return a
+}
+function loadChunk(x){
+	x = Math.floor(x/32)
+	api.getBlock(1e5, 32*x + 16, 0)
 }
 function setFile(x,z){
   let m = followPath(x)
@@ -76,9 +79,10 @@ function newFile(z,x){
 
 
 
-function boot(){
+function boot(id){
   functions = {toRun: [], results: {}}
-	user = myId
+  user = id
+  requestExecFunction(() => loadChunk(0), '')
   requestExecFunction(init, 'bootupCode')
 }
 
