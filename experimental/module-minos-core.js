@@ -69,7 +69,7 @@ function newFile(z,x){
   r.fileCount++
   f.contents[f.contents.length] = r.fileCount
   setFile(z, f)
-  setFile(r, x)
+  setFile(r.fileCount, x)
   setFile(-1, r)
   log("minfs", `Succesful File Created: ${x}`)
   return r.fileCount
