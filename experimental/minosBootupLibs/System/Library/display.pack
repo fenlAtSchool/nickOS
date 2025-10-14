@@ -1,11 +1,7 @@
 globalThis.drawDisplay = function(id = user){
   screen = Array.from({length: config.displayy}, () => Array(config.displayx).fill(config.light))
   for(let i of windows){
-    for(let j = 0; j < i.x; j++){
-      for(let z = 0; z < i.y; z++){
-        screen[i.startx + j][i.starty + z] = i.win[z][j]
-      }
-    }
+    i.render()
   }
   disx = 0
   disy = 0
@@ -34,6 +30,7 @@ globalThis.Window = class{
     this.starty = starty
     this.x = x
     this.y = y
+    this.isVisible = true
     this.win = Array.from({length: y}, () => Array(x).fill(config.light))
   }
   fillInOutline(x1, x2, y1, y2){
@@ -70,6 +67,19 @@ globalThis.Window = class{
   }
   getPixel(x,y){
     return this.win[x][y]
+  }
+  setVisibility(x){
+    this.isVisible = x
+  }
+  render(){
+    if(!this.isVisible){
+      return
+    }
+    for(let j = 0; j < this.x; j++){
+      for(let z = 0; z < this.y; z++){
+        screen[this.startx + j][this.starty + z] = this.win[z][j]
+      }
+    }
   }
 }
 
