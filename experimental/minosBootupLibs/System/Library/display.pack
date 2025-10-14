@@ -1,9 +1,9 @@
 globalThis.drawDisplay = function(id = user){
-  screen = Array(config.displayy).fill(Array(config.displayx).fill(config.light))
+  screen = Array.from({length: config.displayy}, () => Array(config.displayx).fill(config.light))
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
-        screen[i.startx + j][i.starty + z].style.color = i.win[z][j]
+        screen[i.startx + j][i.starty + z] = i.win[z][j]
       }
     }
   }
@@ -32,18 +32,18 @@ globalThis.Window = class{
   constructor(startx, starty, x, y){
     this.startx = startx
     this.starty = starty
-    this.x = x + 2
-    this.y = y + 2
-    this.win = Array(y).fill(Array(x).fill(config.LIGHT))
+    this.x = x
+    this.y = y
+    this.win = Array.from({length: y}, () => Array(x).fill(config.light))
   }
   fillInOutline(x1, x2, y1, y2){
     for(let i = y1; i < y2 + 1; i++){
-      this.win[x1][i] = config.DARK
-      this.win[x2][i] = config.DARK
+      this.win[x1][i] = config.dark
+      this.win[x2][i] = config.dark
     }
     for(let i = x1; i < x2 + 1; i++){
-      this.win[i][y1] = config.DARK
-      this.win[i][y2] = config.DARK
+      this.win[i][y1] = config.dark
+      this.win[i][y2] = config.dark
     }
   }
   dtxt(x,y, f, xlim = this.x, ylim = this.y){
