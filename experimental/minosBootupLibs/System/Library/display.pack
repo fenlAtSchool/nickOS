@@ -1,5 +1,5 @@
 globalThis.drawDisplay = function(id = user){
-  screen = Array(displayy).map(v => Array(displayx).fill(config.DARK))
+  screen = Array(config.displayy).fill(Array(config.displayx).fill(config.light))
   for(let i of windows){
     for(let j = 0; j < i.x; j++){
       for(let z = 0; z < i.y; z++){
@@ -11,18 +11,18 @@ globalThis.drawDisplay = function(id = user){
   disy = 0
   requestExecFunction(dis, '')
 }
-globalThis.dis = function(pos){
-  if(disy < displayy){
+globalThis.dis = function(){
+  if(disy < config.displayy){
     requestExecFunction(dis, '')
   }
   while(1){
-    api.setBlock([disx - displayx/2,displayy - disy,50], screen[disy][disx])
+    api.setBlock([disx - config.displayx/2,config.displayy - disy,50], screen[disy][disx])
     disx++
-    if(disx == displayx){
+    if(disx == config.displayx){
       disy++
       disx = 0
     }
-    if(disy == displayy){
+    if(disy == config.displayy){
       return ''
     }
   }
