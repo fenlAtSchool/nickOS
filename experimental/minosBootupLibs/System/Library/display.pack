@@ -52,12 +52,13 @@ globalThis.Window = class{
       }
       for(let j = 0; j < 5; j++){
         for(let z = 0; z < 3; z++){
-          this.win[y + j][x + z] = font[f[i]][j][z] = "#" ? on : off
+          this.win[x + z][y + j] = font[f[i]][3*j+z] == "#" ? on : off
         }
       }
       x += 4
       if(x > xlim){
         x = dx
+        y += 6
       }
     }
   }
