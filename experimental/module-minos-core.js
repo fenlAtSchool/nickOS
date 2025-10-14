@@ -4,14 +4,18 @@ function onPlayerClick(id){
 		registerClick = true
 	}
 }
+function log(x, y){
+	api.broadcastMessage(`minos-module-${x}: ${y}`)
+}
 function getFile(x, r = 0){
   let m = followPath(x, r)
-  let str = api.getBlockData(1e5,m,0)?.persisted?.shared
-  if(a == undefined){
+  let n = api.getBlockData(1e5,m,0)?.persisted?.shared.c
+  if(n == undefined){
 		throw new Error(`fileNotFoundError: ${x}`)
     return false
   }
-	str = JSON.parse(Array.from({length: str}, (_,i) => api.getBlockData(1e5,m,i + 1)).join(''));
+  let str = Array.from({length: n}, (_,i) => api.getBlockData(1e5,m,i + 1).persisted.shared.c)
+  str = JSON.parse(str.join(''))
   return str 
 }
 function loadChunk(x){
@@ -22,11 +26,12 @@ function setFile(x,z){
 	try{
   	let n = JSON.stringify(z).match(/.{1,300}/g)
   	let m = followPath(x)
-		api.setBlockData(1e5, m, 0, {persisted: {shared: n.length}})
+		api.setBlockData(1e5, m, 0, {persisted: {shared: {c: n.length}}})
 		for(let i = 0; i < n.length; i++){
-  		api.setBlockData(1e5,m,i + 1,{persisted: {shared: n[i]}})
+  			api.setBlockData(1e5,m,i + 1,{persisted: {shared: {c: n[i]}}})
 		}
 	} catch {
+		api.log("Warning: setFile not working")
 		requestExecFunction(() => setFile(x, z), "")
 	}
 }
