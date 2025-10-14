@@ -47,7 +47,7 @@ globalThis.Window = class{
     let dx = x
     for(let i= 0; i < f.length && y < ylim; i++){
       if(f[i] === '\\n'){
-        y += 4
+        y += 6
         continue
       }
       for(let j = 0; j < 5; j++){
