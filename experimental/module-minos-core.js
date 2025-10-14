@@ -4,26 +4,31 @@ function onPlayerClick(id){
 		registerClick = true
 	}
 }
-function log(x, y){
-  api.broadcastMessage(`module-minos-${x}: ${y}`)
-}
 function getFile(x, r = 0){
   let m = followPath(x, r)
-  let a = api.getBlockData(1e5,m,0)?.persisted?.shared
+  let str = api.getBlockData(1e5,m,0)?.persisted?.shared
   if(a == undefined){
-	throw new Error(`FileNotFoundError: ${x}`)
+		throw new Error(`fileNotFoundError: ${x}`)
     return false
   }
-  return a
+	str = JSON.parse(Array.from({length: str}, (_,i) => api.getBlockData(1e5,m,i + 1)).join(''));
+  return str 
 }
 function loadChunk(x){
 	x = Math.floor(x/32)
 	api.getBlock(1e5, 32*x + 16, 0)
 }
 function setFile(x,z){
-  let m = followPath(x)
-  api.setBlock(1e5,m,0, "Air")
-  api.setBlockData(1e5,m,0,{persisted: {shared: z}})
+	try{
+  	let n = JSON.stringify(z).match(/.{1,300}/g)
+  	let m = followPath(x)
+		api.setBlockData(1e5, m, 0, {persisted: {shared: n.length}})
+		for(let i = 0; i < n.length; i++){
+  		api.setBlockData(1e5,m,i + 1,{persisted: {shared: n[i]}})
+		}
+	} catch {
+		requestExecFunction(() => setFile(x, z), "")
+	}
 }
 function setFileAttribute(x,a,z){
   let m = getFile(x)
@@ -43,7 +48,7 @@ function followPath(x, f = 0){
 	j = f.map(m => getFile(m))
     j = j.map(m => m.name + m.extension)
     if(!j.includes(i)){
-      throw new Error(`InvalidFilePathError: ${x}`)
+      throw new Error(`invalidFilePathError: ${x}`)
       return false
     }
 	f = f[j.indexOf(i)]
@@ -75,17 +80,12 @@ function newFile(z,x){
   return r.fileCount
 }
 
-
-
-
-
-
 function boot(id){
   functions = {toRun: [], results: {}}
   user = id
   loadChunk(0)
   requestExecFunction(init, 'bootupCode')
-  log("minfs", "Succesful Boot")
+	api.log("minfs: Succesful Boot")
 }
 
 function init(){
