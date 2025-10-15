@@ -1,5 +1,7 @@
 [
-  'terminal.pack',
+  'buttons.pack', 
+  'cursors.pack',
   'display.pack',
-  'cursors.pack'
+  'terminal.pack',
+  'utils.pack'
 ]
