@@ -1,25 +1,39 @@
+functions = {toRun: []}
 function onPlayerClick(id){
 	if(id == user){
 		registerClick = true
 	}
 }
 function log(x, y){
-  api.broadcastMessage(`module-minos-${x}: ${y}`)
+	api.broadcastMessage(`minos-module-${x}: ${y}`)
 }
 function getFile(x, r = 0){
   let m = followPath(x, r)
-  api.setBlock(1e5,m,0, "Air")
-  let a = api.getBlockData(1e5,m,0)?.persisted?.shared
-  if(a == undefined){
-	throw new Error(`FileNotFoundError: ${x}`)
+  let n = api.getBlockData(1e5,m,0)?.persisted?.shared.c
+  if(n == undefined){
+		throw new Error(`fileNotFoundError: ${x}`)
     return false
   }
-  return a
+  let str = Array.from({length: n}, (_,i) => api.getBlockData(1e5,m,i + 1).persisted.shared.c)
+  str = JSON.parse(str.join(''))
+  return str 
+}
+function loadChunk(x){
+	x = Math.floor(x/32)
+	api.getBlock(1e5, 32*x + 16, 0)
 }
 function setFile(x,z){
-  let m = followPath(x)
-  api.setBlock(1e5,m,0, "Air")
-  api.setBlockData(1e5,m,0,{persisted: {shared: z}})
+	try{
+  	let n = JSON.stringify(z).match(/.{1,300}/g)
+  	let m = followPath(x)
+		api.setBlockData(1e5, m, 0, {persisted: {shared: {c: n.length}}})
+		for(let i = 0; i < n.length; i++){
+  			api.setBlockData(1e5,m,i + 1,{persisted: {shared: {c: n[i]}}})
+		}
+	} catch {
+		api.log("Warning: setFile not working")
+		requestExecFunction(() => setFile(x, z), "")
+	}
 }
 function setFileAttribute(x,a,z){
   let m = getFile(x)
@@ -39,7 +53,7 @@ function followPath(x, f = 0){
 	j = f.map(m => getFile(m))
     j = j.map(m => m.name + m.extension)
     if(!j.includes(i)){
-      throw new Error(`InvalidFilePathError: ${x}`)
+      throw new Error(`invalidFilePathError: ${x}`)
       return false
     }
 	f = f[j.indexOf(i)]
@@ -65,21 +79,18 @@ function newFile(z,x){
   r.fileCount++
   f.contents[f.contents.length] = r.fileCount
   setFile(z, f)
-  setFile(r, x)
+  setFile(r.fileCount, x)
   setFile(-1, r)
   log("minfs", `Succesful File Created: ${x}`)
   return r.fileCount
 }
 
-
-
-
-
-
-function boot(){
+function boot(id){
   functions = {toRun: [], results: {}}
-	user = myId
+  user = id
+  loadChunk(0)
   requestExecFunction(init, 'bootupCode')
+	api.log("minfs: Succesful Boot")
 }
 
 function init(){
@@ -88,18 +99,19 @@ function init(){
   config = getFile("config.json", m).contents
   let a = getFile("requirements.json", m)
   registerClick = false
-	requestExecFunction(() => executeCFF(".pack","~/System/Library/require.pack"), '')
+  executeCFF(".pack","System/Library/require.pack")
   for(let i of a.contents){
     requestExecFunction(() => require(i), 'packLoaded')
   }
-  log("minfs", "Basic Initialization Succesful")
+  requestExecFunction(() => log("minfs", "Succesful high-level initialization"), '')
+  log("minfs", "Succesful low-level initialization")
   return 1
 }
 
 function executeCFF(extension, data){
   let tr = `System/Library/${extension}.cff`
-  tr = getFile(tr)
-  tr = eval(`let data = ${data}; let path = ${tr}; ${tr}`)
+  tr = getFile(tr).contents
+  tr = eval(`let data = '${data}'; let path = '${tr}'; ${tr}`)
   if(tr != "HALT"){
     requestExecFunction(() => executeCFF(extension, data))
     return tr
@@ -115,7 +127,6 @@ function executeFunction(){
 	functions.results[func[1]] = func[0]()
   }
 }
-
 function tick(){
-  executeFunction()
+	executeFunction()
 }
