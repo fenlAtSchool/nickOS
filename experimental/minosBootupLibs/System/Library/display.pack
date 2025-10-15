@@ -1,6 +1,6 @@
 globalThis.drawDisplay = function(id = user){
   screen = Array.from({length: config.displayy}, () => Array(config.displayx).fill(config.light))
-  for(let i of windows){
+  for(let i of Object.values(windows)){
     i.render()
   }
   disx = 0
