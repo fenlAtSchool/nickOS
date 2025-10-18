@@ -117,7 +117,10 @@ function executeCFF(extension, data){
     return tr
   }
 }
-
+function execute(file){
+	let m = file.split('.').at(-1)
+	executeCFF(m,file)
+}
 function requestExecFunction(func, resultOutputName){
   functions.toRun[functions.toRun.length] = [func, resultOutputName]
 }
