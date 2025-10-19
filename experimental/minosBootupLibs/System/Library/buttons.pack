@@ -1,7 +1,7 @@
 require('display.pack')
 require('cursors.pack')
 
-class Button extends Window{
+globalThis.Button = new(class extends Window{
   constructor(x,y, dx, dy, func){
     super(x, y, dx, dy)
     this.toExec = func
@@ -10,4 +10,4 @@ class Button extends Window{
   exec(){
     requestExecFunction(() => this.toExec, "")
   }
-}
+})()
