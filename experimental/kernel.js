@@ -31,7 +31,7 @@ function setFile(x,z){
   			api.setBlockData(1e5,m,i + 1,{persisted: {shared: {c: n[i]}}})
 		}
 	} catch {
-		api.log("Warning: setFile not working")
+		log("kernel","Warning: setFile not working")
 		requestExecFunction(() => setFile(x, z), "")
 	}
 }
@@ -81,7 +81,7 @@ function newFile(z,x){
   setFile(z, f)
   setFile(r.fileCount, x)
   setFile(-1, r)
-  log("minfs", `Succesful File Created: ${x}`)
+  log("kernel", `Succesful File Created: ${x}`)
   return r.fileCount
 }
 
@@ -90,7 +90,7 @@ function boot(id){
   user = id
   loadChunk(0)
   requestExecFunction(init, 'bootupCode')
-	api.log("minfs: Succesful Boot")
+  log("kernel", "Succesful Boot")
 }
 
 function init(){
@@ -103,8 +103,8 @@ function init(){
   for(let i of a.contents){
     requestExecFunction(() => require(i), 'packLoaded')
   }
-  requestExecFunction(() => log("minfs", "Succesful high-level initialization"), '')
-  log("minfs", "Succesful low-level initialization")
+  requestExecFunction(() => log("kernel", "Succesful high-level initialization"), '')
+  log("kernel", "Succesful low-level initialization")
   return 1
 }
 
@@ -167,7 +167,7 @@ function tick(){
 			try{
 				i.exec()
 			} catch(error) {
-				log("min-processor", "Error")
+				log("kernel", "Error")
 				i.onError()
 			}
 		}
