@@ -1,4 +1,4 @@
-functions = {toRun: []}
+
 function onPlayerClick(id){
 	if(id == user){
 		registerClick = true
@@ -86,7 +86,6 @@ function newFile(z,x){
 }
 
 function boot(id){
-  functions = {toRun: [], results: {}}
   user = id
   loadChunk(0)
   requestExecFunction(init, 'bootupCode')
@@ -121,6 +120,9 @@ function execute(file){
 	let m = file.split('.').at(-1)
 	executeCFF(m,file)
 }
+
+/* Legacy Scheduler
+
 function requestExecFunction(func, resultOutputName){
   functions.toRun[functions.toRun.length] = [func, resultOutputName]
 }
@@ -132,4 +134,40 @@ function executeFunction(){
 }
 function tick(){
 	executeFunction()
+}
+
+*/
+functions = {tick: 0, stack: {}}
+function requestExecFunction(func, dummy){ // Legacy Handler
+	scheduleFirstUnused(func)
+}
+function schedule(x, tick, onError = null){
+	let m = functions.stack[functions.tick + tick]
+	if(!m){
+		m = []
+	}
+	m[m.length] = {exec: x, onError: onError}
+	functions.stack[functions.stack.length + tick] = m
+}
+function scheduleFirstUnused(x, min = functions.tick, onError = null){
+	while(functions.stack[min]){
+		min++
+	}
+	functions.stack[min] = [{exec: x, onError: onError}]
+}
+function scheduleLast(x, onError = null){
+	let m = max(...functions.stack.keys + functions.tick) + 1
+	functions.stack[m] = [{exec: x, onError: onError}]
+}
+function tick(){
+	functions.tick++
+	if(functions.stack[functions.tick]){
+		for(let i of functions.stack[functions.tick]){
+			try{
+				eval(i.exec)
+			} catch(error) {
+				eval(i.onError)
+			}
+		}
+	}
 }
