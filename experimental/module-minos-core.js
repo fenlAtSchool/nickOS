@@ -86,6 +86,7 @@ function newFile(z,x){
 }
 
 function boot(id){
+  functions = {tick: 0, stack: {}}
   user = id
   loadChunk(0)
   requestExecFunction(init, 'bootupCode')
@@ -149,24 +150,25 @@ function schedule(x, tick, onError = null){
 	m[m.length] = {exec: x, onError: onError}
 	functions.stack[functions.stack.length + tick] = m
 }
-function scheduleFirstUnused(x, min = functions.tick, onError = null){
+function scheduleFirstUnused(x, min = functions.tick+1, onError = null){
 	while(functions.stack[min]){
 		min++
 	}
 	functions.stack[min] = [{exec: x, onError: onError}]
 }
-function scheduleLast(x, onError = null){
-	let m = max(...functions.stack.keys + functions.tick) + 1
+function scheduleLast(x,shift=1,onError = null){
+	let m = max(...functions.stack.keys + functions.tick) + shift
 	functions.stack[m] = [{exec: x, onError: onError}]
 }
 function tick(){
 	functions.tick++
 	if(functions.stack[functions.tick]){
-		for(let i of functions.stack[functions.tick]){
+		for(const i of functions.stack[functions.tick]){
 			try{
-				eval(i.exec)
+				i.exec()
 			} catch(error) {
-				eval(i.onError)
+				log("min-processor", "Error")
+				i.onError()
 			}
 		}
 	}
