@@ -1,4 +1,4 @@
-functions = {toRun: []}
+
 function onPlayerClick(id){
 	if(id == user){
 		registerClick = true
@@ -31,7 +31,7 @@ function setFile(x,z){
   			api.setBlockData(1e5,m,i + 1,{persisted: {shared: {c: n[i]}}})
 		}
 	} catch {
-		api.log("Warning: setFile not working")
+		log("kernel","Warning: setFile not working")
 		requestExecFunction(() => setFile(x, z), "")
 	}
 }
@@ -81,16 +81,16 @@ function newFile(z,x){
   setFile(z, f)
   setFile(r.fileCount, x)
   setFile(-1, r)
-  log("minfs", `Succesful File Created: ${x}`)
+  log("kernel", `Succesful File Created: ${x}`)
   return r.fileCount
 }
 
 function boot(id){
-  functions = {toRun: [], results: {}}
+  functions = {tick: 0, stack: {}}
   user = id
   loadChunk(0)
   requestExecFunction(init, 'bootupCode')
-	api.log("minfs: Succesful Boot")
+  log("kernel", "Succesful Boot")
 }
 
 function init(){
@@ -103,8 +103,8 @@ function init(){
   for(let i of a.contents){
     requestExecFunction(() => require(i), 'packLoaded')
   }
-  requestExecFunction(() => log("minfs", "Succesful high-level initialization"), '')
-  log("minfs", "Succesful low-level initialization")
+  requestExecFunction(() => log("kernel", "Succesful high-level initialization"), '')
+  log("kernel", "Succesful low-level initialization")
   return 1
 }
 
@@ -117,6 +117,12 @@ function executeCFF(extension, data){
     return tr
   }
 }
+function execute(file){
+	let m = file.split('.').at(-1)
+	executeCFF(m,file)
+}
+
+/* Legacy Scheduler
 
 function requestExecFunction(func, resultOutputName){
   functions.toRun[functions.toRun.length] = [func, resultOutputName]
@@ -129,4 +135,41 @@ function executeFunction(){
 }
 function tick(){
 	executeFunction()
+}
+
+*/
+functions = {tick: 0, stack: {}}
+function requestExecFunction(func, dummy){ // Legacy Handler
+	scheduleFirstUnused(func)
+}
+function schedule(x, tick, onError = null){
+	let m = functions.stack[functions.tick + tick]
+	if(!m){
+		m = []
+	}
+	m[m.length] = {exec: x, onError: onError}
+	functions.stack[functions.stack.length + tick] = m
+}
+function scheduleFirstUnused(x, min = functions.tick+1, onError = null){
+	while(functions.stack[min]){
+		min++
+	}
+	functions.stack[min] = [{exec: x, onError: onError}]
+}
+function scheduleLast(x,shift=1,onError = null){
+	let m = max(...functions.stack.keys + functions.tick) + shift
+	functions.stack[m] = [{exec: x, onError: onError}]
+}
+function tick(){
+	functions.tick++
+	if(functions.stack[functions.tick]){
+		for(const i of functions.stack[functions.tick]){
+			try{
+				i.exec()
+			} catch(error) {
+				log("kernel", "Error")
+				i.onError()
+			}
+		}
+	}
 }
