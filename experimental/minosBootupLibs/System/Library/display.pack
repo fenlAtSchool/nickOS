@@ -33,6 +33,9 @@ globalThis.Window = class{
     this.isVisible = true
     this.win = Array.from({length: y}, () => Array(x).fill(config.light))
   }
+  getParams(){
+    return {startx: startx, starty: starty, x: x, y: y, isVisible: isVisible: win: win}
+  }
   fillInOutline(x1, x2, y1, y2){
     for(let i = y1; i < y2 + 1; i++){
       this.win[x1][i] = config.dark
