@@ -3,11 +3,12 @@ require("utils.pack")
 globalThis.decreaseClick = function(){
 	isClicking = registerClick
 	registerClick = false
+	let z = getPlayerLook()
 	if(isClicking){
 		let m = ''
 		while(clickFunctions.length > 0){
 			m = clickFunctions.shift()
-			m()
+			m(z)
 		}
 	}
 	requestExecFunction(decreaseClick, 'tempOutput')
@@ -26,7 +27,6 @@ globalThis.getPlayerLook = function(){
 		return z
 	}
 	return [0,0]
-	requestExecFunction(getPlayerLook,'')
 }
 globalThis.onPlayerClick = function(id){
   if(id == user){
@@ -35,4 +35,3 @@ globalThis.onPlayerClick = function(id){
 }
 clickFunctions = []
 decreaseClick()
-getPlayerLook()
