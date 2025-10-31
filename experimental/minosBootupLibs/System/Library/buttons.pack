@@ -8,6 +8,8 @@ globalThis.Button = class extends Window{
     clickFunctions.push(() => this.exec())
   }
   exec(){
-    requestExecFunction(() => this.toExec, "")
+    if(inBounds(userCursorPos[0], x, x + dx) && inBounds(userCursorPos[1], y + dy)){
+      requestExecFunction(() => this.toExec, "")
+    }
   }
 }
