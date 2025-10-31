@@ -5,7 +5,7 @@ globalThis.Button = class extends Window{
   constructor(x,y, dx, dy, func){
     super(x, y, dx, dy)
     this.toExec = func
-    clickFunctions.push(() => this.exec())
+    clickFunctions.push(this.exec)
   }
   exec(){
     if(inBounds(userCursorPos[0], x, x + dx) && inBounds(userCursorPos[1], y + dy)){
