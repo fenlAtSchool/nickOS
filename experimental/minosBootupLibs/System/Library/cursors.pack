@@ -11,24 +11,25 @@ globalThis.decreaseClick = function(){
 		}
 	}
 	registerClick = false
-	requestExecFunction(decreaseClick, 'tempOutput')
+	requestExecFunction(decreaseClick, '')
 }
 globalThis.getPlayerLook = function(){
-	let z = api.getPlayerFacingInfO(user)
+	let z = api.getPlayerFacingInfo(user)
 	let look = z.camPos
 	z = z.dir
 	z[0] *= (50-look[2])/z[2]
 	z[1] *= (50-look[2])/z[2]
 	z[0] += look[0]
 	z[1] += look[1]
-	z[0] = Math.round(z[0] + displayx/2)
-	z[1] = Math.round(displayy - z[1])
-	if(inBounds(z, 0, displayx - 3) && inBounds(z[1], 0, displayy - 3)){
+	z[0] = Math.round(z[0] + config.displayx/2)
+	z[1] = Math.round(config.displayy - z[1])
+	if(inBounds(z, 0, config.displayx - 3) && inBounds(z[1], 0, config.displayy - 3)){
 		return z
 	}
 	return [0,0]
 }
 globalThis.onPlayerClick = function(id){
+  api.log(user, id)
   if(id == user){
     registerClick = true
   }
