@@ -1,16 +1,16 @@
 require("display.pack")
 require("utils.pack")
 globalThis.decreaseClick = function(){
-	isClicking = registerClick
-	registerClick = false
-	let z = getPlayerLook()
-	if(isClicking){
+	userCursorPos = getPlayerLook()
+	if(registerClick){
+		api.log(userCursorPos)
 		let m = ''
 		while(clickFunctions.length > 0){
 			m = clickFunctions.shift()
-			m(z)
+			m(userCursorPos)
 		}
 	}
+	registerClick = false
 	requestExecFunction(decreaseClick, 'tempOutput')
 }
 globalThis.getPlayerLook = function(){
