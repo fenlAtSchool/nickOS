@@ -1,29 +1,29 @@
 
-globalThis.terminal = {
-  terminalPath: kernel.followPath("User"),
-  globalThis.parseCommand = function(x){
-    x = x.split(' ')
-    let f = x.shift()
-    return eval(`${f}(...x)`)
-  },
 
-  globalThis.cd = function(x){
-    terminal.terminalPath = x
-    return terminal.terminalPath
-  },
-  home(){
-    terminal.terminalPath = ""
-    return
-  },
-  echo(x){
-    return kernel.log("terminal", parseCommand(X))
-  },
-  ls(){
-    let x = kernel.getFile(terminalPath).contents
-    x = x.map(v => kernel.getFile(v)).map(v => v.name + v.extension)
-    return kernel.log("terminal", x)
-  },
-  touch(x, y){
-    return kernel.log("terminal", kernel.newFile(x, y))
-  }
+
+globalThis.parseCommand = function(x){
+  x = x.split(' ')
+  let f = x.shift()
+  return eval(`${f}(...x)`)
 }
+
+globalThis.cd = function(x){
+  terminalPath = x
+  return terminalPath
+}
+globalThis.home = function(){
+  terminalPath = ""
+  return
+}
+globalThis.echo = function(x){
+  return log("terminal", parseCommand(X))
+}
+globalThis.ls = function(){
+  let x = getFile(terminalPath).contents
+  x = x.map(v => getFile(v)).map(v => v.name + v.extension)
+  return log("terminal", x)
+}
+globalThis.touch = function(x, y){
+  return log("terminal", newFile(x, y))
+}
+terminalPath = followPath("User")
