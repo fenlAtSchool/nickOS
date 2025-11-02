@@ -1,5 +1,6 @@
+
 try{
-let j = eval(kernel.getFile(data).contents)
+let j = eval(getFile(data).contents)
 log("pack.cff", `Succesfully decompressed file ${data}`)
 }
 catch(error){
