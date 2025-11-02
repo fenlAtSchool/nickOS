@@ -163,7 +163,6 @@ function scheduleLast(x,shift=1,onError = null){
 function tick(){
 	functions.tick++
 	if(toDo = functions.stack[functions.tick]){
-		delete functions.stack[functions.tick]
 		for(const i of toDo){
 			try{
 				i.exec()
@@ -172,5 +171,6 @@ function tick(){
 				i.onError(error)
 			}
 		}
+		delete functions.stack[functions.tick]
 	}
 }
