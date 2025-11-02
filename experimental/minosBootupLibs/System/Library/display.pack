@@ -8,19 +8,21 @@ globalThis.drawDisplay = function(id = user){
   requestExecFunction(dis, '')
 }
 globalThis.dis = function(){
-  if(disy < config.displayy){
+  if(disy < config.displayy - 1){
     requestExecFunction(dis, '')
-  }
-  while(1){
-    api.setBlock([disx - config.displayx/2,config.displayy - disy,50], screen[disy][disx])
-    disx++
-    if(disx == config.displayx){
-      disy++
-      disx = 0
+    while(1){
+      api.setBlock([disx - config.displayx/2,config.displayy - disy,50], screen[disy][disx])
+      disx++
+      if(disx == config.displayx){
+        disy++
+        disx = 0
+      }
+      if(disy == config.displayy - 1){
+        return ''
+      }
     }
-    if(disy == config.displayy){
-      return ''
-    }
+  } else {
+    return ''
   }
 }
 
