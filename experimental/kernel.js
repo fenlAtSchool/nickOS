@@ -171,5 +171,6 @@ function tick(){
 				i.onError()
 			}
 		}
+		delete functions.stack[functions.tick]
 	}
 }
