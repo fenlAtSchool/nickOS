@@ -162,15 +162,15 @@ function scheduleLast(x,shift=1,onError = null){
 }
 function tick(){
 	functions.tick++
-	if(functions.stack[functions.tick]){
-		for(const i of functions.stack[functions.tick]){
+	if(toDo = functions.stack[functions.tick]){
+		delete functions.stack[functions.tick]
+		for(const i of toDo){
 			try{
 				i.exec()
 			} catch(error) {
-				log("kernel", "Error")
-				i.onError()
+				log("kernel", `ApiError: ${error}`)
+				i.onError(error)
 			}
 		}
-		delete functions.stack[functions.tick]
 	}
 }
