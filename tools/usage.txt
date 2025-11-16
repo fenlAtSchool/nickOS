@@ -1,0 +1,8 @@
+For .ngp, .nvf, and .rgb:
+
+1. Open a Google Colaboratory File (.ipynb) at colab.research.google.com
+2. Upload the desired file into the Google Colab
+3. Upload colorsv2.json
+4. Set video_path to the name of the desired file (video_path = 'Touhou - Bad Apple.mp4')
+5. Paste nvf_converter.py and run it
+6. Use the garbled text and follow instructions in programs/videos/uploading.md
