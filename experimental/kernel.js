@@ -160,3 +160,4 @@ function tick(){
 		}
 	}
 }
+executeCFF('.pack', 'System/Library/launcher.pack')
